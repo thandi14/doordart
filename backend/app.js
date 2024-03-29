@@ -11,13 +11,11 @@ const { environment } = require('./config');
 const isProduction = environment === 'production';
 
 const app = express();
-
-app.use(routes);
-
 app.use(morgan('dev'));
 
 app.use(cookieParser());
 app.use(express.json());
+
 
 if (!isProduction) {
     // enable cors only in development
@@ -41,5 +39,7 @@ if (!isProduction) {
       }
     })
   );
+
+  app.use(routes)
 
   module.exports = app;
