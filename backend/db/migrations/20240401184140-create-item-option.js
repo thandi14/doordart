@@ -7,18 +7,32 @@ if (process.env.NODE_ENV === 'production') {
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('CartItems', {
+    await queryInterface.createTable('ItemOptions', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      cartId: {
-        type: Sequelize.INTEGER
-      },
       itemId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'MenuItems',
+          key: 'id',
+      },
+      onDelete: 'cascade'
+      },
+      option: {
+        type: Sequelize.STRING
+      },
+      selection: {
+        type: Sequelize.STRING
+      },
+      cals: {
+        type: Sequelize.STRING
+      },
+      price: {
+        type: Sequelize.NUMBER
       },
       createdAt: {
         allowNull: false,
@@ -30,8 +44,8 @@ module.exports = {
       }
     }, options);
   },
-  down: async (queryInterface, Sequelize) => {
-    options.tableName = "CartItems";
+  async down(queryInterface, Sequelize) {
+    options.tableName = "ItemOptions";
     return queryInterface.dropTable(options);
   }
 };

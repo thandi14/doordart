@@ -10,13 +10,41 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      Resturant.hasOne(
+        models.ResturantImage,
+          { foreignKey: 'resturantId', onDelete: 'CASCADE',  hooks: true }
+      );
+      Resturant.hasOne(
+        models.ResturantTime,
+          { foreignKey: 'resturantId', onDelete: 'CASCADE',  hooks: true }
+      );
+      Resturant.hasMany(
+        models.Review,
+          { foreignKey: 'resturantId', onDelete: 'CASCADE',  hooks: true }
+      );
+      Resturant.hasMany(
+        models.Review,
+          { foreignKey: 'resturantId', onDelete: 'CASCADE',  hooks: true }
+      );
+      Resturant.hasMany(
+        models.Save,
+          { foreignKey: 'resturantId', onDelete: 'CASCADE',  hooks: true }
+      );
+      Resturant.hasMany(
+        models.ShoppingCart,
+          { foreignKey: 'resturantId', onDelete: 'CASCADE',  hooks: true }
+      );
+      Resturant.hasMany(
+        models.MenuItem,
+          { foreignKey: 'resturantId', onDelete: 'CASCADE',  hooks: true }
+      );
     }
   }
   Resturant.init({
+    userId: DataTypes.INTEGER,
     name: DataTypes.STRING,
-    deliveryFee: DataTypes.INTEGER,
-    deliveryTime: DataTypes.INTEGER,
+    deliveryFee: DataTypes.NUMBER,
+    deliveryTime: DataTypes.STRING,
     state: DataTypes.STRING,
     city: DataTypes.STRING,
     zipCode: DataTypes.INTEGER,

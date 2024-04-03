@@ -10,18 +10,24 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
       MenuItem.belongsTo(
         models.Resturant,
           { foreignKey: 'resturantId' }
+      );
+      MenuItem.hasMany(
+        models.ItemOption,
+          { foreignKey: 'itemId', onDelete: 'CASCADE',  hooks: true }
       );
     }
   }
   MenuItem.init({
     resturantId: DataTypes.INTEGER,
-    price: DataTypes.INTEGER,
-    cals: DataTypes.INTEGER,
-    category: DataTypes.STRING
+    item: DataTypes.STRING,
+    description: DataTypes.STRING,
+    price: DataTypes.NUMBER,
+    cals: DataTypes.STRING,
+    category: DataTypes.STRING,
+    imgUrl: DataTypes.TEXT
   }, {
     sequelize,
     modelName: 'MenuItem',

@@ -15,10 +15,20 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       userId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Users',
+          key: 'id',
+      },
+      onDelete: 'cascade'
       },
       resturantId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Resturants',
+          key: 'id',
+      },
+      onDelete: 'cascade'
       },
       review: {
         type: Sequelize.STRING

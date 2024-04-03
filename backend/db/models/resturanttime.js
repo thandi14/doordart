@@ -19,11 +19,36 @@ module.exports = (sequelize, DataTypes) => {
   }
   ResturantTime.init({
     resturantId: DataTypes.INTEGER,
-    monday: DataTypes.STRING,
-    tuesday: DataTypes.STRING,
-    wednesday: DataTypes.STRING,
-    thursday: DataTypes.STRING,
-    friday: DataTypes.STRING
+    monday: {
+      type: DataTypes.STRING,
+      validate: {
+        is: /^(1[0-2]|0?[1-9])(:[0-5][0-9])? (AM|PM) - (1[0-2]|0?[1-9])(:[0-5][0-9])? (AM|PM)$/
+      }
+    },
+    tuesday: {
+      type: DataTypes.STRING,
+      validate: {
+        is: /^(1[0-2]|0?[1-9])(:[0-5][0-9])? (AM|PM) - (1[0-2]|0?[1-9])(:[0-5][0-9])? (AM|PM)$/
+      }
+    },
+    wednesday: {
+      type: DataTypes.STRING,
+      validate: {
+        is: /^(1[0-2]|0?[1-9])(:[0-5][0-9])? (AM|PM) - (1[0-2]|0?[1-9])(:[0-5][0-9])? (AM|PM)$/
+      }
+    },
+    thursday: {
+      type: DataTypes.STRING,
+      validate: {
+        is: /^(1[0-2]|0?[1-9])(:[0-5][0-9])? (AM|PM) - (1[0-2]|0?[1-9])(:[0-5][0-9])? (AM|PM)$/
+      }
+    },
+    friday: {
+      type: DataTypes.STRING,
+      validate: {
+        is: /^(1[0-2]|0?[1-9])(:[0-5][0-9])? (AM|PM) - (1[0-2]|0?[1-9])(:[0-5][0-9])? (AM|PM)$/
+      }
+    },
   }, {
     sequelize,
     modelName: 'ResturantTime',

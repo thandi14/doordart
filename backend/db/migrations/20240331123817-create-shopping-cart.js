@@ -7,7 +7,7 @@ if (process.env.NODE_ENV === 'production') {
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('ResturantTimes', {
+    await queryInterface.createTable('ShoppingCarts', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -22,20 +22,47 @@ module.exports = {
       },
       onDelete: 'cascade'
       },
-      monday: {
-        type: Sequelize.STRING
+      userId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Users',
+          key: 'id',
       },
-      tuesday: {
-        type: Sequelize.STRING
+      onDelete: 'cascade'
       },
-      wednesday: {
-        type: Sequelize.STRING
+      offerId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Offers',
+          key: 'id',
       },
-      thursday: {
-        type: Sequelize.STRING
+      onDelete: 'cascade'
       },
-      friday: {
-        type: Sequelize.STRING
+      dealId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Deals',
+          key: 'id',
+      },
+      onDelete: 'cascade'
+      },
+      tip: {
+        type: Sequelize.INTEGER
+      },
+      fees: {
+        type: Sequelize.INTEGER
+      },
+      gift: {
+        type: Sequelize.BOOLEAN
+      },
+      pickup: {
+        type: Sequelize.BOOLEAN
+      },
+      group: {
+        type: Sequelize.BOOLEAN
+      },
+      price: {
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
@@ -48,7 +75,7 @@ module.exports = {
     }, options);
   },
   down: async (queryInterface, Sequelize) => {
-    options.tableName = "ResturantTimes";
+    options.tableName = "ShoppingCarts";
     return queryInterface.dropTable(options);
   }
 };

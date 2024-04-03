@@ -7,21 +7,50 @@ if (process.env.NODE_ENV === 'production') {
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('ItemOptions', {
+    await queryInterface.createTable('Resturants', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      itemId: {
+      userId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Users',
+          key: 'id',
+      },
+      onDelete: 'cascade'
+      },
+      name: {
+        type: Sequelize.STRING
+      },
+      deliveryFee: {
+        type: Sequelize.NUMBER
+      },
+      deliveryTime: {
+        type: Sequelize.STRING
+      },
+      state: {
+        type: Sequelize.STRING
+      },
+      city: {
+        type: Sequelize.STRING
+      },
+      zipCode: {
         type: Sequelize.INTEGER
       },
-      option: {
+      address: {
         type: Sequelize.STRING
       },
-      selection: {
+      type: {
         type: Sequelize.STRING
+      },
+      pickup: {
+        type: Sequelize.BOOLEAN
+      },
+      phone: {
+        type: Sequelize.NUMBER
       },
       createdAt: {
         allowNull: false,
@@ -33,8 +62,8 @@ module.exports = {
       }
     }, options);
   },
-  down: async (queryInterface, Sequelize) => {
-    options.tableName = "ItemOptions";
+  async down(queryInterface, Sequelize) {
+    options.tableName = "Resturants";
     return queryInterface.dropTable(options);
   }
 };

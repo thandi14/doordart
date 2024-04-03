@@ -15,7 +15,12 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       resturantId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Resturants',
+          key: 'id',
+      },
+      onDelete: 'cascade'
       },
       offer: {
         type: Sequelize.STRING

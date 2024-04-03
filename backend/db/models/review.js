@@ -25,7 +25,11 @@ module.exports = (sequelize, DataTypes) => {
     userId: DataTypes.INTEGER,
     resturantId: DataTypes.INTEGER,
     review: DataTypes.STRING,
-    rating: DataTypes.INTEGER
+    rating: {
+      type: DataTypes.INTEGER,
+      max: 5,
+      min: 0,
+    }
   }, {
     sequelize,
     modelName: 'Review',

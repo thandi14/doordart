@@ -7,7 +7,7 @@ if (process.env.NODE_ENV === 'production') {
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('ResturantTimes', {
+    await queryInterface.createTable('MenuItems', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -22,20 +22,23 @@ module.exports = {
       },
       onDelete: 'cascade'
       },
-      monday: {
+      item: {
         type: Sequelize.STRING
       },
-      tuesday: {
+      description: {
         type: Sequelize.STRING
       },
-      wednesday: {
+      price: {
+        type: Sequelize.NUMBER
+      },
+      cals: {
         type: Sequelize.STRING
       },
-      thursday: {
+      category: {
         type: Sequelize.STRING
       },
-      friday: {
-        type: Sequelize.STRING
+      imgUrl: {
+        type: Sequelize.TEXT
       },
       createdAt: {
         allowNull: false,
@@ -48,7 +51,7 @@ module.exports = {
     }, options);
   },
   down: async (queryInterface, Sequelize) => {
-    options.tableName = "ResturantTimes";
+    options.tableName = "MenuItems";
     return queryInterface.dropTable(options);
   }
 };
