@@ -4,25 +4,30 @@ import { Route, Switch } from "react-router-dom";
 import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
 import SplashPage from "./components/SplashPage";
+import HomePage from "./components/HomePage";
+import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
 
 function App() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
+  const location = useLocation();
+
   useEffect(() => {
     dispatch(sessionActions.restoreUser()).then(() => setIsLoaded(true));
   }, [dispatch]);
 
   return (
     <>
-          <Route path="/">
-            <SplashPage />
-          </Route>
-      {isLoaded && (
-        <Switch>
-          <Navigation isLoaded={isLoaded} />
-        </Switch>
-      )}
-    </>
+  {isLoaded && location.pathname !== '/' && <Navigation isLoaded={isLoaded}/>}
+  <Switch>
+    <Route exact path="/">
+      <SplashPage />
+    </Route>
+    <Route exact path="/home">
+      <HomePage />
+    </Route>
+  </Switch>
+</>
   );
 }
 
