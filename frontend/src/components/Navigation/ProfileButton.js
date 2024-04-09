@@ -14,17 +14,17 @@ function ProfileButton({ user }) {
 
   return (
     <>
-      <button>
-        <i className="fas fa-user-circle" />
+      <button id ="menu">
+      <i class="fi fi-br-menu-burger"></i>
       </button>
-      <ul className="profile-dropdown">
+      {/* <ul className="profile-dropdown">
         <li>{user.username}</li>
         <li>{user.firstName} {user.lastName}</li>
         <li>{user.email}</li>
         <li>
           <button onClick={logout}>Log Out</button>
         </li>
-      </ul>
+      </ul> */}
     </>
   );
 }

@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import * as sessionActions from "../../store/session";
 import "./SignupForm.css";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 function SignupFormModal() {
   const dispatch = useDispatch();
@@ -14,9 +15,11 @@ function SignupFormModal() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
+  const history = useHistory()
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    history.push('/home')
     if (password === confirmPassword) {
       setErrors({});
       return dispatch(
