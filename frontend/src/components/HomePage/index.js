@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import "./HomePage.css"
@@ -20,26 +20,28 @@ import salmon from "./images/salmon.png"
 import steak from "./images/meat.png"
 import pizzaTwo from "./images/pizzaTwo.png"
 import south from "./images/chicken.png"
-import * as resturantActions from "../../store/restaurants";
+import * as restaurantActions from "../../store/restaurants";
 import HomeNav from "./HomeNav";
 import HomeFoot from "./HomeFoot";
+import { useFilters } from "../../context/Filters";
 
 
 function HomePage({ isLoaded }) {
-  const sessionUser = useSelector((state) => state.session.user);
+  const { user } = useSelector((state) => state.session );
   const { restaurants } = useSelector((state) => state.restaurants);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentImage, setCurrentImage ] = useState(0)
   const [ length, setLength ] = useState(0)
   const dispatch = useDispatch()
-
+  const { location } = useFilters()
+  const targetRef = useRef()
 
 
  useEffect(() => {
      async function fetchData() {
-         await dispatch(resturantActions.thunkGetResturants())
+         if ( !location && user?.id ) await dispatch(restaurantActions.thunkGetUserResturants())
         }
-        fetchData()
+     fetchData()
 
   }, [dispatch])
 

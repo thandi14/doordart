@@ -1,6 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
+import "./SplashPage.css"
 
 function SplashFoot({ isLoaded }) {
   const sessionUser = useSelector((state) => state.session.user);
@@ -9,33 +10,33 @@ function SplashFoot({ isLoaded }) {
 
   return (
     <>
-    <div className="sp-foot">
+    <div style={{ backgroundColor: "rgb(25, 25, 25)", gap: "0px"}} className="sp-foot">
         <div>
-            <h1 style={{ fontSize: "16px", color: "black" }}>Popular Categories</h1>
+            <h1 style={{ fontSize: "16px", color: "white" }}>Popular Categories</h1>
         </div>
-        <div id="foot-one">
-            <span>
+        <div style={{ marginBottom: "40px"}}  id="foot-one">
+            <span style={{ color: "rgb(196, 196, 196)"}}>
                 <p>Alchol Delivery</p>
                 <p>Back To School Delivery</p>
                 <p>Beauty Stores</p>
                 <p>Beauty Supplies</p>
                 <p>Catering Near Me</p>
             </span>
-            <span>
+            <span style={{ color: "rgb(196, 196, 196)"}}>
                 <p>Convenience Stores Canada</p>
                 <p>Dashmart Near Me</p>
                 <p>Deck The Doorstep</p>
                 <p> Drugstores Canada</p>
                 <p>Flower Delivery</p>
             </span>
-            <span>
+            <span style={{ color: "rgb(196, 196, 196)"}}>
                 <p>Grocery Delivery Canada</p>
                 <p>Halloween</p>
                 <p>Medicine Delivery</p>
                 <p>Pet Store Near Me</p>
                 <p>Retail Stores Near Me</p>
             </span>
-            <span>
+            <span style={{ color: "rgb(196, 196, 196)"}}>
                 <p>Seasonal Holidays </p>
                 <p>Snap Ebt </p>
                 <p>Valentines Day</p>
@@ -48,39 +49,39 @@ function SplashFoot({ isLoaded }) {
         </div> */}
         <div id="foot-two">
             <span>
-            <h1 style={{ fontSize: "16px", color: "black" }}>Get To Know Us</h1>
-                <p>About Us</p>
-                <p>Careers</p>
-                <p>Investors</p>
-                <p>Company Blog</p>
-                <p>Engineering Blog</p>
-                <p>Merchant Blog</p>
-                <p>Gift Cards</p>
-                <p>Package Pickup</p>
-                <p>Promotions</p>
-                <p>Dasher Central</p>
-                <p>LinkedIn</p>
-                <p>Glassdoor</p>
-                <p>Accessibility</p>
-                <p>Newsroom</p>
+            <h1 style={{ fontSize: "16px", color: "white" }}>Get To Know Us</h1>
+                <p style={{ color: "rgb(196, 196, 196)"}}>About Us</p>
+                <p style={{ color: "rgb(196, 196, 196)"}}>Careers</p>
+                <p style={{ color: "rgb(196, 196, 196)"}}>Investors</p>
+                <p style={{ color: "rgb(196, 196, 196)"}}>Company Blog</p>
+                <p style={{ color: "rgb(196, 196, 196)"}}>Engineering Blog</p>
+                <p style={{ color: "rgb(196, 196, 196)"}}>Merchant Blog</p>
+                <p style={{ color: "rgb(196, 196, 196)"}}>Gift Cards</p>
+                <p style={{ color: "rgb(196, 196, 196)"}}>Package Pickup</p>
+                <p style={{ color: "rgb(196, 196, 196)"}}>Promotions</p>
+                <p style={{ color: "rgb(196, 196, 196)"}}>Dasher Central</p>
+                <p style={{ color: "rgb(196, 196, 196)"}}>LinkedIn</p>
+                <p style={{ color: "rgb(196, 196, 196)"}}>Glassdoor</p>
+                <p style={{ color: "rgb(196, 196, 196)"}}>Accessibility</p>
+                <p style={{ color: "rgb(196, 196, 196)"}}>Newsroom</p>
             </span>
             <span>
-            <h1 style={{ fontSize: "16px", color: "black" }}>Let Us Help You</h1>
-                <p>Account Details</p>
-                <p>Order History</p>
-                <p>Help</p>
+            <h1 style={{ fontSize: "16px", color: "white" }}>Let Us Help You</h1>
+                <p style={{ color: "rgb(196, 196, 196)"}}>Account Details</p>
+                <p style={{ color: "rgb(196, 196, 196)"}}>Order History</p>
+                <p style={{ color: "rgb(196, 196, 196)"}}>Help</p>
             </span>
             <span>
-            <h1 style={{ fontSize: "16px", color: "black" }}>Doing Businesses</h1>
-                <p>Become a Dasher</p>
-                <p>List Your Business</p>
-                <p>Get Dashers for Deliveries</p>
-                <p>Get DoorDash for Business</p>
+            <h1 style={{ fontSize: "16px", color: "white" }}>Doing Businesses</h1>
+                <p style={{ color: "rgb(196, 196, 196)"}}>Become a Dasher</p>
+                <p style={{ color: "rgb(196, 196, 196)"}}>List Your Business</p>
+                <p style={{ color: "rgb(196, 196, 196)"}}>Get Dashers for Deliveries</p>
+                <p style={{ color: "rgb(196, 196, 196)"}}>Get DoorDash for Business</p>
             </span>
         </div>
         <div style={{ justifyContent: "flex-start"}} id="foot-three">
-            <img src="https://freepnglogo.com/images/all_img/1706201578doordash-icon-png.png"></img>
-            <span id="ft-one">
+            <img src="https://www.pngall.com/wp-content/uploads/15/Door-Dash-Logo-PNG-Photo.png"></img>
+            <span  style={{ color: "rgb(196, 196, 196)"}} id="ft-one">
             <p>Terms of Service</p>
             <p>Privacy</p>
             <p>Delivery Locations</p>
@@ -88,7 +89,7 @@ function SplashFoot({ isLoaded }) {
             <p>© 2024 DoorDash</p>
             </span>
             <button><i class="fi fi-rs-globe"></i>English (US)<i class="fi fi-rr-angle-small-down"></i></button>
-            <span id="ft-two">
+            <span style={{ color: "rgb(196, 196, 196)"}} id="ft-two">
             <i class="fi fi-brands-facebook"></i>
             <i class="fi fi-brands-twitter"></i>
             <i class="fi fi-brands-instagram"></i>

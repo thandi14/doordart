@@ -9,11 +9,24 @@ const getRestaurant = (restaurants) => {
   };
 };
 
-export const thunkGetResturants = () => async (dispatch) => {
+export const thunkGetUserResturants = () => async (dispatch) => {
     const response = await csrfFetch("/api/restaurants");
     const data = await response.json();
     dispatch(getRestaurant(data));
     return response;
+};
+
+export const thunkGetResturants = (data) => async (dispatch) => {
+  const response = await csrfFetch("/api/restaurants", {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  })
+  const data1 = await response.json();
+  dispatch(getRestaurant(data1));
+  return response;
 };
 
 let initialState = {
