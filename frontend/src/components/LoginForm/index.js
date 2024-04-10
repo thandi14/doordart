@@ -15,6 +15,7 @@ function LoginFormModal() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    history.push('/home')
     setErrors({});
     return dispatch(sessionActions.login({ credential, password }))
       .then(closeModal)
