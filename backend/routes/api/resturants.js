@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
-const { User, Resturant, MenuItem, ResturantTime } = require('../../db/models');
+const { User, Resturant, MenuItem, ResturantTime, Review, ResturantImage } = require('../../db/models');
 const axios = require('axios');
 
 const router = express.Router();
@@ -56,11 +56,14 @@ router.get('/', async (req, res) => {
     const franchises = await Resturant.findAll({
         include: [
             { model: MenuItem },
-            { model: ResturantTime }
+            { model: ResturantTime },
+            { model: Review },
+            { model: ResturantImage }
+
         ]
     })
 
-    res.json({ franchises })
+    res.json( franchises )
 
 })
 

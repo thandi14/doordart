@@ -422,8 +422,10 @@ body {
 #foot-three {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     margin-top: 15px;
+    width: 100%;
+    gap: 10px;
 }
 
 #foot-three > img{
