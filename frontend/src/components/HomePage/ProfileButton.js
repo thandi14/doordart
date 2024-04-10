@@ -2,11 +2,15 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from 'react-redux';
 import * as sessionActions from '../../store/session';
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import SignupFormModal from "../SignupForm";
+import { useModal } from "../../context/Modal";
 
 function ProfileButton({ user, d }) {
   const dispatch = useDispatch();
   const [ drop, setDrop ] = useState(d)
   const history = useHistory()
+  const { setModalContent } = useModal()
+
 
   useEffect(() => {
       setDrop(d)
@@ -48,32 +52,54 @@ function ProfileButton({ user, d }) {
         <p>Orders</p>
         </span>
         <div id="line-three"></div>
+        { !user &&
+        <>
+        <span>
+        <i class="fi fi-rr-life-ring"></i>
+        <p>Help</p>
+        </span>
+        <div id="line-three"></div>
+        </>
+        }
         <span>
         <i class="fi fi-br-clipboard-user"></i>
         <div id="acc">
-        <p>Account</p>
+        { !user && <p onClick={(() => {
+                setModalContent(<SignupFormModal />)
+              })}>Sign Up or Sign In</p>}
+        { user &&
+          <>
+          <p>Account</p>
         <p style={{ fontSize: "14px", color: "#767676"}}>Thandi Mpofu</p>
+          </>
+        }
         </div>
         </span>
+      { user &&
+        <>
         <div id="line-three"></div>
         <span>
-        <i class="fi fi-rs-heart" ></i>
-        <p>Saved Stores</p>
+           <i class="fi fi-rs-heart" ></i>
+          <p>Saved Stores</p>
         </span>
         <div id="line-three"></div>
         <span>
-        <i class="fi fi-rs-money-bill-wave"></i>
-        <p>Payment</p>
+          <i class="fi fi-rs-money-bill-wave"></i>
+          <p>Payment</p>
         </span>
         <div id="line-three"></div>
         <span>
-        <i class="fi fi-rr-credit-card"></i>
-        <p>Gift Card</p>
+          <i class="fi fi-rr-credit-card"></i>
+          <p>Gift Card</p>
         </span>
         <div id="line-three"></div>
+      </>
+        }
         {/* <p>Get $0 delivery fees</p> */}
         {/* <p>DoorDash Rewards Mastercard®<br></br>
         Get 4% cash back and 1 year of DashPass</p> */}
+        {user &&
+        <>
         <span>
         <i class="fi fi-rr-life-ring"></i>
         <p>Help</p>
@@ -83,6 +109,7 @@ function ProfileButton({ user, d }) {
         <i class="fi fi-rr-cross-circle"></i>
         <p>Sign Out</p>
         </span>
+        </>}
         <div id="divider"></div>
         <div style={{ padding: "16px"}}>
         <button id="english"><i class="fi fi-rs-globe"></i>English (US)<i class="fi fi-rr-angle-small-down"></i></button>

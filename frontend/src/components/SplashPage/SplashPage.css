@@ -35,23 +35,25 @@ body {
 }
 
 #address-input {
-    /* width: 481px; */
+    width: 408px;
     height: 40px;
     display: flex;
     align-items: center;
-    /* justify-content: center; */
+    position: relative;
     background-color: rgb(255, 255, 255);
     color: rgb(25, 25, 25);
     border-radius: 32px;
     border: solid rgb(214, 214, 214) 1px;
     padding: 6px 12px;
-    gap: 5%;
+    gap: 2%;
 }
 
 #address-input > span > i {
-    width: 24px;
-    height: 24px;
-    font-size: 24px;
+    width: 34px;
+    height: 34px;
+    font-size: 30px;
+    right: 10px;
+    position: absolute;
 }
 
 #address-input > span {
@@ -66,7 +68,7 @@ body {
     color: #767676ff
 }
 
-#address-input > input {
+#location {
     font-size: 16px;
     line-height: 22px;
     font-weight: 500;
@@ -189,7 +191,7 @@ body {
 
 .sp-one {
     display: flex;
-    padding: 10%;
+    padding: 8%;
 }
 
 .sp-one > div, .sp-two > div, .sp-three > div, .sp-five > div, .sp-four > div, .sp-eight > div, .sp-nine > div {
@@ -266,6 +268,10 @@ body {
     height: 500px
 }
 
+.sp-two, .sp-five, .sp-eight {
+    margin-bottom: -105px;
+}
+
 
 .sp-four {
     background-image: url("https://images.ctfassets.net/lmx885sr3per/6Km5Ovhq5F7UzErMdmuPUr/224daf8dbf0be62727eaed81360df59e/grocery_desktop.png");
@@ -273,7 +279,8 @@ body {
 
 .sp-six > div > div > img {
     width: 100%;
-    height: 100%
+    height: 100%;
+    margin-bottom: 10px;
 }
 
 .sp-six {
@@ -304,6 +311,11 @@ body {
     text-align: center;
 }
 
+.sp-seven > h1 {
+    margin-bottom: 0px;
+    margin-top: 65px;
+}
+
 .sp-nine, .sp-eleven {
     background-color: rgb(254, 241, 238);
 }
@@ -324,7 +336,7 @@ body {
 }
 
 .sp-ten {
-    padding: 2% 12%;
+    padding: 2% 10%;
     display: flex;
     flex-direction: column;
     gap: 4%;
@@ -352,20 +364,28 @@ body {
 
 #top-one > span > p {
     border-bottom: 2px solid #e7e7e7ff;
-    /* margin: 10px; */
-    /* padding: 10%; */
-    height: 30px;
+    padding: 6px 0px;
     width: 100%;
+}
+
+#top-one > span > p:hover {
+    background-color: rgb(247, 247, 247);
+    cursor: pointer;
 }
 
 #top > span > p {
     width: 100%;
     color: #191919;
     line-height: 22px;
-    margin: 8px;
-
-    /* padding: 10%; */
+    padding: 8px;
+    margin: 0px;
+    cursor: pointer;
 }
+
+#top > span > p:hover {
+    background-color: rgb(247, 247, 247);
+}
+
 
 #top {
     width: 100%;
@@ -398,10 +418,26 @@ body {
     justify-content: space-between;
 }
 
+#foot-one > span > p:hover, #foot-two > span > p:hover {
+    text-decoration: underline;
+    cursor: pointer;
+    color: white;
+}
+
 #foot-two {
     display: flex;
     justify-content: space-between;
     width: 50%;
+}
+
+#ft-one > p:hover:not(:last-child) {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#ft-two > i:hover {
+    color: rgb(221, 220, 220);
+    cursor: pointer;
 }
 
 .sp-foot > div > h1 {
@@ -417,6 +453,12 @@ body {
     flex-direction: column;
     width: 100%;
     margin-top: 50px;
+}
+
+.sp-foot {
+    background-color: rgb(25, 25, 25);
+    display: flex;
+    flex-direction: column;
 }
 
 #foot-three {
