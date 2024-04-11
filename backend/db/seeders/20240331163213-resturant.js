@@ -59,6 +59,24 @@ module.exports = {
         type: "fast food",
         pickup: true,
       },
+      {
+        name: "Chicken Express",
+        deliveryFee: 0,
+        type: "fast food",
+        pickup: true,
+      },
+      {
+        name: "Jack in the Box",
+        deliveryFee: 2.49,
+        type: "fast food",
+        pickup: true,
+      },
+      {
+        name: "Cracker Barrel",
+        deliveryFee: 0.49,
+        type: "restaurant",
+        pickup: true,
+      },
     ], {});
   },
 
