@@ -98,6 +98,7 @@
     justify-content: flex-end;
     gap: 10px;
     width: 50%;
+
 }
 
 #my-address {
@@ -118,7 +119,14 @@
     color: red;
     font-size: 12px;
     width: 12px;
-    height: 12px;
+    height: 10px;
+}
+
+#icon > span {
+    padding-right: 15px;
+    color: red;
+    font-weight: 700;
+    font-size: 19px;
 }
 
 #search {
@@ -132,6 +140,7 @@
     height: 40px;
     gap: 10px;
     font-family: TT Norms, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";;
+    margin-left: 64px;
 
 }
 

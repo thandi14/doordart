@@ -24,18 +24,16 @@ import * as restaurantActions from "../../store/restaurants";
 import HomeNav from "./HomeNav";
 import HomeFoot from "./HomeFoot";
 import { useFilters } from "../../context/Filters";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 
 function HomePage({ isLoaded }) {
   const { user } = useSelector((state) => state.session );
   const { restaurants } = useSelector((state) => state.restaurants);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [currentImage, setCurrentImage ] = useState(0)
   const [ length, setLength ] = useState(0)
   const dispatch = useDispatch()
   const { location } = useFilters()
-  const targetRef = useRef()
-
+  const history = useHistory()
 
  useEffect(() => {
      async function fetchData() {
@@ -44,6 +42,7 @@ function HomePage({ isLoaded }) {
      fetchData()
 
   }, [dispatch])
+
 
   const goToNext = (e) => {
       e.stopPropagation()
@@ -63,9 +62,22 @@ function HomePage({ isLoaded }) {
     transform: `translateX(-${length * 50}%)`,
   };
 
-  const franchises = Object.values(restaurants)
+  const franchises = Object.values(restaurants).sort((a, b) => a.miles - b.miles)
 
-  console.log(restaurants)
+  const reviews = (reviews) => {
+
+    if (!reviews.length) return 0
+
+    let sum = 0
+    for (let review of reviews) {
+        sum += review.rating
+    }
+
+    let result = sum / reviews.length
+
+    return result.toFixed(1)
+
+  };
 
 
   return (
@@ -189,21 +201,21 @@ function HomePage({ isLoaded }) {
     <div className="restaurants">
         {franchises.map((f, id) =>
         <>
-            <div className="restaurant" id={`r-${id}`}>
-                <img style={{ marginBottom: "6px", height: "60%" }}src={f.ResturantImage?.thumbnailUrl}></img>
+            <div onClick={(() => history.push(`/restaurant/${f.id}`))} className="restaurant" id={`r-${id}`}>
+                <img style={{ marginBottom: "6px", height: "58%" }}src={f.ResturantImage?.thumbnailUrl}></img>
                 <div id="r-name">
                     <h1 style={{ fontSize: "16px", margin: "2px 0px"}} >{f.name} </h1>
                     <i style={{ color: "#767676", fontSize: "15px", margin: "4px"}} class="fi fi-rs-heart"></i>
                 </div>
                 <div id="r-info">
                     <h1 style={{ fontSize: "12px"}}>
-                    <span style={{ color: "black"}}>4.5</span>
+                    <span style={{ color: "black"}}>{reviews(f.Reviews)}</span>
                     <i class="fi fi-sr-star" style={{ fontSize: "12px", color: "#e4e404" }}></i>
                     ({f.Reviews?.length})
                     <i style={{ width: "10px", height: "10px" }} class="fi fi-sr-bullet"></i>
-                    8.1 mi
+                    {f.miles} mi
                     <i style={{ width: "10px", height: "10px" }} class="fi fi-sr-bullet"></i>
-                    44 mins
+                    {f.minutes + 10} mins
                     </h1>
                 </div>
                 <h1 style={{ fontSize: "12px", color: "#767676"}}>${f.deliveryFee} Delivery Fee</h1>

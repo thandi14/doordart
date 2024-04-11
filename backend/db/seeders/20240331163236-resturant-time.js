@@ -84,6 +84,33 @@ module.exports = {
         friday: "6 AM - 12:30 AM",
         saturday: "6 AM - 12:30 AM",
       },
+      {
+        resturantId: 9,
+        monday: "5 AM - 12:30 AM",
+        tuesday: "5 AM - 12:30 AM",
+        wednesday: "5 AM - 12:30 AM",
+        thursday: "5 AM - 12:30 AM",
+        friday: "6 AM - 12:30 AM",
+        saturday: "6 AM - 12:30 AM",
+      },
+      {
+        resturantId: 10,
+        monday: "5 AM - 12:30 AM",
+        tuesday: "5 AM - 12:30 AM",
+        wednesday: "5 AM - 12:30 AM",
+        thursday: "5 AM - 12:30 AM",
+        friday: "6 AM - 12:30 AM",
+        saturday: "6 AM - 12:30 AM",
+      },
+      {
+        resturantId: 11,
+        monday: "5 AM - 12:30 AM",
+        tuesday: "5 AM - 12:30 AM",
+        wednesday: "5 AM - 12:30 AM",
+        thursday: "5 AM - 12:30 AM",
+        friday: "6 AM - 12:30 AM",
+        saturday: "6 AM - 12:30 AM",
+      },
     ], {});
   },
 

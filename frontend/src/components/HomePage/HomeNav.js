@@ -23,7 +23,6 @@ function HomeNav({ isLoaded }) {
   const { setModalContent } = useModal()
   const { setLocation } = useFilters()
   const autocompleteRef = useRef(null);
-  const [address, setAddress] = useState('');
   const dispatch = useDispatch()
 
   const handlePlaceChanged = () => {
@@ -40,7 +39,7 @@ function HomeNav({ isLoaded }) {
       setLocation(place);
 
       let data = {
-        address: address
+        address: place
       };
 
       await dispatch(restaurantActions.thunkGetResturants(data));
@@ -74,7 +73,7 @@ function HomeNav({ isLoaded }) {
          </button>
         <div id="icon">
         <img src="https://freepnglogo.com/images/all_img/1706201578doordash-icon-png.png"></img>
-          <span style={{ paddingRight: "15px", color: "red", fontSize: "18px" }}>DOORDART</span>
+          <span>DOORDART</span>
         </div>
         <div id="pick">
             <button>

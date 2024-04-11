@@ -22,16 +22,6 @@ function SplashPage() {
   const history = useHistory()
   const [address, setAddress] = useState('');
 
-//   const handlePlaceChanged = (event) => {
-//     setAddress(event.target.value);
-//   };
-
-//   const handleKeyDown = (event) => {
-//     if (event.key === "Enter") {
-//       submitPlaceChanged(event.target.value);
-//     }
-//   };
-
 const handlePlaceChanged = () => {
     const autocomplete = autocompleteRef.current;
     if (autocomplete) {

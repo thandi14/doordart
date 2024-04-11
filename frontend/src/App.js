@@ -5,6 +5,7 @@ import * as sessionActions from "./store/session";
 import SplashPage from "./components/SplashPage";
 import HomePage from "./components/HomePage";
 import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
+import RestaurantPage from "./components/RestaurantPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -23,6 +24,9 @@ function App() {
     </Route>
     <Route exact path="/home">
       <HomePage />
+    </Route>
+    <Route exact path="/restaurant/:id">
+      <RestaurantPage />
     </Route>
   </Switch>
 </>

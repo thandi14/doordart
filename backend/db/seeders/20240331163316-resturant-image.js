@@ -60,6 +60,24 @@ module.exports = {
       thumbnailUrl: "https://img.cdn4dd.com/p/fit=cover,width=400,format=auto,quality=50/media/photosV2/5f65cd3e-d3dc-4b18-b93d-1bbb3cf85dff-retina-large.jpg",
       iconUrl: "https://img.cdn4dd.com/p/fit=contain,width=200,height=200,format=auto,quality=95/media/restaurant/cover_square/d439d236-e807-41d4-a7ea-0f83500de5c6.png"
     },
+    {
+      resturantId: 9,
+      bannerUrl: "https://img.cdn4dd.com/cdn-cgi/image/fit=cover,width=1000,height=300,format=auto,quality=80/https://doordash-static.s3.amazonaws.com/media/store/header/9ce6e934-5ff0-4819-b7c6-acff7e181d3a.jpeg",
+      thumbnailUrl: "https://img.cdn4dd.com/cdn-cgi/image/fit=contain,format=auto,width=800,quality=50/https://doordash-static.s3.amazonaws.com/media/photosV2/57d3b1d4-27fe-4b23-8be9-78ae6e822207-retina-large.jpg",
+      iconUrl: "https://img.cdn4dd.com/p/fit=contain,width=1200,height=76,format=auto,quality=95/media/restaurant/cover_square/b532d10d-d59b-4b97-9eb2-3389294d3e09.png"
+    },
+    {
+      resturantId: 10,
+      bannerUrl: "https://img.cdn4dd.com/cdn-cgi/image/fit=cover,width=1000,height=300,format=auto,quality=80/https://doordash-static.s3.amazonaws.com/media/store/header/e6735cfe-fb1f-4a92-9039-5c39622a4c63.jpg",
+      thumbnailUrl: "https://img.cdn4dd.com/cdn-cgi/image/fit=contain,format=auto,width=800,quality=50/https://doordash-static.s3.amazonaws.com/media/photosV2/96d7ea99-407a-40da-a8ee-476b5cdbfb54-retina-large.JPG",
+      iconUrl: "https://img.cdn4dd.com/p/fit=contain,width=1200,height=76,format=auto,quality=95/media/restaurant/cover_square/Jack_Cover_Square.jpg"
+    },
+    {
+      resturantId: 11,
+      bannerUrl: "https://img.cdn4dd.com/cdn-cgi/image/fit=cover,width=1000,height=300,format=auto,quality=80/https://doordash-static.s3.amazonaws.com/media/store/header/eab72985-d7df-4c40-8d1a-2dc22736d224.jpg",
+      thumbnailUrl: "https://img.cdn4dd.com/p/fit=cover,width=800,format=auto,quality=50/media/photosV2/05d06641-a1b9-4054-b1bb-90a95f7ce023-retina-large.jpg",
+      iconUrl: "https://img.cdn4dd.com/p/fit=contain,width=1200,height=76,format=auto,quality=95/media/restaurant/cover_square/Cracker_Barrel_logo.jpg"
+    },
   ])
   },
 
