@@ -1,5 +1,4 @@
 'use strict';
-
 const { Offer } = require('../models');
 const bcrypt = require("bcryptjs");
 
@@ -14,19 +13,19 @@ module.exports = {
   async up (queryInterface, Sequelize) {
       await Offer.bulkCreate([
         {
-          resturantId: 9,
+          restaurantId: 9,
           offer: "$0 delivery fee",
           discount: 0,
           type: "$",
         },
         {
-          resturantId: 10,
+          restaurantId: 10,
           offer: "20% off, up to $5",
           discount: 20,
           type: "%",
         },
         {
-          resturantId: 11,
+          restaurantId: 11,
           offer: "Spend $35, save $5",
           discount: 35,
           type: "$",

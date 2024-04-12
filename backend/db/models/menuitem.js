@@ -11,17 +11,18 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       MenuItem.belongsTo(
-        models.Resturant,
-          { foreignKey: 'resturantId' }
+        models.Restaurant,
+          { foreignKey: 'restaurantId' }
       );
       MenuItem.hasMany(
         models.ItemOption,
           { foreignKey: 'itemId', onDelete: 'CASCADE',  hooks: true }
       );
+
     }
   }
   MenuItem.init({
-    resturantId: DataTypes.INTEGER,
+    restaurantId: DataTypes.INTEGER,
     item: DataTypes.STRING,
     description: DataTypes.STRING,
     price: DataTypes.NUMBER,

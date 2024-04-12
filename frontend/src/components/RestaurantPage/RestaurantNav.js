@@ -1,19 +1,19 @@
 import React, { useEffect, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import ProfileButton from "./ProfileButton";
 import OpenModalButton from "../OpenModalButton";
 import LoginForm from "../LoginForm";
 import SignupForm from "../SignupForm";
-import "./Navigation.css";
+import "../HomePage/Navigation.css";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { useFilters } from "../../context/Filters";
 import { useModal } from "../../context/Modal";
 import SignupFormModal from "../SignupForm";
 import { GoogleMap, LoadScript, Autocomplete } from '@react-google-maps/api';
 import * as restaurantActions from "../../store/restaurants"
+import ProfileButton from "../HomePage/ProfileButton";
 
-function HomeNav({ isLoaded }) {
+function RestaurantNav({ isLoaded }) {
   const sessionUser = useSelector((state) => state.session.user);
   const history = useHistory()
   const [drop, setDrop] = useState(false)
@@ -67,30 +67,23 @@ function HomeNav({ isLoaded }) {
     <>
     <ProfileButton user={sessionUser} d={drop} />
     <div id="nav">
-        <div className="navi">
-        <button onClick={(() => setDrop(!drop))} id ="menu">
+        <div className="navi-two">
+        <button style={{ left: "2%" }}  onClick={(() => setDrop(!drop))} id ="menu">
         <i class="fi fi-br-menu-burger"></i>
          </button>
         <div id="icon">
         <img src="https://freepnglogo.com/images/all_img/1706201578doordash-icon-png.png"></img>
           <span>DOORDART</span>
         </div>
-        <div id="pick">
-            <button>
-                Delivery
-            </button>
-            <button>
-                Pickup
-            </button>
-        </div>
-        <div id="line"></div>
+        <div style={{ width: "100%" }} className="search">
         <div style={{ position: "relative" }}>
-        <div ref={targetRef} onClick={(() => setLMenu(!lMenu))} id="my-address">
+        <div ref={targetRef} onClick={(() => setLMenu(!lMenu))} id="my-address-two">
+        <i class="fi fi-rs-marker"></i>
         <h1 style={{ fontSize: "14px" }}>{location.split(',')[0]}</h1>
         <i class="fi fi-rr-angle-small-down"></i>
         </div>
           { lMenu &&
-          <div onClick={((e) => e.stopPropagation())} id="addy-menu">
+          <div style={{ right: "0", left: "95" }}  onClick={((e) => e.stopPropagation())} id="addy-menu">
             <div id="a-menu" style={{ padding: "16px" }}>
               <h1>Enter Your Address</h1>
               <div>
@@ -131,17 +124,12 @@ function HomeNav({ isLoaded }) {
         </div>
 
         </div>
-        <div className="search">
-        <div id="search">
-            <i class="fi fi-rr-search"></i>
-            <input defaultValue="Search stores, dishes, products"></input>
-        </div>
-        <i id="notify" class="fi fi-rr-cowbell"></i>
-        <i class="fi fi-rr-shopping-cart"></i>
+        {/* <div className="search"> */}
+        <i id="cart" class="fi fi-rr-shopping-cart"></i>
         </div>
     </div>
     </>
   );
 }
 
-export default HomeNav;
+export default RestaurantNav;

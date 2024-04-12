@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
-const { User, Resturant, MenuItem, ResturantTime, Review, ResturantImage } = require('../../db/models');
+const { User, Restaurant, MenuItem, RestaurantTime, Review, RestaurantImage, Offer, ItemOption } = require('../../db/models');
 const axios = require('axios');
 const geolib = require('geolib'); //
 
@@ -60,9 +60,6 @@ router.get('/', async (req, res) => {
     let address = "1740 Hickory Chase Cir"
     let location
 
-
-    console.log("   ONEEEEEEEEE   ")
-
     const response = await axios.get('https://maps.googleapis.com/maps/api/place/textsearch/json', {
         params: {
             location: address,
@@ -72,9 +69,9 @@ router.get('/', async (req, res) => {
         }
     });
 
-    const resturants = response.data.results
+    const restaurants = response.data.results
 
-    for (let restaurant of resturants) {
+    for (let restaurant of restaurants) {
 
         location = restaurant.formatted_address
         let addy = location.split(",")
@@ -85,7 +82,7 @@ router.get('/', async (req, res) => {
         let zipCode = addy[2]
         zipCode = zipCode.split(" ")[2]
 
-        let franchise = await Resturant.findOne({
+        let franchise = await Restaurant.findOne({
             where: {
                 name: restaurant.name
             }
@@ -105,12 +102,12 @@ router.get('/', async (req, res) => {
 
     }
 
-    const franchises = await Resturant.findAll({
+    const franchises = await Restaurant.findAll({
         include: [
             { model: MenuItem },
-            { model: ResturantTime },
+            { model: RestaurantTime },
             { model: Review },
-            { model: ResturantImage }
+            { model: RestaurantImage }
 
         ]
     })
@@ -143,9 +140,9 @@ router.post('/', async (req, res) => {
     });
     console.log(" TWOOOOOOO ")
 
-    const resturants = response.data.results
+    const restaurants = response.data.results
 
-    for (let restaurant of resturants) {
+    for (let restaurant of restaurants) {
 
         location = restaurant.formatted_address
         let addy = location.split(",")
@@ -156,7 +153,7 @@ router.post('/', async (req, res) => {
         let zipCode = addy[2]
         zipCode = zipCode.split(" ")[2]
 
-        let franchise = await Resturant.findOne({
+        let franchise = await Restaurant.findOne({
             where: {
                 name: restaurant.name
             }
@@ -176,13 +173,13 @@ router.post('/', async (req, res) => {
 
     }
 
-    const franchises = await Resturant.findAll({
+    const franchises = await Restaurant.findAll({
         include: [
             { model: MenuItem },
-            { model: ResturantTime },
+            { model: RestaurantTime },
             { model: Review },
             { model: Offer },
-            { model: ResturantImage }
+            { model: RestaurantImage }
 
         ]
     })
@@ -203,9 +200,10 @@ router.post('/', async (req, res) => {
 
 
 
-router.get('/:id', async (req, res) => {
+router.post('/:id', async (req, res) => {
+    let { address } = req.body
     let restaurantId = req.params.id;
-    let restaurantExist = await Resturant.findByPk(restaurantId);
+    let restaurantExist = await Restaurant.findByPk(restaurantId);
 
     if (!restaurantExist) {
 
@@ -213,14 +211,14 @@ router.get('/:id', async (req, res) => {
 
     }
 
-    let restaurant =  await Resturant.findByPk(restaurantId, {
+    let restaurant =  await Restaurant.findByPk(restaurantId, {
         include: [
-            { model: ResturantImage },
-            { model: ResturantTime },
+            { model: RestaurantImage },
+            { model: RestaurantTime },
             {
                 model: MenuItem,
                 include: [
-                    {model: ItemOptions}
+                    { model: ItemOption }
                 ]
             },
             { model: Offer },
@@ -228,6 +226,12 @@ router.get('/:id', async (req, res) => {
         ]
     });
 
+    let miles = await distanceInMiles(address, restaurant.dataValues?.address)
+
+    if (miles) {
+        restaurant.dataValues.miles = miles.toFixed(1)
+        restaurant.dataValues.minutes = milesToMinutes(Math.round(miles), 60)
+    }
 
     res.json( restaurant )
 

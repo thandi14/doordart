@@ -1,4 +1,5 @@
 'use strict';
+
 let options = {};
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;  // define your schema in options object
@@ -7,50 +8,44 @@ if (process.env.NODE_ENV === 'production') {
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Resturants', {
+    await queryInterface.createTable('RestaurantTimes', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      userId: {
+      restaurantId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'Users',
+          model: 'Restaurants',
           key: 'id',
       },
       onDelete: 'cascade'
       },
-      name: {
+      monday: {
         type: Sequelize.STRING
       },
-      deliveryFee: {
-        type: Sequelize.NUMBER
-      },
-      deliveryTime: {
+      tuesday: {
         type: Sequelize.STRING
       },
-      state: {
+      wednesday: {
         type: Sequelize.STRING
       },
-      city: {
+      thursday: {
         type: Sequelize.STRING
       },
-      zipCode: {
-        type: Sequelize.INTEGER
-      },
-      address: {
+      friday: {
         type: Sequelize.STRING
       },
-      type: {
+      breakfast: {
         type: Sequelize.STRING
       },
-      pickup: {
-        type: Sequelize.BOOLEAN
+      lunch: {
+        type: Sequelize.STRING
       },
-      phone: {
-        type: Sequelize.NUMBER
+      dinner: {
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
@@ -63,7 +58,7 @@ module.exports = {
     }, options);
   },
   async down(queryInterface, Sequelize) {
-    options.tableName = "Resturants";
+    options.tableName = "RestaurantTimes";
     return queryInterface.dropTable(options);
   }
 };

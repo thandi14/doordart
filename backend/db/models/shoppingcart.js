@@ -11,8 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       ShoppingCart.belongsTo(
-        models.Resturant,
-          { foreignKey: 'resturantId' }
+        models.Restaurant,
+          { foreignKey: 'restaurantId' }
       );
       ShoppingCart.belongsTo(
         models.User,
@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   ShoppingCart.init({
-    resturantId: DataTypes.INTEGER,
+    restaurantId: DataTypes.INTEGER,
     userId: DataTypes.INTEGER,
     offerId: DataTypes.INTEGER,
     dealId: DataTypes.INTEGER,

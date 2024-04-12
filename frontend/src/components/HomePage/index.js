@@ -37,7 +37,7 @@ function HomePage({ isLoaded }) {
 
  useEffect(() => {
      async function fetchData() {
-         if ( !location && user?.id ) await dispatch(restaurantActions.thunkGetUserResturants())
+         if ( !location && user?.id ) await dispatch(restaurantActions.thunkGetUserRestaurants())
         }
      fetchData()
 
@@ -202,7 +202,7 @@ function HomePage({ isLoaded }) {
         {franchises.map((f, id) =>
         <>
             <div onClick={(() => history.push(`/restaurant/${f.id}`))} className="restaurant" id={`r-${id}`}>
-                <img style={{ marginBottom: "6px", height: "58%" }}src={f.ResturantImage?.thumbnailUrl}></img>
+                <img style={{ marginBottom: "6px", height: "58%" }}src={f.RestaurantImage?.thumbnailUrl}></img>
                 <div id="r-name">
                     <h1 style={{ fontSize: "16px", margin: "2px 0px"}} >{f.name} </h1>
                     <i style={{ color: "#767676", fontSize: "15px", margin: "4px"}} class="fi fi-rs-heart"></i>

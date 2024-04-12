@@ -3,27 +3,27 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class ResturantImage extends Model {
+  class RestaurantImage extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      ResturantImage.belongsTo(
-        models.Resturant,
-          { foreignKey: 'resturantId' }
+      RestaurantImage.belongsTo(
+        models.Restaurant,
+          { foreignKey: 'restaurantId' }
       );
     }
   }
-  ResturantImage.init({
-    resturantId: DataTypes.INTEGER,
+  RestaurantImage.init({
+    restaurantId: DataTypes.INTEGER,
     bannerUrl: DataTypes.TEXT,
     thumbnailUrl: DataTypes.TEXT,
     iconUrl: DataTypes.TEXT
   }, {
     sequelize,
-    modelName: 'ResturantImage',
+    modelName: 'RestaurantImage',
   });
-  return ResturantImage;
+  return RestaurantImage;
 };

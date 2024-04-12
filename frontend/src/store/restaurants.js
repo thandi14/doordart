@@ -18,14 +18,14 @@ const getRestaurant = (restaurant) => {
   };
 };
 
-export const thunkGetUserResturants = () => async (dispatch) => {
+export const thunkGetUserRestaurants = () => async (dispatch) => {
     const response = await csrfFetch("/api/restaurants");
     const data = await response.json();
     dispatch(getRestaurants(data));
     return response;
 };
 
-export const thunkGetResturants = (data) => async (dispatch) => {
+export const thunkGetRestaurants = (data) => async (dispatch) => {
   const response = await csrfFetch("/api/restaurants", {
     method: 'POST',
     headers: {
@@ -38,10 +38,17 @@ export const thunkGetResturants = (data) => async (dispatch) => {
   return response;
 };
 
-export const thunkGetResturant = (id) => async (dispatch) => {
-  const response = await csrfFetch(`/api/restaurants/${id}`);
-  const data = await response.json();
-  dispatch(getRestaurant(data));
+export const thunkGetRestaurant = (id, data) => async (dispatch) => {
+  console.log(data)
+  const response = await csrfFetch(`/api/restaurants/${id}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  })
+  const data1 = await response.json();
+  dispatch(getRestaurant(data1));
   return response;
 };
 

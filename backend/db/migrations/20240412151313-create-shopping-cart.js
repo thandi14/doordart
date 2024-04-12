@@ -14,10 +14,10 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      resturantId: {
+      restaurantId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'Resturants',
+          model: 'Restaurants',
           key: 'id',
       },
       onDelete: 'cascade'
@@ -74,7 +74,7 @@ module.exports = {
       }
     }, options);
   },
-  down: async (queryInterface, Sequelize) => {
+  async down(queryInterface, Sequelize) {
     options.tableName = "ShoppingCarts";
     return queryInterface.dropTable(options);
   }

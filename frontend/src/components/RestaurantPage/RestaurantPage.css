@@ -1,0 +1,326 @@
+.navi-two {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+}
+
+#my-address-two {
+    background-color: rgb(196, 196, 196);
+    height: 32px;
+    border-radius: 24px;
+    border: 0;
+    font-size: 14px;
+    box-shadow: transparent 0px 0px 0px 1px inset;
+    color: rgb(25, 25, 25);
+    cursor: pointer;
+    font-weight: 600;
+    padding: 0px 12px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+#cart {
+    background: rgb(196, 196, 196);;
+    width: 40px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+#my-address-two > i {
+    width: 16px;
+    height: 16px;
+    font-size: 16px;
+}
+
+/* ksgkjbn */
+
+.rp {
+    display: flex;
+    flex-direction: column;
+    padding: 0% 9.5%;
+    font-family: TT Norms, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";;
+}
+
+.rp > div {
+    width: 100%;
+}
+
+#rp-ban {
+    width: 50%;
+    display: flex;
+    align-items: flex-end;
+    padding: 16px;
+}
+
+#rp-ban > img {
+    height: 80px;
+    width: 80px;
+    position: absolute;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid rgb(255, 255, 255);
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 8px;
+}
+
+#rp-save > button {
+    background-color: #ffffff;
+    height: 32px;
+    border-radius: 24px;
+    border: 0;
+    font-size: 14px;
+    box-shadow: transparent 0px 0px 0px 1px inset;
+    color: rgb(25, 25, 25);
+    cursor: pointer;
+    font-weight: 600;
+    padding: 0px 12px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+#rp-save > button > i {
+    height: 16px;
+    width: 16px;
+    font-size: 16px;
+    color: rgb(25, 25, 25);
+    display: flex;
+    align-items: center;
+}
+
+#rp-save {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    padding: 16px;
+}
+
+#rp-one {
+    border-radius: 0px 0px 16px 16px;
+    overflow: hidden;
+    width: 100%;
+    height: 210px;
+    display: flex;
+}
+
+#rp-two {
+    display: flex;
+}
+
+
+#r-info {
+    width: 30%;
+}
+
+#info-one {
+    width: 30%;
+}
+
+#info-one > p {
+    font-size: 12;
+    color: #767676;
+    white-space: nowrap;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+#info-two {
+    width: 70%;
+}
+
+#info-two > h1 {
+    display: flex;
+    align-items: center;
+    gap: 5px
+}
+
+#info-two > h1 > i {
+    width: 14px;
+    height: 14px;
+    font-size: 14px;
+}
+
+#info-two > span > p {
+    height: 12px;
+}
+
+#info-two > span {
+    display: flex;
+    flex-direction: column;
+}
+
+#item-search {
+    border-radius: 20px;
+    padding: 0px 20px;
+    background-color: rgb(247, 247, 247);
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    width: 40%;
+    height: 35px;
+    gap: 10px;
+    font-family: TT Norms, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+#item-search > input {
+    background-color: transparent;
+    border: 0px;
+}
+
+#item-search > i {
+    width: 18px;
+    height: 18px;
+    font-size: 18px;
+    padding: 0px 2px;
+}
+
+#r-items {
+    width: 90%;
+    margin-top: 2%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+#group > button {
+    background-color: rgb(196, 196, 196);
+    height: 32px;
+    border-radius: 24px;
+    border: 0;
+    font-size: 14px;
+    box-shadow: transparent 0px 0px 0px 1px inset;
+    color: rgb(25, 25, 25);
+    cursor: pointer;
+    font-weight: 600;
+    padding: 0px 12px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+#group {
+    display: flex;
+    padding: 20px;
+    margin-bottom: 12px;
+    border: 1px solid rgb(231, 231, 231);
+    border-radius: 8px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#line-four {
+    background-color: rgb(231, 231, 231);
+    width: 1px;
+    height: 50px;
+}
+
+#group > div {
+    display: flex;
+    gap: 40px;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    width: 50%;
+}
+
+#group > div > span {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px
+}
+
+#menu-item {
+    border: 1px solid rgb(231, 231, 231);
+    border-radius: 12px;
+    height: 156px;
+    display: flex;
+    align-items: center;
+    width: calc(50% - 10px);
+    overflow: hidden;
+    cursor: pointer;
+
+}
+
+#item {
+    padding-left: 16px;
+    width: 50%;
+    gap: 6px;
+    display: flex;
+    flex-direction: column;
+}
+
+#i {
+    width: 30%;
+    height: 100%
+}
+
+#item > span {
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#i-info {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 40px;
+
+}
+
+#item > span > p {
+    margin: 0px;
+}
+
+#i-info > p {
+    margin: 0px;
+}
+
+
+#i > img {
+    width: 100%;
+    height: 100%;
+}
+
+#i {
+    width: 50%;
+    height: 100%;
+    position: relative;
+}
+
+.item {
+    flex-wrap: wrap;
+    display: flex;
+    gap: 15px
+}
+
+#item > h1 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#i > i {
+    position: absolute;
+    color: white;
+    width: 28px;
+    align-items: center;
+    font-size: 30px;
+    border-radius: 100%;
+    justify-content: center;
+    display: flex;
+    background-color: black;
+    height: 28px;
+    box-shadow: transparent 0px 0px 0px 1px inset, rgba(0, 0, 0, 0.2) 0px 2px 8px;
+    bottom: 16px;
+    right: 16px;
+    cursor: pointer;
+}

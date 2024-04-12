@@ -1,4 +1,5 @@
 'use strict';
+
 let options = {};
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;  // define your schema in options object
@@ -7,35 +8,34 @@ if (process.env.NODE_ENV === 'production') {
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('ResturantTimes', {
+    await queryInterface.createTable('Reviews', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      resturantId: {
+      userId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'Resturants',
+          model: 'Users',
           key: 'id',
       },
       onDelete: 'cascade'
       },
-      monday: {
+      restaurantId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Restaurants',
+          key: 'id',
+      },
+      onDelete: 'cascade'
+      },
+      review: {
         type: Sequelize.STRING
       },
-      tuesday: {
-        type: Sequelize.STRING
-      },
-      wednesday: {
-        type: Sequelize.STRING
-      },
-      thursday: {
-        type: Sequelize.STRING
-      },
-      friday: {
-        type: Sequelize.STRING
+      rating: {
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
@@ -47,8 +47,8 @@ module.exports = {
       }
     }, options);
   },
-  down: async (queryInterface, Sequelize) => {
-    options.tableName = "ResturantTimes";
+  async down(queryInterface, Sequelize) {
+    options.tableName = "Reviews";
     return queryInterface.dropTable(options);
   }
 };

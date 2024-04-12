@@ -32,7 +32,7 @@ function ProfileButton({ user, d }) {
       <i onClick={(() => setDrop(false))} class="fi fi-br-cross"></i>
       </div>
       <div className="profile">
-        <span>
+        <span onClick={(() => history.push('/home'))}>
         <i class="fi fi-rs-house-chimney"></i>
         <p>Home</p>
         </span>
