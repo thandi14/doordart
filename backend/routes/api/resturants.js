@@ -188,8 +188,10 @@ router.post('/', async (req, res) => {
 
         let miles = await distanceInMiles(location, address)
 
+        if (miles) {
         franchise.dataValues.miles = miles.toFixed(1)
         franchise.dataValues.minutes = milesToMinutes(Math.round(miles), 60)
+        }
 
     }
 
