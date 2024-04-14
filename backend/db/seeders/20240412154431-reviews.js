@@ -33,7 +33,7 @@ module.exports = {
       },
       {
         userId: 2,
-        restaurantId: 11,
+        restaurantId: 10,
         review: "Excellent service and delicious food! Definitely coming back again.",
         rating: 5,
       },
@@ -51,13 +51,13 @@ module.exports = {
       },
       {
         userId: 3,
-        restaurantId: 11,
+        restaurantId: 10,
         review: "One of the best dining experiences I've had in a long time. Everything was perfect!",
         rating: 5,
       },
       {
         userId: 2,
-        restaurantId: 11,
+        restaurantId: 3,
         review: "Horrible food, terrible service. Avoid this place at all costs!",
         rating: 1,
       },

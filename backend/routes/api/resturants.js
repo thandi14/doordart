@@ -60,118 +60,53 @@ router.get('/', async (req, res) => {
     let address = "1740 Hickory Chase Cir"
     let location
 
-    const response = await axios.get('https://maps.googleapis.com/maps/api/place/textsearch/json', {
-        params: {
-            location: address,
-            radius: 10000, // Search radius in meters (adjust as needed)
-            type: 'restaurant',
-            key: 'AIzaSyA9ZZhYki6tunwewDOEljGqWu9sSY6VC9k'
+    let restaurants = await Restaurant.findAll()
+
+    const requests = restaurants.map(async (restaurant) => {
+        const response = await axios.get('https://maps.googleapis.com/maps/api/place/textsearch/json', {
+            params: {
+                query: restaurant.name,
+                location: address,
+                radius: 50000, // Search radius in meters (adjust as needed)
+                key: 'AIzaSyA9ZZhYki6tunwewDOEljGqWu9sSY6VC9k'
+            }
+        });
+
+
+        const places = response.data.results;
+        let location = ""
+
+        if (places.length > 0) {
+            location = places[0].formatted_address;
         }
-    });
-
-    const restaurants = response.data.results
-
-    for (let restaurant of restaurants) {
-
-        location = restaurant.formatted_address
-        let addy = location.split(",")
-        let addressTwo = addy[0]
-        let city = addy[1]
-        let state = addy[2]
-        state = state.split(" ")[1]
-        let zipCode = addy[2]
-        zipCode = zipCode.split(" ")[2]
 
         let franchise = await Restaurant.findOne({
             where: {
                 name: restaurant.name
             }
-        })
+        });
 
         if (franchise) {
+            let distance = await distanceInMiles(location, address);
+            let miles = 1;
+            let mins = 0;
+
+            if (distance) {
+                miles = distance.toFixed(1);
+                mins = milesToMinutes(Math.round(miles), 60);
+            }
 
             franchise.set({
-                address: addressTwo,
-                state,
-                city,
-                zipCode
-            })
+                address: location,
+                miles,
+                mins
+            });
 
-            await franchise.save()
+            await franchise.save();
         }
 
-    }
 
-    const franchises = await Restaurant.findAll({
-        include: [
-            { model: MenuItem },
-            { model: RestaurantTime },
-            { model: Review },
-            { model: RestaurantImage }
-
-        ]
     })
-
-    for (let franchise of franchises) {
-
-        let miles = await distanceInMiles(location, address)
-
-        franchise.dataValues.miles = miles.toFixed(1)
-        franchise.dataValues.minutes = milesToMinutes(Math.round(miles), 60)
-
-    }
-
-    res.json( franchises )
-
-})
-
-router.post('/', async (req, res) => {
-    let { address } = req.body
-    let location
-
-
-    const response = await axios.get('https://maps.googleapis.com/maps/api/place/textsearch/json', {
-        params: {
-            location: address,
-            radius: 10000, // Search radius in meters (adjust as needed)
-            type: 'restaurant',
-            key: 'AIzaSyA9ZZhYki6tunwewDOEljGqWu9sSY6VC9k'
-        }
-    });
-    console.log(" TWOOOOOOO ")
-
-    const restaurants = response.data.results
-
-    for (let restaurant of restaurants) {
-
-        location = restaurant.formatted_address
-        let addy = location.split(",")
-        let addressTwo = addy[0]
-        let city = addy[1]
-        let state = addy[2]
-        state = state.split(" ")[1]
-        let zipCode = addy[2]
-        zipCode = zipCode.split(" ")[2]
-
-        let franchise = await Restaurant.findOne({
-            where: {
-                name: restaurant.name
-            }
-        })
-
-        if (franchise) {
-
-            franchise.set({
-                address: addressTwo,
-                state,
-                city,
-                zipCode
-            })
-
-            await franchise.save()
-        }
-
-    }
 
     const franchises = await Restaurant.findAll({
         include: [
@@ -184,16 +119,72 @@ router.post('/', async (req, res) => {
         ]
     })
 
-    for (let franchise of franchises) {
+    res.json( franchises )
 
-        let miles = await distanceInMiles(location, address)
+})
 
-        if (miles) {
-        franchise.dataValues.miles = miles.toFixed(1)
-        franchise.dataValues.minutes = milesToMinutes(Math.round(miles), 60)
+router.post('/', async (req, res) => {
+    let { address } = req.body
+    let location
+
+    let restaurants = await Restaurant.findAll()
+
+    const requests = restaurants.map(async (restaurant) => {
+        const response = await axios.get('https://maps.googleapis.com/maps/api/place/textsearch/json', {
+            params: {
+                query: restaurant.name,
+                location: address,
+                radius: 50000, // Search radius in meters (adjust as needed)
+                key: 'AIzaSyA9ZZhYki6tunwewDOEljGqWu9sSY6VC9k'
+            }
+        });
+
+
+        const places = response.data.results;
+        let location = ""
+
+        if (places.length > 0) {
+            location = places[0].formatted_address;
         }
 
-    }
+        let franchise = await Restaurant.findOne({
+            where: {
+                name: restaurant.name
+            }
+        });
+
+        if (franchise) {
+            let distance = await distanceInMiles(location, address);
+            let miles = 1;
+            let mins = 0;
+
+            if (distance) {
+                miles = distance.toFixed(1);
+                mins = milesToMinutes(Math.round(miles), 60);
+            }
+
+            franchise.set({
+                address: location,
+                miles,
+                mins
+            });
+
+            await franchise.save();
+        }
+
+
+    })
+
+    const franchises = await Restaurant.findAll({
+        include: [
+            { model: MenuItem },
+            { model: RestaurantTime },
+            { model: Review },
+            { model: Offer },
+            { model: RestaurantImage }
+
+        ]
+    })
 
     res.json( franchises )
 
@@ -224,16 +215,13 @@ router.post('/:id', async (req, res) => {
                 ]
             },
             { model: Offer },
-            { model: Review }
+            { model: Review,
+                include: [
+                    { model: User }
+                ]
+             }
         ]
     });
-
-    let miles = await distanceInMiles(address, restaurant.dataValues?.address)
-
-    if (miles) {
-        restaurant.dataValues.miles = miles.toFixed(1)
-        restaurant.dataValues.minutes = milesToMinutes(Math.round(miles), 60)
-    }
 
     res.json( restaurant )
 

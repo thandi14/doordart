@@ -19,13 +19,13 @@ module.exports = {
           type: "$",
         },
         {
-          restaurantId: 10,
+          restaurantId: 2,
           offer: "20% off, up to $5",
           discount: 20,
           type: "%",
         },
         {
-          restaurantId: 11,
+          restaurantId: 10,
           offer: "Spend $35, save $5",
           discount: 35,
           type: "$",

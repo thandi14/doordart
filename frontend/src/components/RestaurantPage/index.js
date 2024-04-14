@@ -14,7 +14,7 @@ function RestaurantPage({ isLoaded }) {
   const { id } = useParams();
   const [ length, setLength ] = useState(0)
   const [ selection, setSelection ] = useState("Combo Meals")
-  const [ mark, setMark ] = useState(0)
+  const [ mark, setMark ] = useState(-1)
   const [ hide, setHide ] = useState(true)
   const [ scroll, setScroll ] = useState(false)
   const dispatch = useDispatch()
@@ -129,7 +129,7 @@ useEffect(() => {
 
 //   const franchises = Object.values(restaurants).sort((a, b) => a.miles - b.miles)
 
-  const reviews = (reviews) => {
+  const allReviews = (reviews) => {
 
     if (!reviews?.length) return 0
 
@@ -157,27 +157,49 @@ useEffect(() => {
 
     let menu = restaurant.MenuItems
     let categories = {};
-    let set = new Set();
+let set = new Set();
 
-    if (menu?.length) {
-        for (let item of menu) {
-            let category = item.category;
-            if (!set.has(category)) {
-                categories[category] = [];
-                set.add(category);
+if (menu?.length) {
+    for (let item of menu) {
+        let category = item.category.trim();
+        let cs = category.includes(',') ? category.split(",").map(c => c.trim()) : [category];
+        for (let c of cs) {
+            if (!set.has(c.toLowerCase())) {
+                categories[c] = [];
+                set.add(c.toLowerCase());
             }
-        }
-
-        for (let item of menu) {
-            categories[item.category].push(item);
         }
     }
 
+    for (let item of menu) {
+        let category = item.category.trim();
+        let cs = category.includes(',') ? category.split(",").map(c => c.trim()) : [category];
+        for (let c of cs) {
+            categories[c].push(item);
+        }
+    }
+}
     let keys = Object.keys(categories);
 
     let items = []
 
     if (menu?.length) items = menu.filter((i) => i.category == selection)
+
+    let reviews = []
+    reviews = restaurant.Reviews
+
+    function formatTimestamp(timestamp) {
+        const date = new Date(timestamp);
+
+        // Extract components
+        const month = ('0' + (date.getMonth() + 1)).slice(-2); // Add leading zero if needed
+        const day = ('0' + date.getDate()).slice(-2); // Add leading zero if needed
+        const year = date.getFullYear().toString().slice(-2); // Extract last two digits
+
+        // Format into MM/DD/YY
+        return `${month}/${day}/${year}`;
+    }
+
 
   return (
     <div style={{ position: "relative"}}>
@@ -186,7 +208,7 @@ useEffect(() => {
                         <div style={{ width: "50%", display: "flex", gap: "5px", flexDirection: "column"}}>
                         <h1 style={{ margin: "0px", fontSize: "20px"}} >{restaurant.name}</h1>
                         <p style={{ width: "100%", gap: "4px", margin: "0px", color: "#767676", fontSize: "13px", display: "flex", alignItems: "center"}}>
-                        {reviews(restaurant.Reviews)}
+                        {allReviews(restaurant.Reviews)}
                         <i class="fi fi-sr-star" style={{ width: "10px", height: "10px", fontSize: "10px", color: "#767676"}}></i>
                         {restaurant.Reviews?.length}+
                         ratings
@@ -224,7 +246,7 @@ useEffect(() => {
                             Closes at {night}
                         </p>
                         <p style={{ color: "#767676", fontSize: "13px", display: "flex", alignItems: "center"}}>
-                            {reviews(restaurant.Reviews)}
+                            {allReviews(restaurant.Reviews)}
                             <i class="fi fi-sr-star" style={{ width: "10px", height: "10px", fontSize: "10px", color: "#767676"}}></i>
                             {restaurant.Reviews?.length}+
                             ratings
@@ -246,32 +268,39 @@ useEffect(() => {
                             <span style={{ fontSize: "13px", width: "100%", overflowY: "scroll"}}>
                             {/* <p onClick={(() => {
                                 setScroll(true)
-                                setMark(-4)
+                                setMark(-5)
                                 })} style={{ position: "relative"}}>
-                                <div id={mark == -4 ? "mark" : "hidden"}></div>
+                                <div id={mark == -5 ? "mark" : "hidden"}></div>
                                 <p style={{ marginLeft: "16px"}}>Order it again</p>
                             </p>
                             <p onClick={(() => {
                                 setScroll(true)
-                                setMark(-3)
+                                setMark(-4)
                                 })}   style={{ position: "relative"}}>
-                                <div id={mark == -3 ? "mark" : "hidden"}></div>
+                                <div id={mark == -4 ? "mark" : "hidden"}></div>
                                 <p style={{ marginLeft: "16px"}}>Item Deals</p>
+                            </p>
+                            <p onClick={(() => {
+                                setScroll(true)
+                                setMark(-3)
+                                })}  style={{ position: "relative"}}>
+                                <div id={mark == -3 ? "mark" : "hidden"}></div>
+                                <p style={{ marginLeft: "16px"}}>Reviews</p>
                             </p>
                             <p onClick={(() => {
                                 setScroll(true)
                                 setMark(-2)
                                 })}  style={{ position: "relative"}}>
                                 <div id={mark == -2 ? "mark" : "hidden"}></div>
-                                <p style={{ marginLeft: "16px"}}>Reviews</p>
-                            </p>
+                                <p style={{ marginLeft: "16px"}}>Most Ordered</p>
+                            </p> */}
                             <p onClick={(() => {
                                 setScroll(true)
                                 setMark(-1)
                                 })}  style={{ position: "relative"}}>
                                 <div id={mark == -1 ? "mark" : "hidden"}></div>
-                                <p style={{ marginLeft: "16px"}}>Most Ordered</p>
-                            </p> */}
+                                <p style={{ marginLeft: "16px"}}>Reviews</p>
+                            </p>
                             {keys.map((category, i) =>
                             <p onClick={(() => {
                                 setScroll(true)
@@ -300,9 +329,59 @@ useEffect(() => {
                             </span>
                             <div id="line-four"></div>
                             <span>
-                            <h1 style={{ fontSize: "16px", whiteSpace: "nowrap", display: "flex", margin: "0px" }}>{restaurant.deliveryTime + 10} min</h1>
+                            <h1 style={{ fontSize: "16px", whiteSpace: "nowrap", display: "flex", margin: "0px" }}>{restaurant.mins + 10} min</h1>
                             <h2 style={{ fontSize: "12px", color: "#767676", margin: "0px"}}> delivery time</h2>
                             </span>
+                        </div>
+                    </div>
+                    <div ref={el => divRefs.current[`mi-${-1}`] = el} className="review">
+                        <div id="review-one">
+                            <div>
+                                <h1 style={{ fontSize: "24px", whiteSpace: "nowrap", margin: "0px" }}>Reviews</h1>
+                                <p style={{ gap: "3px", margin: "0px", color: "#767676", fontSize: "13px", display: "flex", alignItems: "center"}}>
+                                    {allReviews(restaurant.Reviews)}
+                                    <i class="fi fi-sr-star" style={{ width: "10px", height: "10px", fontSize: "10px", color: "#767676"}}></i>
+                                    {restaurant.Reviews?.length}+
+                                    ratings ratings
+                                    <i style={{ width: "8px", height: "8px", fontSize: "8px" }} class="fi fi-sr-bullet"></i>
+                                    {reviews?.length} public reviews
+                                </p>
+                            </div>
+                            <div id="add-r">
+                                <button>Add Review</button>
+                                <span>
+                                { <i id="gotobutt-two" style={{ left: "0"}} onClick={goToPrev} class="fi fi-sr-angle-circle-left"></i>}
+                                { <i id="gotobutt-two" style={{ right: "0"}} onClick={goToNext} class="fi fi-sr-angle-circle-right"></i>}
+                                </span>
+                            </div>
+                        </div>
+                        <div style={sliderStyle} id="review-two">
+                            <div>
+                                <div id="curved-line"></div>
+                                {allReviews(restaurant.Reviews)}
+                                out of 5 stars
+                            </div>
+                            { reviews?.map((review, i) =>
+                                <div style={{ cursor: "pointer" }}>
+                                    <span id="pp">
+                                        <div id="profile-pic">
+                                        {review.User.firstName[0]}
+                                        </div>
+                                        <h2 style={{ whiteSpace: "nowrap", width: "50%", fontSize: "14px" }}>{review.User.firstName} {review.User.lastName}</h2>
+                                    </span>
+                                    <p style={{ gap: "3px", margin: "0px", color: "#767676", fontSize: "12px", display: "flex", alignItems: "center"}}>
+                                            {1 <= review.rating ? <i key={i} className="fi fi-sr-star" style={{ width: "10px", height: "10px", fontSize: "10px", color: "black"}}></i> : <i key={i} className="fi fi-rr-star" style={{ width: "10px", height: "10px", fontSize: "10px", color: "black"}}></i>}
+                                            {2 <= review.rating ? <i key={i} className="fi fi-sr-star" style={{ width: "10px", height: "10px", fontSize: "10px", color: "black"}}></i> : <i key={i} className="fi fi-rr-star" style={{ width: "10px", height: "10px", fontSize: "10px", color: "black"}}></i>}
+                                            {3 <= review.rating ? <i key={i} className="fi fi-sr-star" style={{ width: "10px", height: "10px", fontSize: "10px", color: "black"}}></i> : <i key={i} className="fi fi-rr-star" style={{ width: "10px", height: "10px", fontSize: "10px", color: "black"}}></i>}
+                                            {4 <= review.rating ? <i key={i} className="fi fi-sr-star" style={{ width: "10px", height: "10px", fontSize: "10px", color: "black"}}></i> : <i key={i} className="fi fi-rr-star" style={{ width: "10px", height: "10px", fontSize: "10px", color: "black"}}></i>}
+                                            {5 <= review.rating ? <i key={i} className="fi fi-sr-star" style={{ width: "10px", height: "10px", fontSize: "10px", color: "black"}}></i> : <i key={i} className="fi fi-rr-star" style={{ width: "10px", height: "10px", fontSize: "10px", color: "black"}}></i>}
+                                        {formatTimestamp(review.createdAt)}
+                                        <i style={{ width: "8px", height: "8px", fontSize: "8px" }} class="fi fi-sr-bullet"></i>
+                                        DoorDash Order
+                                    </p>
+                                    <p id="comment">{review.review}</p>
+                                </div>
+                                )}
                         </div>
                     </div>
                     { keys.map((key, i) =>

@@ -3,32 +3,53 @@ let options = {};
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;  // define your schema in options object
 }
-
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('CartItems', {
+    await queryInterface.createTable('Restaurants', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      cartId: {
+      userId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'ShoppingCarts',
+          model: 'Users',
           key: 'id',
       },
       onDelete: 'cascade'
       },
-      itemId: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'MenuItems',
-          key: 'id',
+      name: {
+        type: Sequelize.STRING
       },
-      onDelete: 'cascade'
+      deliveryFee: {
+        type: Sequelize.NUMBER
+      },
+      deliveryTime: {
+        type: Sequelize.STRING
+      },
+      address: {
+        type: Sequelize.STRING
+      },
+      type: {
+        type: Sequelize.STRING
+      },
+      pickup: {
+        type: Sequelize.BOOLEAN
+      },
+      phone: {
+        type: Sequelize.NUMBER
+      },
+      miles: {
+        type: Sequelize.NUMBER
+      },
+      mins: {
+        type: Sequelize.INTEGER
+      },
+      franchiseId: {
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
@@ -40,8 +61,8 @@ module.exports = {
       }
     }, options);
   },
-  down: async (queryInterface, Sequelize) => {
-    options.tableName = "CartItems";
+  async down(queryInterface, Sequelize) {
+    options.tableName = "Restaurants";
     return queryInterface.dropTable(options);
   }
 };

@@ -18,18 +18,14 @@ module.exports = (sequelize, DataTypes) => {
         models.User,
           { foreignKey: 'userId' }
       );
-
     }
   }
   Review.init({
     userId: DataTypes.INTEGER,
     restaurantId: DataTypes.INTEGER,
     review: DataTypes.STRING,
-    rating: {
-      type: DataTypes.INTEGER,
-      max: 5,
-      min: 0,
-    }
+    rating: DataTypes.INTEGER,
+    franchiseId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Review',

@@ -50,7 +50,8 @@ module.exports = (sequelize, DataTypes) => {
     pickup: DataTypes.BOOLEAN,
     phone: DataTypes.NUMBER,
     miles: DataTypes.NUMBER,
-    mins: DataTypes.INTEGER
+    mins: DataTypes.INTEGER,
+    franchiseId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Restaurant',

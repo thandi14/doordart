@@ -215,7 +215,7 @@ function HomePage({ isLoaded }) {
                     <i style={{ width: "10px", height: "10px" }} class="fi fi-sr-bullet"></i>
                     {f.miles} mi
                     <i style={{ width: "10px", height: "10px" }} class="fi fi-sr-bullet"></i>
-                    {f.minutes + 10} mins
+                    {f.mins + 10} mins
                     </h1>
                 </div>
                 <h1 style={{ fontSize: "12px", color: "#767676"}}>${f.deliveryFee} Delivery Fee</h1>

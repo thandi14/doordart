@@ -132,18 +132,6 @@ module.exports = {
         lunch: "6 AM - 12:30 AM",
         dinner: "6 AM - 12:30 AM",
       },
-      {
-        restaurantId: 11,
-        monday: "5 AM - 12:30 AM",
-        tuesday: "5 AM - 12:30 AM",
-        wednesday: "5 AM - 12:30 AM",
-        thursday: "5 AM - 12:30 AM",
-        friday: "6 AM - 12:30 AM",
-        saturday: "6 AM - 12:30 AM",
-        breakfast: "5 AM - 12:30 AM",
-        lunch: "6 AM - 12:30 AM",
-        dinner: "6 AM - 12:30 AM",
-      },
     ], {});
   },
 

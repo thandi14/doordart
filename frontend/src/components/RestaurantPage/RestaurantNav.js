@@ -79,7 +79,7 @@ function RestaurantNav({ isLoaded }) {
         <div style={{ position: "relative" }}>
         <div ref={targetRef} onClick={(() => setLMenu(!lMenu))} id="my-address-two">
         <i class="fi fi-rs-marker"></i>
-        <h1 style={{ fontSize: "14px" }}>{location.split(',')[0]}</h1>
+        <h1 style={{ fontSize: "14px" }}>{location?.split(',')[0]}</h1>
         <i class="fi fi-rr-angle-small-down"></i>
         </div>
           { lMenu &&

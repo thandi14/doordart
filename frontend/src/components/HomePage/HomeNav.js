@@ -86,7 +86,7 @@ function HomeNav({ isLoaded }) {
         <div id="line"></div>
         <div style={{ position: "relative" }}>
         <div ref={targetRef} onClick={(() => setLMenu(!lMenu))} id="my-address">
-        <h1 style={{ fontSize: "14px" }}>{location.split(',')[0]}</h1>
+        <h1 style={{ fontSize: "14px" }}>{location?.split(',')[0]}</h1>
         <i class="fi fi-rr-angle-small-down"></i>
         </div>
           { lMenu &&
@@ -122,8 +122,8 @@ function HomeNav({ isLoaded }) {
             <div style={{ padding: "16px" }} id="a-recent">
             <i class="fi fi-bs-dot-circle"></i>
             <div>
-            <h1 style={{ fontSize: "16px", margin: "0px" }}>{location.split(',')[0]}</h1>
-            <p style={{ fontSize: "12px", margin: "0px" }}>{location.split(',')[1]}, {location.split(',')[2]}, {location.split(',')[3]}</p>
+            <h1 style={{ fontSize: "16px", margin: "0px" }}>{location?.split(',')[0]}</h1>
+            <p style={{ fontSize: "12px", margin: "0px" }}>{location?.split(',')[1]}, {location?.split(',')[2]}</p>
             </div>
             </div>
           </div>
