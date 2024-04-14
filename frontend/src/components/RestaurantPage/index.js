@@ -356,10 +356,15 @@ if (menu?.length) {
                             </div>
                         </div>
                         <div style={sliderStyle} id="review-two">
-                            <div>
-                                <div id="curved-line"></div>
-                                {allReviews(restaurant.Reviews)}
-                                out of 5 stars
+                            <div  style={{ position: "relative" }}>
+                                <div style={{ position: "relative", color: "rgb(118, 118, 118)" }} className="progress">
+                                <i id="progress" class="fi fi-sr-circle-c"></i>
+                                </div>
+                                <div style={{ color: "rgb(118, 118, 118)" }}  id="p-info">
+                                <p style={{ fontSize: "16px" }}>{allReviews(restaurant.Reviews)}</p>
+                                <i class="fi fi-sr-star"></i>
+                                <p style={{ fontSize: "11px" }}>of 5 stars</p>
+                                </div>
                             </div>
                             { reviews?.map((review, i) =>
                                 <div style={{ cursor: "pointer" }}>
@@ -382,6 +387,11 @@ if (menu?.length) {
                                     <p id="comment">{review.review}</p>
                                 </div>
                                 )}
+                                 <div  style={{ cursor: "pointer", display: "flex", justifyContent: "center" }}>
+                                    <div>
+                                        <p id="more-reviews" ><i style={{ width: "16px", height: "16px", fontSize: "16px", color: "black"}} class="fi fi-rr-arrow-small-right"></i> See All</p>
+                                    </div>
+                                </div>
                         </div>
                     </div>
                     { keys.map((key, i) =>

@@ -413,6 +413,80 @@
     cursor: pointer;
 }
 
+.progress {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+#progress {
+    width: 100px;
+    height: 100px;
+    border-radius: 100%;
+    font-size: 150px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    transform: rotate(90deg);
+    color: #f7f7f7;
+    background: linear-gradient(to top, gold 50%, white 50%)
+}
+
+#more-reviews {
+    white-space: nowrap;
+    display: flex;
+    font-size: 14px;
+    font-weight: 600;
+    align-items: center;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+}
+
+#p-info {
+    position: absolute;
+    text-align: center;
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    top: 22%;
+}
+
+#progress-two {
+    height: 50px;
+    z-index: 2;
+    display: flex;
+    position: absolute;
+    font-size: 40px;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    width: 50px;
+    padding: 12px;
+    margin: 0px;
+    color: gold;
+    transform: rotate(90deg);
+}
+
+#rt {
+    background-color: #f7f7f7;
+    border-radius: 8px;
+    flex-direction: column;
+    display: flex;
+    gap: 8px;
+}
+
+#bar {
+    background-color: #f7f7f7;
+    border-radius: 8px;
+    height: 151px;
+    flex-direction: column;
+    display: flex;
+    gap: 8px;
+}
+
 #add-r > span {
     display: flex;
     gap: 10px;
