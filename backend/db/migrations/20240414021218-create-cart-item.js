@@ -1,4 +1,5 @@
 'use strict';
+
 let options = {};
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;  // define your schema in options object
@@ -7,12 +8,20 @@ if (process.env.NODE_ENV === 'production') {
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('ItemOptions', {
+    await queryInterface.createTable('CartItems', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
+      },
+      cartId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'ShoppingCarts',
+          key: 'id',
+      },
+      onDelete: 'cascade'
       },
       itemId: {
         type: Sequelize.INTEGER,
@@ -22,17 +31,11 @@ module.exports = {
       },
       onDelete: 'cascade'
       },
-      option: {
-        type: Sequelize.STRING
+      quantity: {
+        type: Sequelize.INTEGER
       },
-      selection: {
+      instructions: {
         type: Sequelize.STRING
-      },
-      cals: {
-        type: Sequelize.STRING
-      },
-      price: {
-        type: Sequelize.NUMBER
       },
       createdAt: {
         allowNull: false,
@@ -45,7 +48,7 @@ module.exports = {
     }, options);
   },
   async down(queryInterface, Sequelize) {
-    options.tableName = "ItemOptions";
+    options.tableName = "CartItems";
     return queryInterface.dropTable(options);
   }
 };

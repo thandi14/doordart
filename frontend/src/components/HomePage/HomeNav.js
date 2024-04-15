@@ -12,6 +12,7 @@ import { useModal } from "../../context/Modal";
 import SignupFormModal from "../SignupForm";
 import { GoogleMap, LoadScript, Autocomplete } from '@react-google-maps/api';
 import * as restaurantActions from "../../store/restaurants"
+import ShoppingCart from "../RestaurantPage/ShoppingCart";
 
 function HomeNav({ isLoaded }) {
   const sessionUser = useSelector((state) => state.session.user);
@@ -24,6 +25,8 @@ function HomeNav({ isLoaded }) {
   const { setLocation } = useFilters()
   const autocompleteRef = useRef(null);
   const dispatch = useDispatch()
+  const [dropTwo, setDropTwo] = useState(false)
+
 
   const handlePlaceChanged = () => {
     const autocomplete = autocompleteRef.current;
@@ -66,6 +69,7 @@ function HomeNav({ isLoaded }) {
   return (
     <>
     <ProfileButton user={sessionUser} d={drop} />
+    <ShoppingCart user={sessionUser} d={dropTwo} />
     <div id="nav">
         <div className="navi">
         <button onClick={(() => setDrop(!drop))} id ="menu">
@@ -90,7 +94,7 @@ function HomeNav({ isLoaded }) {
         <i class="fi fi-rr-angle-small-down"></i>
         </div>
           { lMenu &&
-          <div onClick={((e) => e.stopPropagation())} id="addy-menu">
+          <div style={{ left: "0" }} onClick={((e) => e.stopPropagation())} id="addy-menu">
             <div id="a-menu" style={{ padding: "16px" }}>
               <h1>Enter Your Address</h1>
               <div>
@@ -137,7 +141,7 @@ function HomeNav({ isLoaded }) {
             <input defaultValue="Search stores, dishes, products"></input>
         </div>
         <i id="notify" class="fi fi-rr-cowbell"></i>
-        <i class="fi fi-rr-shopping-cart"></i>
+        <i onClick={(() => setDropTwo(!dropTwo))} class="fi fi-rr-shopping-cart"></i>
         </div>
     </div>
     </>

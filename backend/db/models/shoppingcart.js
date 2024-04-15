@@ -26,6 +26,10 @@ module.exports = (sequelize, DataTypes) => {
         models.Deal,
           { foreignKey: 'dealId' }
       );
+      ShoppingCart.hasMany(
+        models.CartItem,
+          { foreignKey: 'cartId', onDelete: 'CASCADE',  hooks: true }
+      );
     }
   }
   ShoppingCart.init({
@@ -38,7 +42,11 @@ module.exports = (sequelize, DataTypes) => {
     gift: DataTypes.BOOLEAN,
     pickup: DataTypes.BOOLEAN,
     group: DataTypes.BOOLEAN,
-    price: DataTypes.INTEGER
+    price: DataTypes.INTEGER,
+    status: {
+      type: DataTypes.STRING,
+      defaultValue: "Ordering"
+    }
   }, {
     sequelize,
     modelName: 'ShoppingCart',

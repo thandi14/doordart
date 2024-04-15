@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Route, Switch } from "react-router-dom";
 import * as sessionActions from "./store/session";
+import * as cartActions from "./store/shoppingcart";
+
 import SplashPage from "./components/SplashPage";
 import HomePage from "./components/HomePage";
 import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
@@ -13,6 +15,7 @@ function App() {
   const location = useLocation();
 
   useEffect(() => {
+    dispatch(cartActions.thunkGetCarts())
     dispatch(sessionActions.restoreUser()).then(() => setIsLoaded(true));
   }, [dispatch]);
 

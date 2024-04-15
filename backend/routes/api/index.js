@@ -3,8 +3,10 @@ const { setTokenCookie } = require('../../utils/auth.js');
 const { User } = require('../../db/models');
 const sessionRouter = require('./session.js');
 const usersRouter = require('./users.js');
-const resturantsRouter = require('./resturants.js');
+const resturantsRouter = require('./restaurants.js');
 const itemsRouter = require('./items.js');
+const reviewsRouter = require('./reviews.js');
+const cartsRouter = require('./shoppingcarts.js');
 
 const { restoreUser } = require('../../utils/auth.js');
 const { requireAuth } = require('../../utils/auth.js');
@@ -18,6 +20,10 @@ router.use('/users', usersRouter);
 router.use('/restaurants', resturantsRouter);
 
 router.use('/items', itemsRouter);
+
+router.use('/reviews', reviewsRouter);
+
+router.use('/shoppingcarts', cartsRouter);
 
 
 

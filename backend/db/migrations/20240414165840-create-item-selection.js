@@ -1,4 +1,5 @@
 'use strict';
+
 let options = {};
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;  // define your schema in options object
@@ -7,26 +8,29 @@ if (process.env.NODE_ENV === 'production') {
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Likes', {
+    await queryInterface.createTable('ItemSelections', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      itemId: {
+      optionId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'MenuItems',
+          model: 'ItemOptions',
           key: 'id',
       },
       onDelete: 'cascade'
       },
-      thumbsUp: {
-        type: Sequelize.BOOLEAN
+      selection: {
+        type: Sequelize.STRING
       },
-      thumbsDown: {
-        type: Sequelize.BOOLEAN
+      cals: {
+        type: Sequelize.STRING
+      },
+      price: {
+        type: Sequelize.NUMBER
       },
       createdAt: {
         allowNull: false,
@@ -39,7 +43,7 @@ module.exports = {
     }, options);
   },
   async down(queryInterface, Sequelize) {
-    options.tableName = "Likes";
+    options.tableName = "ItemSelections";
     return queryInterface.dropTable(options);
   }
 };

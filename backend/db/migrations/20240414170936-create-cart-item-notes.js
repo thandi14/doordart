@@ -1,4 +1,5 @@
 'use strict';
+
 let options = {};
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;  // define your schema in options object
@@ -7,62 +8,28 @@ if (process.env.NODE_ENV === 'production') {
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('ShoppingCarts', {
+    await queryInterface.createTable('CartItemNotes', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      restaurantId: {
+      itemId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'Restaurants',
+          model: 'CartItems',
           key: 'id',
       },
       onDelete: 'cascade'
       },
-      userId: {
+      selectionId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'Users',
+          model: 'ItemSelections',
           key: 'id',
       },
       onDelete: 'cascade'
-      },
-      offerId: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'Offers',
-          key: 'id',
-      },
-      onDelete: 'cascade'
-      },
-      dealId: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'Deals',
-          key: 'id',
-      },
-      onDelete: 'cascade'
-      },
-      tip: {
-        type: Sequelize.INTEGER
-      },
-      fees: {
-        type: Sequelize.INTEGER
-      },
-      gift: {
-        type: Sequelize.BOOLEAN
-      },
-      pickup: {
-        type: Sequelize.BOOLEAN
-      },
-      group: {
-        type: Sequelize.BOOLEAN
-      },
-      price: {
-        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
@@ -75,7 +42,7 @@ module.exports = {
     }, options);
   },
   async down(queryInterface, Sequelize) {
-    options.tableName = "ShoppingCarts";
+    options.tableName = "CartItemNotes";
     return queryInterface.dropTable(options);
   }
 };

@@ -12,18 +12,40 @@ import SignupFormModal from "../SignupForm";
 import { GoogleMap, LoadScript, Autocomplete } from '@react-google-maps/api';
 import * as restaurantActions from "../../store/restaurants"
 import ProfileButton from "../HomePage/ProfileButton";
+import ShoppingCart from "./ShoppingCart";
 
-function RestaurantNav({ isLoaded }) {
+function RestaurantNav() {
   const sessionUser = useSelector((state) => state.session.user);
+  const {restaurant} = useSelector((state) => state.restaurants);
   const history = useHistory()
   const [drop, setDrop] = useState(false)
-  const { location } = useFilters()
+  const [dropTwo, setDropTwo] = useState(false)
+  const { location, item, setItem, count } = useFilters()
   const [ lMenu, setLMenu ] = useState(false)
+  const [ cMenu, setCMenu ] = useState(false)
   const targetRef = useRef()
   const { setModalContent } = useModal()
   const { setLocation } = useFilters()
   const autocompleteRef = useRef(null);
   const dispatch = useDispatch()
+  const [ cartItem, setCartItem ] = useState({})
+
+
+
+    useEffect(() => {
+
+        if (Object.values(item).length) {
+            setCMenu(true)
+            setCartItem(item)
+            setItem({})
+            setTimeout(() =>{
+                setCMenu(false)
+            }, 2500)
+        }
+
+    }, [item]);
+
+    // console.log(item)
 
   const handlePlaceChanged = () => {
     const autocomplete = autocompleteRef.current;
@@ -66,6 +88,7 @@ function RestaurantNav({ isLoaded }) {
   return (
     <>
     <ProfileButton user={sessionUser} d={drop} />
+    <ShoppingCart user={sessionUser} d={dropTwo}/>
     <div id="nav">
         <div className="navi-two">
         <button style={{ left: "2%" }}  onClick={(() => setDrop(!drop))} id ="menu">
@@ -82,8 +105,13 @@ function RestaurantNav({ isLoaded }) {
         <h1 style={{ fontSize: "14px" }}>{location?.split(',')[0]}</h1>
         <i class="fi fi-rr-angle-small-down"></i>
         </div>
+        </div>
+
+        </div>
+        {/* <div className="search"> */}
+        <i onClick={(() => setDropTwo(!dropTwo))} id="cart" class="fi fi-rr-shopping-cart">
           { lMenu &&
-          <div style={{ right: "0", left: "95" }}  onClick={((e) => e.stopPropagation())} id="addy-menu">
+          <div style={{ right: "0" }}  onClick={((e) => e.stopPropagation())} id="addy-menu">
             <div id="a-menu" style={{ padding: "16px" }}>
               <h1>Enter Your Address</h1>
               <div>
@@ -121,11 +149,30 @@ function RestaurantNav({ isLoaded }) {
             </div>
           </div>
           }
-        </div>
 
-        </div>
-        {/* <div className="search"> */}
-        <i id="cart" class="fi fi-rr-shopping-cart"></i>
+        { cMenu &&
+          <div style={{ right: "0" }}  onClick={((e) => e.stopPropagation())} id="cart-menu">
+            <div style={{ cursor: "default" }} id="c-menu">
+                <div  style={{ padding: "10px", borderBottom: "1px solid rgb(231, 231, 231)" }}>
+                <h1 style={{ fontSize: "18px", marginBottom: "0px"}}>{restaurant.name}</h1>
+                <p style={{ fontSize: "10px"}}>{count} item</p>
+                </div>
+                <div id="cart-m">
+                <div style={{ padding: "8px", boxSizing: "border-box" }} id="cart-pic">
+                    <img style={{ width: "30%"}} src={cartItem.imgUrl}></img>
+                    <span style={{ width: "70%"}}>
+                        <h2 style={{ fontSize: "14px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{cartItem.item}</h2>
+                        <p style={{ fontSize: "12px", margin: "0px" }}> {cartItem.price}</p>
+                    </span>
+                </div>
+                <div style={{backgroundColor: "rgb(231, 231, 231)", height: "1px", width: "100%"}} id="divider-two"></div>
+                <button onClick={(() => setDropTwo(!dropTwo))} style={{ display: "flex", justifyContent: "center" }}><p>Go to cart</p></button>
+                <button id="cart-c" style={{ backgroundColor: "red", color: "white" }}><p>Checkout</p> {cartItem.price * count}</button>
+                </div>
+            </div>
+          </div>
+          }
+        </i>
         </div>
     </div>
     </>

@@ -2,65 +2,75 @@ import React, { useEffect, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import * as restaurantActions from "../../store/restaurants";
+import * as cartActions from "../../store/shoppingcart";
 import { useFilters } from "../../context/Filters";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import "./RestaurantPage.css"
 import RestaurantNav from "./RestaurantNav";
 import RestaurantFoot from "./RestaurantFoot";
+import { useModal } from "../../context/Modal";
+import ItemFormModal from "../ItemForm";
 
 function RestaurantPage({ isLoaded }) {
   const { user } = useSelector((state) => state.session );
   const { restaurant } = useSelector((state) => state.restaurants);
+  const { cartItem, shoppingCart }  = useSelector((state) => state.cart);
   const { id } = useParams();
   const [ length, setLength ] = useState(0)
-  const [ selection, setSelection ] = useState("Combo Meals")
+  const [ selection, setSelection ] = useState("Reviews")
   const [ mark, setMark ] = useState(-1)
   const [ hide, setHide ] = useState(true)
   const [ scroll, setScroll ] = useState(false)
   const dispatch = useDispatch()
   const { location } = useFilters()
+  const { setModalContent } = useModal()
   const targetRef = useRef()
   const divRefs = useRef({});
 
+
   useEffect(() => {
-  window.scrollTo(0, 0); // Scrolls to the top instantly when the page loads
+    window.scrollTo(0, 0);
+    async function fetchData() {
+        dispatch(cartActions.thunkGetCart(id))
+    }
+    fetchData()
+
   }, []);
 
   const checkInCenter = (id) => {
     if (divRefs.current[id]) {
-        const element = divRefs.current[id];
+            const element = divRefs.current[id];
 
-        const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+            const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
 
-        const rect = element.getBoundingClientRect();
-        const elementTop = rect.top;
-        const elementBottom = rect.bottom;
-        const viewportCenterY = window.scrollY + viewportHeight / 2;
-        const isInCenter = elementTop <= viewportCenterY && elementBottom >= viewportCenterY;
+            const rect = element.getBoundingClientRect();
+            const elementTop = rect.top;
+            const elementBottom = rect.bottom;
+            const viewportCenterY = window.scrollY + viewportHeight / 2;
+            const isInCenter = elementTop <= viewportCenterY && elementBottom >= viewportCenterY;
 
-        if (isInCenter) {
-            const number = parseInt(id.split('-')[1])
-            setMark(number);
+            if (isInCenter) {
+                const number = parseInt(id.split('-')[1])
+                setMark(number);
+            }
         }
     }
-}
 
-useEffect(() => {
-    // Attach scroll event listener when component mounts
-    const handleScroll = () => {
-        // Loop through each div ref and check if it's in the center
-        Object.keys(divRefs.current).forEach(id => {
-        checkInCenter(id);
-      });
-    };
-    window.addEventListener('scroll', handleScroll);
+    useEffect(() => {
+        // Attach scroll event listener when component mounts
+        const handleScroll = () => {
+            // Loop through each div ref and check if it's in the center
+            Object.keys(divRefs.current).forEach(id => {
+            checkInCenter(id);
+        });
+        };
+        window.addEventListener('scroll', handleScroll);
 
-    // Cleanup function to remove event listener when component unmounts
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
+        return () => {
+        window.removeEventListener('scroll', handleScroll);
+        };
 
-}, [mark]);
+    }, [mark]);
 
    useEffect(() => {
      async function fetchData() {
@@ -73,11 +83,11 @@ useEffect(() => {
 
   }, [dispatch, location, id])
 
+
   window.addEventListener('scroll', function() {
     const element = document.getElementById('head-nav-two');
-    const scrollAmount = 550; // Adjust this value as needed
+    const scrollAmount = 550;
 
-    // Check if the user has scrolled past the specified amount
     if (window.scrollY > scrollAmount) {
         setHide(false);
     } else {
@@ -157,7 +167,7 @@ useEffect(() => {
 
     let menu = restaurant.MenuItems
     let categories = {};
-let set = new Set();
+    let set = new Set();
 
 if (menu?.length) {
     for (let item of menu) {
@@ -400,7 +410,7 @@ if (menu?.length) {
                         <div className="item">
                             { categories[key].map((item, i) =>
                                 <>
-                                <div id="menu-item">
+                                <div onClick={(() => setModalContent(<ItemFormModal itemId={item.id}/>))} id="menu-item">
                                     <div id="item">
                                     <h1 style={{ fontSize: "16px", whiteSpace: "nowrap", margin: "0" }}>{item.item}</h1>
                                     <div id="i-info">

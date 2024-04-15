@@ -3,15 +3,24 @@ let options = {};
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;  // define your schema in options object
 }
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Restaurants', {
+    await queryInterface.createTable('ShoppingCarts', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
+      },
+      restaurantId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Restaurants',
+          key: 'id',
+      },
+      onDelete: 'cascade'
       },
       userId: {
         type: Sequelize.INTEGER,
@@ -21,35 +30,43 @@ module.exports = {
       },
       onDelete: 'cascade'
       },
-      name: {
-        type: Sequelize.STRING
+      offerId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Offers',
+          key: 'id',
       },
-      deliveryFee: {
-        type: Sequelize.NUMBER
+      onDelete: 'cascade'
       },
-      deliveryTime: {
-        type: Sequelize.STRING
+      dealId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Deals',
+          key: 'id',
       },
-      address: {
-        type: Sequelize.STRING
+      onDelete: 'cascade'
       },
-      type: {
-        type: Sequelize.STRING
+      tip: {
+        type: Sequelize.INTEGER
+      },
+      fees: {
+        type: Sequelize.INTEGER
+      },
+      gift: {
+        type: Sequelize.BOOLEAN
       },
       pickup: {
         type: Sequelize.BOOLEAN
       },
-      phone: {
-        type: Sequelize.NUMBER
+      group: {
+        type: Sequelize.BOOLEAN
       },
-      miles: {
-        type: Sequelize.NUMBER
-      },
-      mins: {
+      price: {
         type: Sequelize.INTEGER
       },
-      franchiseId: {
-        type: Sequelize.INTEGER
+      status: {
+        type: Sequelize.STRING,
+        defaultValue: "Ordering"
       },
       createdAt: {
         allowNull: false,
@@ -62,7 +79,7 @@ module.exports = {
     }, options);
   },
   async down(queryInterface, Sequelize) {
-    options.tableName = "Restaurants";
+    options.tableName = "ShoppingCarts";
     return queryInterface.dropTable(options);
   }
 };

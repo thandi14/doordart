@@ -14,14 +14,17 @@ module.exports = (sequelize, DataTypes) => {
         models.MenuItem,
           { foreignKey: 'itemId' }
       );
+      ItemOption.hasMany(
+        models.ItemSelection,
+          { foreignKey: 'optionId', onDelete: 'CASCADE',  hooks: true }
+      );
     }
   }
   ItemOption.init({
     itemId: DataTypes.INTEGER,
     option: DataTypes.STRING,
-    selection: DataTypes.STRING,
-    cals: DataTypes.STRING,
-    price: DataTypes.NUMBER
+    required: DataTypes.BOOLEAN,
+    number: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'ItemOption',

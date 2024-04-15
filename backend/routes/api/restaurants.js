@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
-const { User, Restaurant, MenuItem, RestaurantTime, Review, RestaurantImage, Offer, ItemOption } = require('../../db/models');
+const { User, Restaurant, MenuItem, RestaurantTime, Review, RestaurantImage, Offer, ItemOption, ShoppingCart, CartItem, CartItemNotes, ItemSelection } = require('../../db/models');
 const axios = require('axios');
 const geolib = require('geolib'); //
 
@@ -99,7 +99,8 @@ router.get('/', async (req, res) => {
             franchise.set({
                 address: location,
                 miles,
-                mins
+                mins,
+                franchiseId: places[0].place_id
             });
 
             await franchise.save();
@@ -132,6 +133,7 @@ router.post('/', async (req, res) => {
     const requests = restaurants.map(async (restaurant) => {
         const response = await axios.get('https://maps.googleapis.com/maps/api/place/textsearch/json', {
             params: {
+                place_id: 'PLACE_ID',
                 query: restaurant.name,
                 location: address,
                 radius: 50000, // Search radius in meters (adjust as needed)
@@ -166,7 +168,8 @@ router.post('/', async (req, res) => {
             franchise.set({
                 address: location,
                 miles,
-                mins
+                mins,
+                franchiseId: places[0].place_id
             });
 
             await franchise.save();
@@ -190,8 +193,56 @@ router.post('/', async (req, res) => {
 
 })
 
+router.get('/:id/cart', async (req, res) => {
+    let restaurantId = req.params.id;
+    let restaurantExist = await Restaurant.findByPk(restaurantId);
+    const { user } = req
+    const userId = user.dataValues.id
+
+    if (!restaurantExist) {
+
+        res.status(404).json({"message": "Restaurant couldn't be found"});
+
+    }
+
+    let cart = await ShoppingCart.findOne({
+        where : {
+            userId,
+            restaurantId,
+            status: "Ordering"
+        },
+        include : [
+            {
+                model: CartItem,
+                include : [
+                    {
+                        model: MenuItem,
+                    },
+                    {
+                        model: CartItemNotes,
+                        include : [
+                            {
+                                model: ItemSelection,
+                            }
+                        ]
+                    }
+                ]
+             },
+            { model: User },
+            { model: Restaurant }
+        ]
+    });
 
 
+    if (!cart) {
+
+        res.status(404).json({"message": "Shopping Cart couldn't be found"});
+
+    }
+
+    res.json( cart )
+
+})
 
 router.post('/:id', async (req, res) => {
     let { address } = req.body
@@ -226,6 +277,38 @@ router.post('/:id', async (req, res) => {
     res.json( restaurant )
 
 })
+
+router.post('/:id/review', async (req, res) => {
+    let restaurantId = req.params.id;
+    let restaurantExist = await Restaurant.findByPk(restaurantId);
+    let { review, rating, franchiseId } = req.body;
+    const { user } = req
+    const userId = user.dataValues.id
+
+    if (!restaurantExist) {
+
+        res.status(404).json({"message": "Restaurant couldn't be found"});
+
+    }
+
+    let rr = await Review.create({
+        restaurantId,
+        userId,
+        review,
+        rating,
+        franchiseId
+    })
+
+    let r = await Review.findByPk(rr.dataValues.id, {
+        include : [
+            { model: User }
+        ]
+    });
+
+    res.json( r )
+
+})
+
 
 
 module.exports = router;

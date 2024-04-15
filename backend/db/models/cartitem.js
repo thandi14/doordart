@@ -18,12 +18,17 @@ module.exports = (sequelize, DataTypes) => {
         models.MenuItem,
           { foreignKey: 'itemId' }
       );
+      CartItem.hasMany(
+        models.CartItemNotes,
+          { foreignKey: 'itemId', onDelete: 'CASCADE',  hooks: true }
+      );
     }
   }
   CartItem.init({
     cartId: DataTypes.INTEGER,
     itemId: DataTypes.INTEGER,
-    quantity: DataTypes.INTEGER
+    quantity: DataTypes.INTEGER,
+    instructions: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'CartItem',
