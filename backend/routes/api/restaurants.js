@@ -244,6 +244,34 @@ router.get('/:id/cart', async (req, res) => {
 
 })
 
+
+router.get('/:id/reviews', async (req, res) => {
+    let restaurantId = req.params.id;
+    let restaurantExist = await Restaurant.findByPk(restaurantId);
+    const page = parseInt(req.query.page) || 1;
+    const pageSize = 10;
+
+    if (!restaurantExist) {
+
+        res.status(404).json({"message": "Restaurant couldn't be found"});
+
+    }
+
+    let reviews = await Review.findAll({
+        where: {
+            restaurantId
+        },
+        include : [
+            { model: User }
+        ],
+        limit: pageSize,
+        offset: (page - 1) * pageSize
+    });
+
+    res.json( reviews )
+
+})
+
 router.post('/:id', async (req, res) => {
     let { address } = req.body
     let restaurantId = req.params.id;

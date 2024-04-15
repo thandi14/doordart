@@ -4,12 +4,14 @@ import { useDispatch, useSelector } from "react-redux";
 import * as restaurantActions from "../../store/restaurants";
 import * as cartActions from "../../store/shoppingcart";
 import { useFilters } from "../../context/Filters";
-import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+import { useHistory, useParams } from "react-router-dom/cjs/react-router-dom.min";
 import "./RestaurantPage.css"
 import RestaurantNav from "./RestaurantNav";
 import RestaurantFoot from "./RestaurantFoot";
 import { useModal } from "../../context/Modal";
 import ItemFormModal from "../ItemForm";
+import ReviewFormModal from "../ReviewForm";
+import ReviewFormThreeModal from "../ReviewForm/index3";
 
 function RestaurantPage({ isLoaded }) {
   const { user } = useSelector((state) => state.session );
@@ -26,6 +28,7 @@ function RestaurantPage({ isLoaded }) {
   const { setModalContent } = useModal()
   const targetRef = useRef()
   const divRefs = useRef({});
+  const history = useHistory()
 
 
   useEffect(() => {
@@ -358,7 +361,7 @@ if (menu?.length) {
                                 </p>
                             </div>
                             <div id="add-r">
-                                <button>Add Review</button>
+                                <button onClick={(() => setModalContent(<ReviewFormModal />))}>Add Review</button>
                                 <span>
                                 { <i id="gotobutt-two" style={{ left: "0"}} onClick={goToPrev} class="fi fi-sr-angle-circle-left"></i>}
                                 { <i id="gotobutt-two" style={{ right: "0"}} onClick={goToNext} class="fi fi-sr-angle-circle-right"></i>}
@@ -377,7 +380,7 @@ if (menu?.length) {
                                 </div>
                             </div>
                             { reviews?.map((review, i) =>
-                                <div style={{ cursor: "pointer" }}>
+                                <div onClick={(() => setModalContent(<ReviewFormThreeModal rev={review} />))} style={{ cursor: "pointer" }}>
                                     <span id="pp">
                                         <div id="profile-pic">
                                         {review.User.firstName[0]}
@@ -399,7 +402,7 @@ if (menu?.length) {
                                 )}
                                  <div  style={{ cursor: "pointer", display: "flex", justifyContent: "center" }}>
                                     <div>
-                                        <p id="more-reviews" ><i style={{ width: "16px", height: "16px", fontSize: "16px", color: "black"}} class="fi fi-rr-arrow-small-right"></i> See All</p>
+                                        <p onClick={(() => history.push(`/restaurant/${id}/reviews`))} id="more-reviews" ><i style={{ width: "16px", height: "16px", fontSize: "16px", color: "black"}} class="fi fi-rr-arrow-small-right"></i> See All</p>
                                     </div>
                                 </div>
                         </div>

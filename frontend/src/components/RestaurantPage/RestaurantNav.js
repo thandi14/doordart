@@ -16,7 +16,8 @@ import ShoppingCart from "./ShoppingCart";
 
 function RestaurantNav() {
   const sessionUser = useSelector((state) => state.session.user);
-  const {restaurant} = useSelector((state) => state.restaurants);
+  const { restaurant } = useSelector((state) => state.restaurants);
+  const { shoppingCart } = useSelector((state) => state.cart);
   const history = useHistory()
   const [drop, setDrop] = useState(false)
   const [dropTwo, setDropTwo] = useState(false)
@@ -85,6 +86,8 @@ function RestaurantNav() {
 
   }, []);
 
+  let sc = shoppingCart.CartItems
+
   return (
     <>
     <ProfileButton user={sessionUser} d={drop} />
@@ -109,7 +112,7 @@ function RestaurantNav() {
 
         </div>
         {/* <div className="search"> */}
-        <i onClick={(() => setDropTwo(!dropTwo))} id="cart" class="fi fi-rr-shopping-cart">
+        <i onClick={(() => setDropTwo(!dropTwo))} id={sc.length > 0 ? "cart-two" : "cart"} class="fi fi-rr-shopping-cart">
           { lMenu &&
           <div style={{ right: "0" }}  onClick={((e) => e.stopPropagation())} id="addy-menu">
             <div id="a-menu" style={{ padding: "16px" }}>
@@ -172,6 +175,7 @@ function RestaurantNav() {
             </div>
           </div>
           }
+          <p>{sc.length}</p>
         </i>
         </div>
     </div>

@@ -8,6 +8,7 @@ import SplashPage from "./components/SplashPage";
 import HomePage from "./components/HomePage";
 import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
 import RestaurantPage from "./components/RestaurantPage";
+import ReviewPage from "./components/ReviewPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -30,6 +31,9 @@ function App() {
     </Route>
     <Route exact path="/restaurant/:id">
       <RestaurantPage />
+    </Route>
+    <Route exact path="/restaurant/:id/reviews">
+      <ReviewPage />
     </Route>
   </Switch>
 </>

@@ -3,6 +3,8 @@ import { csrfFetch } from "./csrf";
 const GET_RESTAURANTS = "restaurant/getRestaurants";
 const GET_RESTAURANT = "restaurant/getRestaurant";
 const GET_REVIEW = "restaurant/getReview";
+const GET_REVIEWS = "restaurant/getReviews";
+const GET_REVIEW_DETAILS = "restaurant/getReviewDetails";
 const UPDATE_REVIEW = "restaurant/updateReview";
 const DELETE_REVIEW = "restaurant/deleteReview";
 
@@ -28,6 +30,21 @@ const getReview = (review) => {
     review,
   };
 };
+
+const getReviews = (reviews) => {
+  return {
+    type: GET_REVIEWS,
+    reviews,
+  };
+};
+
+const getReviewDetails = (details) => {
+  return {
+    type: GET_REVIEW_DETAILS,
+    details,
+  };
+};
+
 
 const updateReview = (review) => {
   return {
@@ -77,6 +94,23 @@ export const thunkGetRestaurant = (id, data) => async (dispatch) => {
   return response;
 };
 
+export const thunkGetReview = (id) => async (dispatch) => {
+  const response = await csrfFetch(`/api/reviews/${id}`)
+  const data1 = await response.json();
+  dispatch(getReview(data1));
+  return data1;
+};
+
+export const thunkGetReviews = (id, page) => async (dispatch) => {
+  const response = await csrfFetch(`/api/restaurants/${id}/reviews?page=${page}`)
+  const data1 = await response.json();
+  dispatch(getReviews(data1));
+  return data1;
+
+};
+
+
+
 export const thunkCreateReview = (id, data) => async (dispatch) => {
   const response = await csrfFetch(`/api/restaurants/${id}/review`, {
     method: 'POST',
@@ -86,8 +120,8 @@ export const thunkCreateReview = (id, data) => async (dispatch) => {
     body: JSON.stringify(data)
   })
   const data1 = await response.json();
-  dispatch(getReview(data1));
-  return response;
+  dispatch(getReviewDetails(data1));
+  return data1;
 };
 
 export const thunkUpdateReview = (id, data) => async (dispatch) => {
@@ -119,6 +153,8 @@ export const thunkDeleteReview = (id) => async (dispatch) => {
 let initialState = {
    restaurants: {},
    restaurant: {},
+   reviews: {},
+   review: {}
 }
 
 
@@ -131,6 +167,12 @@ const restaurantReducer = (state = initialState, action) => {
         (restaurant) => (newState.restaurants[restaurant.id] = { ...restaurant})
       );
       return newState;
+    case GET_REVIEWS:
+      newState = { ...state };
+      if (action.reviews.length) action.reviews.forEach(
+        (review) => (newState.reviews[review.id] = { ...review})
+      );
+      return newState;
     case GET_RESTAURANT:
       newState = { ...state };
       const restaurant = action.restaurant;
@@ -139,7 +181,13 @@ const restaurantReducer = (state = initialState, action) => {
     case GET_REVIEW:
       newState = { ...state };
       const review = action.review;
-      newState.restaurant.Reviews?.push(review);
+      newState.review = { ...review };
+      return newState;
+    case GET_REVIEW_DETAILS:
+      newState = { ...state };
+      const details = action.details;
+      newState.restaurant.Reviews?.push(details);
+      newState.reviews.push(details);
       return newState;
     case UPDATE_REVIEW:
       newState = { ...state };

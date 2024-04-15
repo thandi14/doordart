@@ -7,6 +7,30 @@ const { User, Restaurant, Review, MenuItem } = require('../../db/models');
 
 const router = express.Router();
 
+router.get('/:id', async (req, res) => {
+    let reviewId = req.params.id;
+    let reviewExist = await Review.findByPk(reviewId);
+    const { user } = req
+    const userId = user.dataValues.id
+
+    if (!reviewExist) {
+
+        res.status(404).json({"message": "Review couldn't be found"});
+
+    }
+
+    let r = await Review.findByPk(reviewId, {
+        include : [
+            { model: User }
+        ]
+    });
+
+    res.json( r )
+
+})
+
+
+
 
 router.put('/:id', async (req, res) => {
     let reviewId = req.params.id;
