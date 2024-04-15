@@ -162,7 +162,19 @@ const cartReducer = (state = initialState, action) => {
     case GET_DETAILS:
       newState = { ...state };
       const details = action.details;
-      newState.shoppingCart.CartItems.push(details)
+      let more = newState.shoppingCart.CartItems.some((i) => i.id == details.id)
+      if (more) {
+        newState.shoppingCart.CartItems = newState.shoppingCart.CartItems.map((item) => {
+          if (item.id === details.id) {
+              return details;
+          }
+          return item;
+        });
+      }
+      else {
+        newState.shoppingCart.CartItems.push(details)
+
+      }
       return newState;
     case GET_UPDATES:
       newState = { ...state };

@@ -73,7 +73,7 @@ router.post('/:id', async (req, res) => {
 router.post('/:id/item', async (req, res) => {
     let cartId = req.params.id;
     let cartExist = await ShoppingCart.findByPk(cartId);
-    let { itemId, options } = req.body;
+    let { itemId, options, quantity } = req.body;
     const { user } = req
     const userId = user.dataValues.id
 
@@ -83,37 +83,98 @@ router.post('/:id/item', async (req, res) => {
 
     }
 
-    let item = await CartItem.create({
-        cartId,
-        quantity: 1,
-        itemId,
+    let itemsExist = await CartItem.findAll({
+        where: {
+            cartId,
+            itemId
+        },
+        include: [
+            { model: CartItemNotes }
+        ]
     })
 
-    if (options?.length) {
-        for (o of options) {
-            let selected = await CartItemNotes.create({
-                itemId,
-                selectionId: o,
-            })
-        }
-    }
+    let c
+    let more = false
 
-    let c = await CartItem.findByPk(item.dataValues.id, {
-        include : [
-            {
-                model: MenuItem
-             },
-             {
-                model: CartItemNotes,
+    for (let itemExist of itemsExist) {
+        let notes = itemExist.dataValues.CartItemNotes
+        more = notes.length == 0 && options.length == 0 ? true : false
+        if (!more && notes.length) {
+            more = options.every(option =>
+                notes.some(note => note.dataValues.selectionId === option)
+            );
+        }
+
+        if (more) {
+            let ci = await CartItem.findByPk(itemExist.dataValues.id)
+            let q = ci.dataValues.quantity + quantity
+
+            let newCi = ci.set({
+                quantity: q
+            })
+
+            await newCi.save()
+
+            c = await CartItem.findByPk(itemExist.dataValues.id, {
                 include : [
                     {
-                        model: ItemSelection,
-                    }
+                        model: MenuItem
+                    },
+                    {
+                        model: CartItemNotes,
+                        include : [
+                            {
+                                model: ItemSelection,
+                            }
+                        ]
+                    },
+                    { model: ShoppingCart },
                 ]
-            },
-            { model: ShoppingCart },
-        ]
-    });
+
+            });
+
+             res.json( c )
+        }
+
+        console.log(itemExist.dataValues.CartItemNotes, more)
+    }
+
+    if (!more) {
+
+        let item = await CartItem.create({
+            cartId,
+            quantity,
+            itemId,
+        })
+
+        if (options?.length) {
+            for (let selectionId of options) {
+                let selected = await CartItemNotes.create({
+                    itemId: item.dataValues.id,
+                    selectionId
+                })
+            }
+        }
+
+
+        c = await CartItem.findByPk(item.dataValues.id, {
+            include : [
+                {
+                    model: MenuItem
+                 },
+                 {
+                    model: CartItemNotes,
+                    include : [
+                        {
+                            model: ItemSelection,
+                        }
+                    ]
+                },
+                { model: ShoppingCart },
+            ]
+        });
+
+    }
 
     res.json( c )
 

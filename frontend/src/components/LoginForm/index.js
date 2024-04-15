@@ -4,20 +4,21 @@ import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import "./LoginForm.css";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import SignupFormModal from "../SignupForm";
 
 function LoginFormModal() {
   const dispatch = useDispatch();
   const [credential, setCredential] = useState("");
-  const [password, setPassword] = useState("");
+  // const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
-  const { closeModal } = useModal();
+  const { closeModal, setModalContent } = useModal();
   const history = useHistory()
 
   const handleSubmit = (e) => {
     e.preventDefault();
     history.push('/home')
     setErrors({});
-    return dispatch(sessionActions.login({ credential, password }))
+    return dispatch(sessionActions.login({ credential }))
       .then(closeModal)
       .catch(async (res) => {
         const data = await res.json();
@@ -28,19 +29,36 @@ function LoginFormModal() {
   };
 
   return (
-    <>
-      <h1>Log In</h1>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Username or Email
-          <input
-            type="text"
-            value={credential}
-            onChange={(e) => setCredential(e.target.value)}
-            required
-          />
-        </label>
-        <label>
+    <div id="login-form">
+      <div id="login-head">
+      <i class="fi fi-br-cross"></i>
+      <h1 style={{ fontSize: "32px", margin: "0px" }}>Sign in or Sign up</h1>
+      </div>
+      <div className="switch" style={{ display: "flex"}}>
+      <div id="switch">
+        <button>Sign In</button>
+        <p onClick={(() => setModalContent(<SignupFormModal />))} >Sign Up</p>
+      </div>
+      </div>
+      <form className="su-form" onSubmit={handleSubmit}>
+      <div id="continue">
+        <div id="line-eight"></div>
+        <p style={{ fontSize: "14px", color: "#767676", margin: "0px" }}>or continue with email</p>
+      </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+          <p style={{ fontSize: "16px", fontWeight: "500", margin: "0px"}} >Email</p>
+          <div id="email">
+            <input
+              type="text"
+              placeholder="Required"
+              value={credential}
+              onChange={(e) => setCredential(e.target.value)}
+              required
+            />
+          </div>
+        <p style={{ fontSize: "14px", color: "#767676", margin: "0px" }} >No password required</p>
+          </div>
+        {/* <label>
           Password
           <input
             type="password"
@@ -48,13 +66,16 @@ function LoginFormModal() {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-        </label>
+        </label> */}
         {errors.credential && (
           <p>{errors.credential}</p>
         )}
-        <button type="submit">Log In</button>
+        <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+        <button id="submit-one">Continue to Sign In</button>
+        <p style={{ fontSize: "14px", color: "#767676", margin: "0px" }} >By continuing with the sign in process, we may send you a one-time verification code via text message to the phone number associated with your account. Message and data rates may apply.</p>
+        </div>
       </form>
-    </>
+    </div>
   );
 }
 

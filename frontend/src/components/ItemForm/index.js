@@ -18,10 +18,16 @@ function ItemFormModal({ itemId }) {
   const [items, setItems] = useState({});
   const { setItem, setCount } = useFilters()
   const [ data, setData ] = useState({})
+  const [ validation, setValidation ] = useState(0)
+  const [ optionIds, setOptionIds ] = useState([]);
 
+
+  let options = cartItem.ItemOptions
 
   const addItem = (selection, option) => {
     let num = option.id
+    const newArray = [...optionIds, num];
+    setOptionIds(newArray)
     const currentArray = items[num]?.length ? items[num] : [];
     const updatedArray = [...currentArray, selection.id];
 
@@ -35,6 +41,19 @@ function ItemFormModal({ itemId }) {
     });
   };
 
+   useEffect(() => {
+    async function validateItem() {
+        let required = 0
+        let ops = Object.values(cartItem.ItemOptions)
+        for (let o of ops) {
+            if (o.required) required++
+        }
+        setValidation(required)
+    }
+    validateItem()
+
+  }, [dispatch, itemId, options])
+
   useEffect(() => {
     async function fetchData() {
          await dispatch(cartActions.thunkGetItem(itemId))
@@ -44,30 +63,13 @@ function ItemFormModal({ itemId }) {
 
   }, [dispatch, itemId])
 
-//   useEffect(() => {
-//     async function fetchData() {
-//         let data1
-//         if (shoppingCart?.id) {
-//             await dispatch(cartActions.thunkCreateCartItem(shoppingCart?.id, data))
-//         }
-//         else if (!shoppingCart?.id) {
-//             data1 = await dispatch(cartActions.thunkCreateCart(restaurant?.id))
-//             if (data1) await dispatch(cartActions.thunkCreateCartItem(data1?.id, data))
-//         }
-//     }
-
-//     fetchData()
-
-//   }, [dispatch, shoppingCart?.id, data])
-
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setCount(quantity)
     setItem(cartItem)
     let selections = Object.values(items)
     const ops = [].concat(...selections);
-    let data = { itemId, options: ops }
+    let data = { itemId, options: ops, quantity }
     let data1
     if (!shoppingCart?.id) {
         data1 = await dispatch(cartActions.thunkCreateCart(restaurant.id))
@@ -76,10 +78,6 @@ function ItemFormModal({ itemId }) {
     if (shoppingCart?.id) await dispatch(cartActions.thunkCreateCartItem(shoppingCart.id, data))
     closeModal()
   };
-
-  console.log(shoppingCart?.id)
-
-  let options = cartItem.ItemOptions
 
   return (
     <div className="item-modal">
@@ -99,8 +97,10 @@ function ItemFormModal({ itemId }) {
                 <div id="item-options">
                     <h2 style={{ fontSize: "15px", margin: "0px" }}>{option.option}</h2>
                         <p style={{ margin: "6px 0px", gap: "3px", color: "#767676", fontSize: "11px", display: "flex", alignItems: "center"}}>
-                            <span style={{ gap: "3px", display: "flex", alignItems: "center", color: "green", fontSize: "11px"}}>
-                                <i style={{ width: "12px", height: "12px", fontSize: "12px" }} class="fi fi-sr-check-circle"></i>{option.required ? "Required" : "(Optional)"}</span>
+                            <span style={{ gap: "3px", display: "flex", alignItems: "center", color: optionIds.some((id) => option.id == id) ? "green" : "gold", fontSize: "11px"}}>
+                                { optionIds.some((id) => option.id == id) ? <i style={{ width: "12px", height: "12px", fontSize: "12px" }} class="fi fi-sr-check-circle"></i> :
+                                <i style={{ width: "12px", height: "12px", fontSize: "12px" }} class="fi fi-sr-triangle-warning"></i>}
+                                {option.required ? "Required" : "(Optional)"}</span>
                                 <i style={{ width: "8px", height: "8px", fontSize: "8px" }} class="fi fi-sr-bullet"></i>
                             Select {option.number}
                         </p>
@@ -143,8 +143,12 @@ function ItemFormModal({ itemId }) {
                     </span>
                 <i onClick={(() => setQuantity(quantity + 1))} class="fi fi-rr-add"></i>
             </div>
-            <button onClick={handleSubmit}>
-                Add to cart - ${cartItem.price * quantity}
+            <button onClick={(() => {
+                 if (Object.keys(items).length == validation) {
+                    handleSubmit()
+                 }
+            })}>
+                {Object.keys(items).length == validation ? "Add to cart" : `Make ${validation - Object.keys(items).length} required selections` } - ${cartItem.price * quantity}
             </button>
         </div>
     </div>
