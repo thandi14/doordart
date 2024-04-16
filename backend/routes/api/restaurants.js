@@ -57,7 +57,8 @@ const geocodeAddress = async (address) => {
   };
 
 router.get('/', async (req, res) => {
-    let address = "1740 Hickory Chase Cir"
+    const { user } = req
+    const address = user.dataValues.address
     let location
 
     let restaurants = await Restaurant.findAll()

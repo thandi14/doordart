@@ -25,6 +25,12 @@ module.exports = {
         required: true,
         number: 1,
       },
+      {
+        itemId: 42,
+        option: "Flavor",
+        required: true,
+        number: 1,
+      },
     ], {});
   },
 

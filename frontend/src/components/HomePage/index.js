@@ -21,6 +21,7 @@ import steak from "./images/meat.png"
 import pizzaTwo from "./images/pizzaTwo.png"
 import south from "./images/chicken.png"
 import * as restaurantActions from "../../store/restaurants";
+import * as cartActions from "../../store/shoppingcart";
 import HomeNav from "./HomeNav";
 import HomeFoot from "./HomeFoot";
 import { useFilters } from "../../context/Filters";
@@ -38,10 +39,11 @@ function HomePage({ isLoaded }) {
  useEffect(() => {
      async function fetchData() {
          if ( !location && user?.id ) await dispatch(restaurantActions.thunkGetUserRestaurants())
+         dispatch(cartActions.thunkGetCarts())
         }
      fetchData()
 
-  }, [dispatch])
+  }, [dispatch, location, user])
 
 
   const goToNext = (e) => {

@@ -58,9 +58,9 @@ module.exports = {
         firstName: "Thandi",
         lastName: "Mpofu",
         state: "TX",
-        city: "Fort Worth",
-        address: "8900 Harmon Rd",
-        zipCode: "76177",
+        city: "Keller",
+        address: "1740 Hickory Chase Cir",
+        zipCode: "76248",
         phone: "8179756306",
         door: true,
         hashedPassword: bcrypt.hashSync('Love2003!')

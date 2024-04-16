@@ -6,6 +6,8 @@ const GET_UPDATES = "cart/getUpdates";
 const GET_CARTS = "cart/getCarts";
 const GET_ITEM = "cart/getItem";
 const DELETE_ITEM = "cart/deleteItem";
+const DELETE_CART = "cart/deleteCart";
+
 
 const getCarts = (carts) => {
   return {
@@ -51,6 +53,14 @@ const deleteCartItem = (id) => {
   };
 };
 
+const deleteCart = (id) => {
+  return {
+    type: DELETE_CART,
+    id,
+  };
+};
+
+
 export const thunkGetCart = (id) => async (dispatch) => {
   const response = await csrfFetch(`/api/restaurants/${id}/cart`)
   const data = await response.json();
@@ -60,6 +70,7 @@ export const thunkGetCart = (id) => async (dispatch) => {
 
 
 export const thunkGetCarts = () => async (dispatch) => {
+  console.log("jatklbanrbjkrtbkjakjrkjbnajrbnjnlbtjjablkjaja")
   const response = await csrfFetch(`/api/shoppingcarts/`)
   const data = await response.json();
   dispatch(getCarts(data));
@@ -133,7 +144,7 @@ export const thunkDeleteCart = (id) => async (dispatch) => {
       },
     })
     const data = await response.json();
-    dispatch(getCart({}));
+    dispatch(deleteCart(id));
     return response;
 };
 
@@ -151,7 +162,7 @@ const cartReducer = (state = initialState, action) => {
     case GET_CARTS:
       newState = { ...state };
       if (action.carts.length) action.carts.forEach(
-        (cart) => (newState.shoppingCart[cart.id] = { ...cart})
+        (cart) => (newState.shoppingCarts[cart.id] = { ...cart})
       );
       return newState;
     case GET_CART:
@@ -196,6 +207,11 @@ const cartReducer = (state = initialState, action) => {
       const itemId = action.id;
       newState.shoppingCart.CartItems = newState.shoppingCart.CartItems.filter((i) => i.id != itemId);
       return newState;
+      case DELETE_CART:
+        newState = { ...state };
+        const cartId = action.id;
+        newState.shoppingCarts = newState.shoppingCarts.filter((i) => i.id != cartId);
+        return newState;
     default:
       return state;
   }

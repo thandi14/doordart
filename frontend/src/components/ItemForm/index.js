@@ -64,7 +64,7 @@ function ItemFormModal({ itemId }) {
   }, [dispatch, itemId])
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     setCount(quantity)
     setItem(cartItem)
     let selections = Object.values(items)
@@ -87,7 +87,7 @@ function ItemFormModal({ itemId }) {
         <div id="item-modal">
         <div className="item-one">
             <h1>{cartItem.item}</h1>
-            <p >{cartItem.cals} cal</p>
+            {cartItem.cals && <p>{cartItem.cals} cal</p>}
             <p>{cartItem.description}</p>
         </div>
         <img style={{ width: "100%", marginBottom: "20px" }} src={cartItem.imgUrl}></img>
@@ -116,7 +116,7 @@ function ItemFormModal({ itemId }) {
                                 {selection.selection}
                                 </p>
                                 <p style={{ fontSize: "12px", color: "#767676", fontWeight: "500" }}>
-                                {selection.cals}
+                                {selection.cals ? selection.cals : selection.price}
                                 </p>
                             </div>
                         </div>

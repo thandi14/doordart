@@ -121,6 +121,31 @@ module.exports = {
         optionId: 2,
         selection: "No Sauce",
       },
+      {
+        optionId: 2,
+        selection: "Mild Pincate Salsa",
+        cals: "5 cal",
+      },
+      {
+        optionId: 3,
+        selection: "Cherry Limeade Slush",
+        price: 2.67,
+      },
+      {
+        optionId: 3,
+        selection: "Lemonade Slush",
+        price: 2.67,
+      },
+      {
+        optionId: 3,
+        selection: "Limeade Slush",
+        price: 2.67,
+      },
+      {
+        optionId: 3,
+        selection: "Strawberry Real Fruit Slush",
+        price: 1.57,
+      },
     ], {});
   },
 

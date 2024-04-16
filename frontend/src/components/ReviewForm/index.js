@@ -54,7 +54,8 @@ const handleSubmit = async (e) => {
     e.preventDefault();
     let data = {
         review,
-        rating
+        rating,
+        franchiseId: restaurant.franchiseId
     }
     console.log("before dispatch:", data)
     let r =  await dispatch(restaurantActions.thunkCreateReview(restaurant.id, data))

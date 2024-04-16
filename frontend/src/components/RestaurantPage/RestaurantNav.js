@@ -105,14 +105,14 @@ function RestaurantNav() {
         <div style={{ position: "relative" }}>
         <div ref={targetRef} onClick={(() => setLMenu(!lMenu))} id="my-address-two">
         <i class="fi fi-rs-marker"></i>
-        <h1 style={{ fontSize: "14px" }}>{location?.split(',')[0]}</h1>
+        <h1 style={{ fontSize: "14px" }}>{location ? location?.split(',')[0] : sessionUser?.address}</h1>
         <i class="fi fi-rr-angle-small-down"></i>
         </div>
         </div>
 
         </div>
         {/* <div className="search"> */}
-        <i onClick={(() => setDropTwo(!dropTwo))} id={sc.length > 0 ? "cart-two" : "cart"} class="fi fi-rr-shopping-cart">
+        <i onClick={(() => setDropTwo(!dropTwo))} id={sc?.length > 0 ? "cart-two" : "cart"} class="fi fi-rr-shopping-cart">
           { lMenu &&
           <div style={{ right: "0" }}  onClick={((e) => e.stopPropagation())} id="addy-menu">
             <div id="a-menu" style={{ padding: "16px" }}>
@@ -146,8 +146,18 @@ function RestaurantNav() {
             <div style={{ padding: "16px" }} id="a-recent">
             <i class="fi fi-bs-dot-circle"></i>
             <div>
+           { location &&
+           <>
             <h1 style={{ fontSize: "16px", margin: "0px" }}>{location.split(',')[0]}</h1>
             <p style={{ fontSize: "12px", margin: "0px" }}>{location.split(',')[1]}, {location.split(',')[2]}, {location.split(',')[3]}</p>
+           </>
+            }
+            { !location &&
+           <>
+            <h1 style={{ fontSize: "16px", margin: "0px" }}>{sessionUser?.address}</h1>
+            <p style={{ fontSize: "12px", margin: "0px" }}>{sessionUser?.city}, {sessionUser?.state}, {sessionUser?.zipCode}</p>
+           </>
+            }
             </div>
             </div>
           </div>
@@ -157,8 +167,8 @@ function RestaurantNav() {
           <div style={{ right: "0" }}  onClick={((e) => e.stopPropagation())} id="cart-menu">
             <div style={{ cursor: "default" }} id="c-menu">
                 <div  style={{ padding: "10px", borderBottom: "1px solid rgb(231, 231, 231)" }}>
-                <h1 style={{ fontSize: "18px", marginBottom: "0px"}}>{restaurant.name}</h1>
-                <p style={{ fontSize: "10px"}}>{count} item</p>
+                <h1 style={{ fontSize: "18px", marginBottom: "0px", color: "black"}}>{restaurant.name}</h1>
+                <p style={{ fontSize: "10px", color: "black"}}>{count} item</p>
                 </div>
                 <div id="cart-m">
                 <div style={{ padding: "8px", boxSizing: "border-box" }} id="cart-pic">
@@ -175,7 +185,7 @@ function RestaurantNav() {
             </div>
           </div>
           }
-          <p>{sc.length}</p>
+          <p>{sc?.length}</p>
         </i>
         </div>
     </div>

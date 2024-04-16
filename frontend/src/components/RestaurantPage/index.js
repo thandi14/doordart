@@ -24,7 +24,7 @@ function RestaurantPage({ isLoaded }) {
   const [ hide, setHide ] = useState(true)
   const [ scroll, setScroll ] = useState(false)
   const dispatch = useDispatch()
-  const { location } = useFilters()
+  const { location, setRecentId } = useFilters()
   const { setModalContent } = useModal()
   const targetRef = useRef()
   const divRefs = useRef({});
@@ -35,6 +35,7 @@ function RestaurantPage({ isLoaded }) {
     window.scrollTo(0, 0);
     async function fetchData() {
         dispatch(cartActions.thunkGetCart(id))
+        setRecentId(id)
     }
     fetchData()
 

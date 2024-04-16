@@ -9,11 +9,11 @@ import HomePage from "./components/HomePage";
 import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
 import RestaurantPage from "./components/RestaurantPage";
 import ReviewPage from "./components/ReviewPage";
+import { useFilters } from "./context/Filters";
 
 function App() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
-  const location = useLocation();
 
   useEffect(() => {
     dispatch(cartActions.thunkGetCarts())

@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
-const { User, Restaurant, ShoppingCart, MenuItem, CartItem, CartItemNotes, ItemSelection } = require('../../db/models');
+const { User, Restaurant, ShoppingCart, MenuItem, CartItem, CartItemNotes, ItemSelection, RestaurantImage } = require('../../db/models');
 
 const router = express.Router();
 
@@ -11,21 +11,31 @@ router.get('/', async (req, res) => {
     const { user } = req
     const userId = user.dataValues.id
 
-    if (!cartExist) {
-
-        res.status(404).json({"message": "Restaurant couldn't be found"});
-
-    }
-
     let cart = await ShoppingCart.findAll({
         where : {
             userId,
             status: "Ordering"
         },
         include : [
-            { model: CartItem },
+            { model: CartItem,
+                include : [
+                    { model: MenuItem },
+                    {
+                        model: CartItemNotes,
+                        include : [
+                            {
+                                model: ItemSelection,
+                            }
+                        ]
+                    }
+                ]
+             },
             { model: User },
-            { model: Restaurant }
+            { model: Restaurant,
+                include : [
+                    { model: RestaurantImage }
+                ]
+             }
         ]
     });
 
