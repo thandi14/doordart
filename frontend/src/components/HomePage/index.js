@@ -64,6 +64,16 @@ function HomePage({ isLoaded }) {
     transform: `translateX(-${length * 50}%)`,
   };
 
+  const saveRestaurant = (id) => {
+    dispatch(restaurantActions.thunkCreateSave(id))
+
+  };
+
+  const deleteSave = (saves, restaurantId) => {
+    let save = saves.find((s) => s.userId == user.id)
+    dispatch(restaurantActions.thunkDeleteSave(save.id, restaurantId))
+  };
+
   const franchises = Object.values(restaurants).sort((a, b) => a.miles - b.miles)
 
   const reviews = (reviews) => {
@@ -207,7 +217,14 @@ function HomePage({ isLoaded }) {
                 <img style={{ marginBottom: "6px", height: "58%" }}src={f.RestaurantImage?.thumbnailUrl}></img>
                 <div id="r-name">
                     <h1 style={{ fontSize: "16px", margin: "2px 0px"}} >{f.name} </h1>
-                    <i style={{ color: "#767676", fontSize: "15px", margin: "4px"}} class="fi fi-rs-heart"></i>
+                    { user && f.Saves.some((s) => s.userId == user?.id && s.restaurantId == f.id) ?
+                    <i onClick={((e) => {
+                        e.stopPropagation()
+                        deleteSave(f.Saves, f.id)})} style={{ color: "red", fontSize: "16px", margin: "4px"}} class="fi fi-ss-heart"></i> :
+                    <i onClick={((e) => {
+                        e.stopPropagation()
+                        saveRestaurant(f.id)})} style={{ color: "#767676", fontSize: "16px", margin: "4px"}} class="fi fi-rs-heart"></i>
+                    }
                 </div>
                 <div id="r-info">
                     <h1 style={{ fontSize: "12px"}}>

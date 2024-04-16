@@ -7,7 +7,9 @@ const GET_REVIEWS = "restaurant/getReviews";
 const GET_REVIEW_DETAILS = "restaurant/getReviewDetails";
 const UPDATE_REVIEW = "restaurant/updateReview";
 const DELETE_REVIEW = "restaurant/deleteReview";
-
+const GET_SAVE_DETAILS = "restaurant/getSaveDetails";
+const GET_SAVES = "restaurant/getSave";
+const DELETE_SAVE = "restaurant/deleteSave";
 
 const getRestaurants = (restaurants) => {
   return {
@@ -28,6 +30,28 @@ const getReview = (review) => {
   return {
     type: GET_REVIEW,
     review,
+  };
+};
+
+const getSaves = (save) => {
+  return {
+    type: GET_SAVES,
+    save,
+  };
+};
+
+const getSaveDetails = (details) => {
+  return {
+    type: GET_SAVE_DETAILS,
+    details,
+  };
+};
+
+const deleteSave = (id, restaurantId) => {
+  return {
+    type: DELETE_SAVE,
+    id,
+    restaurantId
   };
 };
 
@@ -101,6 +125,14 @@ export const thunkGetReview = (id) => async (dispatch) => {
   return data1;
 };
 
+export const thunkGetSaves = (id) => async (dispatch) => {
+  const response = await csrfFetch(`/api/restaurants/saves`)
+  const data1 = await response.json();
+  dispatch(getSaves(data1));
+  return data1;
+};
+
+
 export const thunkGetReviews = (id, page) => async (dispatch) => {
   const response = await csrfFetch(`/api/restaurants/${id}/reviews?page=${page}`)
   const data1 = await response.json();
@@ -123,6 +155,20 @@ export const thunkCreateReview = (id, data) => async (dispatch) => {
   dispatch(getReviewDetails(data1));
   return data1;
 };
+
+export const thunkCreateSave = (id) => async (dispatch) => {
+  const response = await csrfFetch(`/api/restaurants/${id}/save`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify()
+  })
+  const data1 = await response.json();
+  dispatch(getSaveDetails(data1));
+  return data1;
+};
+
 
 export const thunkUpdateReview = (id, data) => async (dispatch) => {
   const response = await csrfFetch(`/api/reviews/${id}`, {
@@ -150,11 +196,24 @@ export const thunkDeleteReview = (id) => async (dispatch) => {
   return response;
 };
 
+export const thunkDeleteSave = (id, restaurantId) => async (dispatch) => {
+  const response = await csrfFetch(`/api/restaurants/save/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  })
+  const data = await response.json();
+  dispatch(deleteSave(id, restaurantId));
+  return response;
+};
+
 let initialState = {
    restaurants: {},
    restaurant: {},
    reviews: {},
-   review: {}
+   review: {},
+   saves: {},
 }
 
 
@@ -189,6 +248,18 @@ const restaurantReducer = (state = initialState, action) => {
       newState.restaurant.Reviews?.push(details);
       newState.reviews.push(details);
       return newState;
+    case GET_SAVES:
+      newState = { ...state };
+      if (action.saves.length) action.saves.forEach(
+        (save) => (newState.saves[save.id] = { ...save })
+      );
+      return newState;
+    case GET_SAVE_DETAILS:
+      newState = { ...state };
+      const sDetails = action.details;
+      newState.restaurants[sDetails.restaurantId].Saves.push(sDetails)
+      newState.saves[sDetails.id] = { ...sDetails };
+      return newState;
     case UPDATE_REVIEW:
       newState = { ...state };
       const update = action.review;
@@ -201,8 +272,15 @@ const restaurantReducer = (state = initialState, action) => {
     case DELETE_REVIEW:
       newState = { ...state };
       const reviewId = action.id;
-      newState.restaurant.Reviews.filter((r) => r.id != reviewId);
+      newState.restaurant.Reviews = newState.restaurant.Reviews.filter((r) => r.id != reviewId);
       return newState;
+    case DELETE_SAVE:
+      newState = { ...state };
+      const saveId = action.id;
+      const restaurantId = action.restaurantId;
+      delete newState.saves[saveId]
+      newState.restaurants[restaurantId].Saves =  newState.restaurants[restaurantId].Saves.filter((save) => save.id !== saveId);
+    return newState;
     default:
       return state;
   }

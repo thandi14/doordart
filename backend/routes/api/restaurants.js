@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
-const { User, Restaurant, MenuItem, RestaurantTime, Review, RestaurantImage, Offer, ItemOption, ShoppingCart, CartItem, CartItemNotes, ItemSelection } = require('../../db/models');
+const { User, Save, Restaurant, MenuItem, RestaurantTime, Review, RestaurantImage, Offer, ItemOption, ShoppingCart, CartItem, CartItemNotes, ItemSelection } = require('../../db/models');
 const axios = require('axios');
 const geolib = require('geolib'); //
 
@@ -116,7 +116,8 @@ router.get('/', async (req, res) => {
             { model: RestaurantTime },
             { model: Review },
             { model: Offer },
-            { model: RestaurantImage }
+            { model: RestaurantImage },
+            { model: Save }
 
         ]
     })
@@ -124,6 +125,102 @@ router.get('/', async (req, res) => {
     res.json( franchises )
 
 })
+
+router.get('/saves', async (req, res) => {
+    const { user } = req
+    const userId = user.dataValues.id
+
+    let saves = await Save.findAll({
+        where : {
+            userId,
+        },
+        include : [
+            { model: Restaurant,
+                include: [
+                    { model: MenuItem },
+                    { model: RestaurantTime },
+                    { model: Review },
+                    { model: Offer },
+                    { model: RestaurantImage },
+                    { model: Save }
+                ]
+            }
+        ]
+    });
+
+
+    if (!saves) {
+
+        res.status(404).json({"message": "Saves couldn't be found"});
+
+    }
+
+    res.json( saves )
+
+})
+
+router.post('/:id/save', async (req, res) => {
+    let restaurantId = req.params.id;
+    let restaurantExist = await Restaurant.findByPk(restaurantId);
+    const { user } = req
+    const userId = user.dataValues.id
+
+    if (!restaurantExist) {
+
+        res.status(404).json({"message": "Restaurant couldn't be found"});
+
+    }
+
+    let s = await Save.create({
+        restaurantId,
+        userId
+    })
+
+    let save = await Save.findByPk(s.dataValues.id, {
+        include : [
+            { model: Restaurant,
+                include: [
+                    { model: MenuItem },
+                    { model: RestaurantTime },
+                    { model: Review },
+                    { model: Offer },
+                    { model: RestaurantImage },
+                    { model: Save }
+
+                ]
+            }
+        ]
+    });
+
+
+    if (!save) {
+
+        res.status(404).json({"message": "Save couldn't be found"});
+
+    }
+
+    res.json( save )
+
+})
+
+router.delete('/save/:id', async (req, res) => {
+    let saveId = req.params.id;
+    let saveExist = await Save.findByPk(saveId);
+    const { user } = req
+    const userId = user.dataValues.id
+
+    if (!saveExist) {
+
+        res.status(404).json({"message": "Save couldn't be found"});
+
+    }
+
+    saveExist.destroy()
+
+    res.json( {"message": "Save succesfully deleted"} )
+
+})
+
 
 router.post('/', async (req, res) => {
     let { address } = req.body
@@ -244,7 +341,6 @@ router.get('/:id/cart', async (req, res) => {
     res.json( cart )
 
 })
-
 
 router.get('/:id/reviews', async (req, res) => {
     let restaurantId = req.params.id;
