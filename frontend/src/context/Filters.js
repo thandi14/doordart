@@ -9,12 +9,14 @@ export function FiltersProvider({ children }) {
     const [item, setItem] = useState({});
     const [count, setCount] = useState(1);
     const [recentId, setRecentId] = useState(1);
+    const [profile, setProfile] = useState(false);
+
 
 
 
 
   return (
-    <FiltersContext.Provider value={{ recentId, setRecentId, filter, setFilter, location, setLocation, item, setItem, count, setCount }}>
+    <FiltersContext.Provider value={{ profile, setProfile, recentId, setRecentId, filter, setFilter, location, setLocation, item, setItem, count, setCount }}>
       {children}
     </FiltersContext.Provider>
   );

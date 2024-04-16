@@ -70,7 +70,6 @@ export const thunkGetCart = (id) => async (dispatch) => {
 
 
 export const thunkGetCarts = () => async (dispatch) => {
-  console.log("jatklbanrbjkrtbkjakjrkjbnajrbnjnlbtjjablkjaja")
   const response = await csrfFetch(`/api/shoppingcarts/`)
   const data = await response.json();
   dispatch(getCarts(data));

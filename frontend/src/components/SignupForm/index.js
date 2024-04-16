@@ -47,7 +47,7 @@ function SignupFormModal() {
   return (
     <div id="signup-form">
        <div id="signup-head">
-      <i class="fi fi-br-cross"></i>
+      <i onClick={(() => closeModal())} class="fi fi-br-cross"></i>
       <h1 style={{ fontSize: "32px", margin: "0px" }}>Sign in or Sign up</h1>
       </div>
       <div className="switch" style={{ display: "flex"}}>

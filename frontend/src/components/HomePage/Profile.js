@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from 'react-redux';
 import * as sessionActions from '../../store/session';
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
@@ -7,11 +7,32 @@ import { useModal } from "../../context/Modal";
 import LoginFormModal from "../LoginForm";
 import { useFilters } from "../../context/Filters";
 
-function ProfileButton({ user, d }) {
+function Profile({ user, d }) {
   const dispatch = useDispatch();
   const [ drop, setDrop ] = useState(d)
   const history = useHistory()
   const { setModalContent } = useModal()
+  const { setProfile } = useFilters()
+  const targetRef = useRef()
+
+  useEffect(() => {
+
+    const handleDocumentClick = (event) => {
+
+        if ((targetRef.current && !targetRef.current.contains(event.target))) {
+                    setProfile(false);
+            }
+
+        };
+
+        document.addEventListener('click', handleDocumentClick);
+        return () => {
+            document.removeEventListener('click', handleDocumentClick);
+        };
+
+
+
+    }, []);
 
 
   useEffect(() => {
@@ -25,27 +46,21 @@ function ProfileButton({ user, d }) {
     dispatch(sessionActions.logout());
   };
 
+
+
   const ulClassName = drop ? "" : "hidden";
 
   return (
-    <div className={ulClassName} id="profile-menu">
+    <div ref={targetRef} className={ulClassName} id="profile-menu">
       <div style={{position: "absolute"}}>
-      <div id="close">
-      <i onClick={(() => {
-        setDrop(false)
-      })} class="fi fi-br-cross"></i>
+      <div id="close-a">
+      <h1 id="acc-sett">Account</h1>
       </div>
       <div className="profile">
-       <span onClick={(() => history.push('/home'))}>
-        <i class="fi fi-rs-house-chimney"></i>
-        <p>Home</p>
-        </span>
-        <div id="line-three"></div>
-        <span>
+        {/* <span>
         <i class="fi fi-rs-shopping-bag"></i>
         <p>Pickup</p>
-        </span>
-        <div id="line-three"></div>
+        </span> */}
         <span>
         <i class="fi fi-sr-tags"></i>
         <p>Offers</p>
@@ -54,30 +69,6 @@ function ProfileButton({ user, d }) {
         <span>
         <i class="fi fi-rr-receipt"></i>
         <p>Orders</p>
-        </span>
-        <div id="line-three"></div>
-        { !user &&
-        <>
-        <span>
-        <i class="fi fi-rr-life-ring"></i>
-        <p>Help</p>
-        </span>
-        <div id="line-three"></div>
-        </>
-        }
-        <span>
-        <i class="fi fi-br-clipboard-user"></i>
-        <div id="acc">
-        { !user && <p onClick={(() => {
-                setModalContent(<LoginFormModal />)
-              })}>Sign Up or Sign In</p>}
-        { user &&
-          <>
-          <p>Account</p>
-        <p style={{ fontSize: "14px", color: "#767676"}}>Thandi Mpofu</p>
-          </>
-        }
-        </div>
         </span>
       { user &&
         <>
@@ -88,47 +79,38 @@ function ProfileButton({ user, d }) {
         </span>
         <div id="line-three"></div>
         <span>
-          <i class="fi fi-rs-money-bill-wave"></i>
-          <p>Payment</p>
+        <i class="fi fi-rr-life-ring"></i>
+        <p>Help</p>
         </span>
         <div id="line-three"></div>
         <span>
           <i class="fi fi-rr-credit-card"></i>
           <p>Gift Card</p>
         </span>
-        <div id="line-three"></div>
       </>
         }
         {/* <p>Get $0 delivery fees</p> */}
         {/* <p>DoorDash Rewards Mastercard®<br></br>
         Get 4% cash back and 1 year of DashPass</p> */}
-        {user &&
-        <>
-        <span>
-        <i class="fi fi-rr-life-ring"></i>
-        <p>Help</p>
-        </span>
-        <div id="line-three"></div>
-        <span onClick={logout}>
-        <i class="fi fi-rr-cross-circle"></i>
-        <p>Sign Out</p>
-        </span>
-        </>}
         <div id="divider"></div>
-        <div style={{ padding: "16px"}}>
+        <h1 id="acc-sett">Account Settings</h1>
+        <span>
+        <div id="acc">
+            <p style={{ fontSize: "16px", fontWeight: "500"}}>Account</p>
+            <p style={{ fontSize: "12px", color: "#767676"}}>Thandi Mpofu</p>
+        </div>
+        </span>
+        <span>
+        <p style={{ fontSize: "16px", fontWeight: "500"}}>Payment</p>
+        </span>
+        <span style={{ justifyContent: "space-between"}}>
+        <p style={{ fontSize: "16px", fontWeight: "500"}}>Language</p>
+        <div>
         <button id="english"><i class="fi fi-rs-globe"></i>English (US)<i class="fi fi-rr-angle-small-down"></i></button>
         </div>
-        <span>
-        <p style={{ fontSize: "16px", fontWeight: "500"}}>About Us</p>
         </span>
-        <span>
-        <p style={{ fontSize: "16px", fontWeight: "500"}}>Careers</p>
-        </span>
-        <span>
-        <p style={{ fontSize: "16px", fontWeight: "500"}}>DoorDash Newsroom</p>
-        </span>
-        <span>
-        <p style={{ fontSize: "16px", fontWeight: "500"}}>About Engineering</p>
+        <span onClick={logout}>
+        <p style={{ fontSize: "16px", fontWeight: "500"}}>Sign Out</p>
         </span>
         <span>
         <p style={{ fontSize: "16px", fontWeight: "500"}}>Engineering Blog</p>
@@ -154,4 +136,4 @@ function ProfileButton({ user, d }) {
   );
 }
 
-export default ProfileButton;
+export default Profile;

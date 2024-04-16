@@ -8,7 +8,7 @@ const GET_REVIEW_DETAILS = "restaurant/getReviewDetails";
 const UPDATE_REVIEW = "restaurant/updateReview";
 const DELETE_REVIEW = "restaurant/deleteReview";
 const GET_SAVE_DETAILS = "restaurant/getSaveDetails";
-const GET_SAVES = "restaurant/getSave";
+const GET_SAVES = "restaurant/getSaves";
 const DELETE_SAVE = "restaurant/deleteSave";
 
 const getRestaurants = (restaurants) => {
@@ -33,10 +33,10 @@ const getReview = (review) => {
   };
 };
 
-const getSaves = (save) => {
+const getSaves = (saves) => {
   return {
     type: GET_SAVES,
-    save,
+    saves,
   };
 };
 

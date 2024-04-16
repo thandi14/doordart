@@ -41,6 +41,11 @@ function RestaurantPage({ isLoaded }) {
 
   }, []);
 
+
+ 
+
+
+
   const checkInCenter = (id) => {
     if (divRefs.current[id]) {
             const element = divRefs.current[id];
