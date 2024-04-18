@@ -101,7 +101,7 @@ router.get('/', async (req, res) => {
                 address: location,
                 miles,
                 mins,
-                franchiseId: places[0].place_id
+                franchiseId: places[0]?.place_id
             });
 
             await franchise.save();
@@ -395,7 +395,8 @@ router.post('/:id', async (req, res) => {
                 include: [
                     { model: User }
                 ]
-             }
+            },
+            { model: Save }
         ]
     });
 

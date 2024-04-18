@@ -90,8 +90,8 @@ function HomeNav({ isLoaded }) {
                 Pickup
             </button>
         </div>
+        <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
         <div id="line"></div>
-        <div style={{ position: "relative" }}>
         <div ref={targetRef} onClick={(() => setLMenu(!lMenu))} id="my-address">
         <h1 style={{ fontSize: "14px" }}>{location ? location?.split(',')[0] : sessionUser?.address }</h1>
         <i class="fi fi-rr-angle-small-down"></i>
@@ -153,10 +153,12 @@ function HomeNav({ isLoaded }) {
             <i class="fi fi-rr-search"></i>
             <input defaultValue="Search stores, dishes, products"></input>
         </div>
-        <i style={{ fontSize: "18px"}} id="notify" class="fi fi-rr-cowbell"></i>
-        <i style={{ fontSize: "16px"}} onClick={(() => setDropTwo(!dropTwo))} id={Object.values(shoppingCarts).length  > 0 ? "cart-two" : "cart"} class="fi fi-rr-shopping-cart">
+        {/* <i style={{ fontSize: "18px"}} id="notify" class="fi fi-rr-cowbell"></i> */}
+        <i style={{ fontSize: "16px"}} onClick={(() => setDropTwo(!dropTwo))} id={Object.values(shoppingCarts).length == 0 ? "cart-two" : "cart"} class="fi fi-rr-shopping-cart">
         <p>{Object.values(shoppingCarts).length}</p>
         </i>
+        <button onClick={(() => setModalContent(<LoginForm />))} style={{ backgroundColor: "transparent"}} id="si-butt">Sign In</button>
+        <button onClick={(() => setModalContent(<SignupForm />))} id="su-butt">Sign Up</button>
         </div>
     </div>
     </>

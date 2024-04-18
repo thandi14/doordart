@@ -44,6 +44,16 @@ function ShoppingCart({ user, d }) {
   }, 0);
 
 
+  const checkout = async (id, price) => {
+    let data = {
+      price
+    }
+    await dispatch(cartActions.thunkUpdateCart(id, data));
+    history.push('/')
+
+  };
+
+
   const ulClassName = drop ? "shopping-menu" : "hidden";
 
   return (
@@ -64,7 +74,7 @@ function ShoppingCart({ user, d }) {
         <p style={{ width: "100%", margin: "0px", color: "#767676", fontSize: "12px", fontWeight: "500"}}>Your cart from</p>
         <h1 style={{ fontSize: "18px", margin: "0px"}}>{restaurant.name}</h1>
         <p style={{ width: "100%", margin: "0px", color: "#767676", fontSize: "16px", fontWeight: "300"}}>Maximum order limit: $500.00</p>
-        <button style={{ justifyContent: "space-between", display: "flex", }} id="cart-co">
+        <button onClick={(() => checkout(shoppingCart?.id, totalPrice.toFixed(0)))}  style={{ justifyContent: "space-between", display: "flex", }} id="cart-co">
           <p>Checkout</p>
           <p>${totalPrice.toFixed(2)}</p>
           </button>

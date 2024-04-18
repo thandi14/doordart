@@ -21,7 +21,60 @@
     gap: 5px;
 }
 
+#restaurant-p {
+    position: relative;
+    /* width: fit-content; */
+}
+
 #cart {
+    background: red;
+    padding: 0px 2.5%;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 24px;
+    cursor: pointer;
+    position: relative;
+    color: white;
+    gap: 10px;
+}
+
+#rp-three {
+    font-family: TT Norms, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";;
+    padding: 0% 6%;
+}
+
+#my-address-two > i {
+    width: 16px;
+    height: 16px;
+    font-size: 16px;
+}
+
+#rp-h-one {
+    width: 100%;
+    display: flex;
+}
+
+.rp-h {
+    flex-direction: column;
+}
+
+#mark-two {
+    background-color: black;
+    width: 100%;
+    height: 5px;
+    position: absolute;
+    margin: 0px;
+    bottom: -1px;
+    border-radius: 8px;
+}
+
+#scroll-to > p {
+    cursor: pointer;
+}
+
+#cart-three {
     background: #f7f7f7;
     width: 40px;
     height: 30px;
@@ -33,24 +86,31 @@
     position: relative;
 }
 
-#my-address-two > i {
-    width: 16px;
-    height: 16px;
-    font-size: 16px;
-}
+/* #cart-two {
+    background: #f7f7f7;
+    width: 40px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    cursor: pointer;
+    position: relative;
+} */
 
 #rp-head {
     display: flex;
     position: sticky;
     width: 100%;
     height: 100%;
-    top: 65px;
+    top: 64px;
     z-index: 3;
     left: 0;
     right: 0;
     background-color: white;
     box-sizing: border-box;
-    padding: 15px 6%;
+    padding: 0% 6%;
+    padding-top: 16px;
     border-bottom: 1px solid rgb(231, 231, 231);
     font-family: TT Norms, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";;
 
@@ -141,10 +201,139 @@
     margin: 20px 0px;
 }
 
+#pages {
+    padding: 20px 0px;
+    font-size: 12px;
+    color: rgb(96, 96, 96);
+}
+
+#pages > span:not(:last-child) {
+    text-decoration: underline;
+}
+
+#io > p {
+    margin: 0px;
+}
+
+#io {
+    height: 14px
+
+}
+
+#grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Two columns */
+    grid-auto-rows: auto; /* Automatic row height */
+    grid-gap: 10px;
+}
+
+#more-reviews-two {
+    height: 32px;
+    border-radius: 24px;
+    display: flex;
+    border: 0;
+    gap: 5px;
+    font-size: 14px;
+    background-color: rgb(231, 231, 231);
+    box-shadow: transparent 0px 0px 0px 1px inset;
+    color: rgb(25, 25, 25);
+    cursor: pointer;
+    font-weight: 600;
+    align-items: center;
+    padding: 0px 12px;
+    white-space: nowrap;
+}
+
+#grid > div {
+    margin-bottom: 10px;
+}
+
+#more-ratings {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+#other-rev {
+    width: 100%;
+    display: flex;
+    /* gap: 20px; */
+}
+
+#other-rev > div:not(#more-ratings) {
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    display: flex;
+    width: 40%
+}
+
+#more-ratings > div {
+    max-width: 100%;
+    align-items: center;
+    flex-direction: column;
+    display: flex;
+}
+
+#a-bar {
+    width: 100%;
+    border-radius: 16px;
+    height: 8px;
+    background-color: rgb(231, 231, 231);
+}
+
+#reviewing-five {
+    width: 622px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#reviewing-five:hover {
+    background-color: rgb(247, 247, 247);
+    cursor: pointer;
+}
+
+#r4 {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#r4 > div {
+    padding: 16px;
+
+}
+
+#more-ratings {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    /* align-items: center; */
+    padding: 16px;
+}
+
+.group-two > span {
+    padding: 20px;
+    width: 50%;
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+}
+
+#line-thirteen {
+    background-color: rgb(231, 231, 231);
+    width: 1px;
+    height: 100%;
+    /* margin: 20px 0px; */
+}
+
 .rp {
     display: flex;
     flex-direction: column;
-    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+    position: sticky;
     padding: 0% 6%;
     font-family: TT Norms, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";;
 }
@@ -337,6 +526,33 @@
     gap: 5px;
 }
 
+#review-three {
+    border: 1px solid rgb(231, 231, 231);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* #review-three > div {
+} */
+
+
+#group-butt {
+    background-color: #f7f7f7;
+    height: 32px;
+    border-radius: 24px;
+    border: 0;
+    font-size: 14px;
+    box-shadow: transparent 0px 0px 0px 1px inset;
+    color: rgb(25, 25, 25);
+    cursor: pointer;
+    font-weight: 600;
+    padding: 0px 12px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
 #group {
     display: flex;
     padding: 20px;
@@ -379,6 +595,7 @@
     padding: 12px 16px;
 }
 
+
 #each-item {
     display: flex;
     align-items: center;
@@ -389,6 +606,19 @@
     padding-bottom: 10px;
     overflow: hidden;
     color: rgb(118, 118, 118);
+}
+
+#rp-st {
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    display: flex;
+    align-items: center;
+    flex: 1 1;
+    flex-direction: column;
+    box-sizing: border-box;
+    max-width: 100%;
+    width: 110vh;
 }
 
 #cart-form {

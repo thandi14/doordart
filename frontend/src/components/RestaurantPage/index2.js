@@ -15,10 +15,8 @@ import ReviewFormThreeModal from "../ReviewForm/index3";
 import Profile from "../HomePage/Profile";
 import ProfileButton from "../HomePage/ProfileButton";
 import HomeNav from "../HomePage/HomeNav";
-import Franchise from "./index2";
-import FranchiseTwo from "./index3";
 
-function RestaurantPage({ isLoaded }) {
+function Franchise({ isLoaded }) {
   const { user } = useSelector((state) => state.session );
   const { restaurant } = useSelector((state) => state.restaurants);
   const { cartItem, shoppingCart }  = useSelector((state) => state.cart);
@@ -56,10 +54,6 @@ function RestaurantPage({ isLoaded }) {
     let save = saves.find((s) => s.userId == user.id)
     dispatch(restaurantActions.thunkDeleteSave(save.id, restaurantId))
   };
-
-
-
-
 
 
   const checkInCenter = (id) => {
@@ -237,109 +231,7 @@ if (menu?.length) {
 
 
   return (
-    <div id="restaurant-p" style={{ position: "relative"}}>
-    {user ? <RestaurantNav /> : <HomeNav />}
 
-    <div style={{ display: "flex"}} >
-    <div className="side-bar" onMouseEnter={(() => setBar(true))} onMouseLeave={(() => setBar(false))}  style={{ position: "sticky", height: "100vh", top: "64px", zIndex: 10}}>
-
-    { user?.id && <div style={{ width: "auto"}} id="side-bar">
-        <span onClick={(() => history.push('/home'))} className="page">
-            <i class="fi fi-rs-house-chimney"></i>
-        </span>
-        <span>
-            <i class="fi fi-rr-apple-whole"></i>
-        </span>
-        <span>
-            <i class="fi fi-rr-shopping-bag"></i>
-        </span>
-        <span>
-             <i class="fi fi-rr-hamburger-soda"></i>
-        </span>
-        <span>
-            <i class="fi fi-rr-glass-cheers"></i>
-        </span>
-        <span>
-        <i class="fi fi-rr-tags"></i>
-        </span>
-        <span>
-        <i class="fi fi-rr-lipstick"></i>
-        </span>
-        <span>
-            <i class="fi fi-rr-paw"></i>
-        </span>
-        <span>
-        <i class="fi fi-rr-search-alt"></i>
-        </span>
-        <div id="line-bar"></div>
-        <span>
-            <i id="notify" class="fi fi-rr-cowbell"></i>
-        </span>
-        <span>
-            <i class="fi fi-rr-receipt"></i>
-        </span>
-        <span>
-            <i class="fi fi-rr-user"></i>
-        </span>
-    </div>}
-    { bar && <div style={{ position: "absolute", backgroundColor:"white", height: "100vh", top: "0", boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.2) " }} id="side-bar">
-        <span onClick={(() => history.push('/home'))} className="page">
-            <i class="fi fi-rs-house-chimney"></i>
-            <p>Home</p>
-        </span>
-        <span>
-            <i class="fi fi-rr-apple-whole"></i>
-            <p>Grocery</p>
-        </span>
-        <span>
-            <i class="fi fi-rr-shopping-bag"></i>
-            <p>Retail</p>
-        </span>
-        <span>
-             <i class="fi fi-rr-hamburger-soda"></i>
-            <p>Convenience</p>
-        </span>
-        <span>
-            <i class="fi fi-rr-glass-cheers"></i>
-            <p>Alcohol</p>
-        </span>
-        <span>
-        <i class="fi fi-rr-tags"></i>
-            <p>Offers</p>
-        </span>
-        <span>
-        <i class="fi fi-rr-lipstick"></i>
-            <p>Beauty</p>
-        </span>
-        <span>
-            <i class="fi fi-rr-paw"></i>
-            <p>Pets</p>
-        </span>
-        <span>
-        <i class="fi fi-rr-search-alt"></i>
-        <p>Browse All</p>
-        </span>
-        <div id="line-bar"></div>
-        <span>
-            <i id="notify" class="fi fi-rr-cowbell"></i>
-            <p>Notifications</p>
-        </span>
-        <span>
-            <i class="fi fi-rr-receipt"></i>
-            <p>Orders</p>
-        </span>
-        <span onClick={(() => setProfile(true))} >
-            <i class="fi fi-rr-user"></i>
-            <p>Account</p>
-        </span>
-        { user?.id && profile ? <div ref={targetRef} style={{ left: "220px"}} id="profile-modal">
-            <Profile user={user} d={profile} />
-        </div> : null}
-    </div>}
-        </div>
-        {/* <Franchise /> */}
-        <FranchiseTwo />
-{/*
         <div id="rp-st">
 
             <div id={ hide ? "hidden" : "rp-head"}>
@@ -431,7 +323,7 @@ if (menu?.length) {
                                 })}  style={{ position: "relative"}}>
                                 <div id={mark == -2 ? "mark" : "hidden"}></div>
                                 <p style={{ marginLeft: "16px"}}>Most Ordered</p>
-                            </p>
+                            </p> */}
                             <p onClick={(() => {
                                 setScroll(true)
                                 setMark(-1)
@@ -572,10 +464,8 @@ if (menu?.length) {
         </div>
     <RestaurantFoot />
             </div>
-        </div> */}
-    </div>
-    </div>
+        </div>
   );
 }
 
-export default RestaurantPage;
+export default Franchise;

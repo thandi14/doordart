@@ -90,7 +90,7 @@ function RestaurantNav() {
 
   return (
     <>
-    <ProfileButton user={sessionUser} d={drop} />
+    {/* <ProfileButton user={sessionUser} d={drop} /> */}
     <ShoppingCart user={sessionUser} d={dropTwo}/>
     <div id="nav">
         <div className="navi-two">
@@ -112,10 +112,10 @@ function RestaurantNav() {
 
         </div>
         {/* <div className="search"> */}
-        <i onClick={(() => setDropTwo(!dropTwo))} id={sc?.length > 0 ? "cart-two" : "cart"} class="fi fi-rr-shopping-cart">
+        <i onClick={(() => setDropTwo(!dropTwo))} id={sc?.length > 0 || Object.values(shoppingCart).length > 0 ? "cart-two" : "cart-three"} class="fi fi-rr-shopping-cart">
           { lMenu &&
           <div style={{ right: "0" }}  onClick={((e) => e.stopPropagation())} id="addy-menu">
-            <div id="a-menu" style={{ padding: "16px" }}>
+            <div id="a-menu" style={{ padding: "16px", color: "black" }}>
               <h1>Enter Your Address</h1>
               <div>
               <i class="fi fi-rs-marker"></i>

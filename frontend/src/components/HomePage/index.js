@@ -133,9 +133,9 @@ function HomePage({ isLoaded }) {
 
   return (
     <div style={{ position: "relative"}}>
-    <HomeNavTwo />
+    {user ? <HomeNavTwo /> : <HomeNav /> }
     <div style={{ display: "flex"}} >
-        <div className="side-bar" style={{ position: "sticky", height: "100vh", top: "64px", zIndex: 10}}>
+    <div className="side-bar" style={{ position: "sticky", height: "100vh", top: "64px", zIndex: 10}}>
 
     { user?.id && <div id="side-bar">
         <span className="page">
@@ -187,10 +187,10 @@ function HomePage({ isLoaded }) {
             <i class="fi fi-rr-user"></i>
             <p>Account</p>
         </span>
-    </div>}
-        { profile && <div ref={targetRef} id="profile-modal">
+        { profile && <div ref={targetRef} style={{ left: "220px"}}  id="profile-modal">
             <Profile user={user} d={profile} />
         </div>}
+    </div>}
         </div>
 
     <div style={{ padding: !user?.id ? "0.4% 9.5%" : "0.4% 2%"}} className="hp">
@@ -356,7 +356,7 @@ function HomePage({ isLoaded }) {
                 <img style={{ marginBottom: "6px", height: "58%" }}src={f.RestaurantImage?.thumbnailUrl}></img>
                 <div id="r-name">
                     <h1 style={{ fontSize: "16px", margin: "2px 0px"}} >{f.name} </h1>
-                    { user && f.Saves.some((s) => s.userId == user?.id && s.restaurantId == f.id) ?
+                    { user && f.Saves?.some((s) => s.userId == user?.id && s.restaurantId == f.id) ?
                     <i onClick={((e) => {
                         e.stopPropagation()
                         deleteSave(f.Saves, f.id)})} style={{ color: "red", fontSize: "16px", margin: "4px"}} class="fi fi-ss-heart"></i> :

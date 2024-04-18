@@ -50,6 +50,62 @@ router.get('/', async (req, res) => {
 
 })
 
+router.put('/:id', async (req, res) => {
+    let cartId = req.params.id;
+    let cartExist = await ShoppingCart.findByPk(cartId);
+    let { price } = req.body
+    const { user } = req
+    const userId = user.dataValues.id
+
+    console.log(price)
+
+    if (!cartExist) {
+
+        res.status(404).json({"message": "Shopping cart couldn't be found"});
+
+    }
+
+    cartExist.set({
+        status: "Ordered",
+        price
+    })
+
+    await cartExist.save()
+
+    let cart = await ShoppingCart.findByPk( cartId, {
+        include : [
+            {
+                model: CartItem,
+                include : [
+                    {
+                        model: MenuItem,
+                    },
+                    {
+                        model: CartItemNotes,
+                        include : [
+                            {
+                                model: ItemSelection,
+                            }
+                        ]
+                    }
+                ]
+             },
+            { model: User },
+            { model: Restaurant }
+        ]
+    });
+
+
+    if (!cart) {
+
+        res.status(404).json({"message": "Shopping Cart couldn't be found"});
+
+    }
+
+    res.json( cart )
+
+})
+
 router.post('/:id', async (req, res) => {
     let restaurantId = req.params.id;
     let restaurantExist = await Restaurant.findByPk(restaurantId);

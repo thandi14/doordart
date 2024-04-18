@@ -49,7 +49,29 @@ function ShoppingCarts({ user, d }) {
   }, 0);
 
 
+  const pricing = async (cartIs) => {
+    let totalPrice = cartIs?.reduce((total, item) => {
+        let money = 0
+        if (item && item.MenuItem) money = item.MenuItem.price
+        const itemPrice =  money ? item.quantity * money: 0;
+        return total + itemPrice;
+      }, 0);
+
+      return totalPrice
+  };
+
+
   const ulClassName = drop ? "shopping-menu" : "hidden";
+
+  const checkout = async (id, price) => {
+    let data = {
+      price
+    }
+    await dispatch(cartActions.thunkUpdateCart(id, data));
+    history.push('/')
+
+  };
+
 
   return (
     <div className={ulClassName}>
@@ -68,7 +90,7 @@ function ShoppingCarts({ user, d }) {
         <p style={{ width: "100%", margin: "0px", color: "#767676", fontSize: "12px", fontWeight: "500"}}>Your cart from</p>
         <h1 style={{ fontSize: "18px", margin: "0px"}}>{shoppingCart.Restaurant.name}</h1>
         <p style={{ width: "100%", margin: "0px", color: "#767676", fontSize: "16px", fontWeight: "300"}}>Maximum order limit: $500.00</p>
-        <button style={{ justifyContent: "space-between", display: "flex", }} id="cart-co">
+        <button onClick={(() => checkout(shoppingCart?.id, totalPrice.toFixed(0)))} style={{ justifyContent: "space-between", display: "flex", }} id="cart-co">
           <p>Checkout</p>
           <p>${totalPrice.toFixed(2)}</p>
           </button>
@@ -125,7 +147,7 @@ function ShoppingCarts({ user, d }) {
                             <img style={{ width: "50px", height: "50px"}} src={item.MenuItem?.imgUrl}></img>
                         )}
                         </div>
-                        <div id="other-butts">
+                        <div onClick={(() => checkout(cart?.id, pricing(cart.CartItems).toFixed(0)))} id="other-butts">
                         <button>Checkout</button>
                         <button onClick={(() => history.push(`restaurants/${cart.Restaurant.id}`))}>Add more items</button>
                         </div>

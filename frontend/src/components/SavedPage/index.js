@@ -8,6 +8,7 @@ import { useFilters } from "../../context/Filters";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import HomeNav from "../HomePage/HomeNav";
 import HomeFoot from "../HomePage/HomeFoot";
+import Profile from "../HomePage/Profile";
 
 
 function SavedPage({ isLoaded }) {
@@ -18,8 +19,9 @@ function SavedPage({ isLoaded }) {
   const [ index, setIndex ] = useState(0)
   const [ category, setCategory ] = useState("")
   const dispatch = useDispatch()
-  const { location } = useFilters()
+  const { location, setRecentId, profile, setProfile } = useFilters()
   const history = useHistory()
+  const targetRef = useRef()
 
  useEffect(() => {
      async function fetchData() {
@@ -68,7 +70,65 @@ function SavedPage({ isLoaded }) {
   return (
     <div style={{ position: "relative"}}>
     <HomeNav />
-    <div className="hp">
+    <div style={{ display: "flex"}}>
+    <div className="side-bar" style={{ position: "sticky", height: "100vh", top: "64px", zIndex: 10}}>
+
+{ user?.id && <div id="side-bar">
+    <span onClick={(() => history.push('/home'))} className="page">
+        <i class="fi fi-rs-house-chimney"></i>
+        <p>Home</p>
+    </span>
+    <span>
+        <i class="fi fi-rr-apple-whole"></i>
+        <p>Grocery</p>
+    </span>
+    <span>
+        <i class="fi fi-rr-shopping-bag"></i>
+        <p>Retail</p>
+    </span>
+    <span>
+         <i class="fi fi-rr-hamburger-soda"></i>
+        <p>Convenience</p>
+    </span>
+    <span>
+        <i class="fi fi-rr-glass-cheers"></i>
+        <p>Alcohol</p>
+    </span>
+    <span>
+    <i class="fi fi-rr-tags"></i>
+        <p>Offers</p>
+    </span>
+    <span>
+    <i class="fi fi-rr-lipstick"></i>
+        <p>Beauty</p>
+    </span>
+    <span>
+        <i class="fi fi-rr-paw"></i>
+        <p>Pets</p>
+    </span>
+    <span>
+    <i class="fi fi-rr-search-alt"></i>
+    <p>Browse All</p>
+    </span>
+    <div id="line-bar"></div>
+    <span>
+        <i id="notify" class="fi fi-rr-cowbell"></i>
+        <p>Notifications</p>
+    </span>
+    <span>
+        <i class="fi fi-rr-receipt"></i>
+        <p>Orders</p>
+    </span>
+    <span onClick={(() => setProfile(true))} >
+        <i class="fi fi-rr-user"></i>
+        <p>Account</p>
+    </span>
+    { profile && <div ref={targetRef} style={{ left: "220px"}}  id="profile-modal">
+        <Profile user={user} d={profile} />
+    </div>}
+</div>}
+    </div>
+    <div style={{ height: "100%"}} className="hp">
     <div id="results">
          <div><h1 style={{ fontSize: "32px"}}>Saved Stores</h1></div>
     </div>
@@ -103,6 +163,7 @@ function SavedPage({ isLoaded }) {
             </div>
         </>
     )}
+    </div>
     </div>
     </div>
     <HomeFoot />

@@ -12,6 +12,8 @@ import ReviewFormThreeModal from "../ReviewForm/index3";
 import RestaurantNav from "../RestaurantPage/RestaurantNav";
 import RestaurantFoot from "../RestaurantPage/RestaurantFoot";
 import './ReviewPage.css'
+import Profile from "../HomePage/Profile";
+import HomeNav from "../HomePage/HomeNav";
 
 function ReviewPage({ isLoaded }) {
   const { user } = useSelector((state) => state.session );
@@ -20,10 +22,11 @@ function ReviewPage({ isLoaded }) {
 //   const { page } = useParams();
   const dispatch = useDispatch()
   const [currentPage, setCurrentPage] = useState(1);
-  const { location } = useFilters()
   const { setModalContent } = useModal()
   const [threshold, setThreshold] = useState(450);
+  const { location, setRecentId, profile, setProfile } = useFilters()
   const history = useHistory()
+  const targetRef = useRef()
 
 
   useEffect(() => {
@@ -105,7 +108,66 @@ function ReviewPage({ isLoaded }) {
 
   return (
     <div style={{ position: "relative"}}>
-    <RestaurantNav />
+    {user ? <RestaurantNav /> : <HomeNav />}
+    <div style={{ display: "flex"}}>
+    <div className="side-bar" style={{ position: "sticky", height: "100vh", top: "64px", zIndex: 10}}>
+
+{ user?.id && <div id="side-bar">
+    <span onClick={(() => history.push('/home'))} className="page">
+        <i class="fi fi-rs-house-chimney"></i>
+        <p>Home</p>
+    </span>
+    <span>
+        <i class="fi fi-rr-apple-whole"></i>
+        <p>Grocery</p>
+    </span>
+    <span>
+        <i class="fi fi-rr-shopping-bag"></i>
+        <p>Retail</p>
+    </span>
+    <span>
+         <i class="fi fi-rr-hamburger-soda"></i>
+        <p>Convenience</p>
+    </span>
+    <span>
+        <i class="fi fi-rr-glass-cheers"></i>
+        <p>Alcohol</p>
+    </span>
+    <span>
+    <i class="fi fi-rr-tags"></i>
+        <p>Offers</p>
+    </span>
+    <span>
+    <i class="fi fi-rr-lipstick"></i>
+        <p>Beauty</p>
+    </span>
+    <span>
+        <i class="fi fi-rr-paw"></i>
+        <p>Pets</p>
+    </span>
+    <span>
+    <i class="fi fi-rr-search-alt"></i>
+    <p>Browse All</p>
+    </span>
+    <div id="line-bar"></div>
+    <span>
+        <i id="notify" class="fi fi-rr-cowbell"></i>
+        <p>Notifications</p>
+    </span>
+    <span>
+        <i class="fi fi-rr-receipt"></i>
+        <p>Orders</p>
+    </span>
+    <span onClick={(() => setProfile(true))} >
+        <i class="fi fi-rr-user"></i>
+        <p>Account</p>
+    </span>
+    { profile && <div ref={targetRef} style={{ left: "220px"}}  id="profile-modal">
+        <Profile user={user} d={profile} />
+    </div>}
+</div>}
+    </div>
+    <div style={{ width: "100%"}} >
         <div className="review-page">
             <div id="rev-page">
             <div id="reviewed-one">
@@ -171,6 +233,8 @@ function ReviewPage({ isLoaded }) {
             </div>
         </div>
     <RestaurantFoot />
+    </div>
+    </div>
     </div>
   );
 }

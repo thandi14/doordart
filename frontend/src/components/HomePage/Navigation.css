@@ -11,10 +11,11 @@
     display: flex;
     position: sticky;
     top: 0;
-    padding: 0px 8%;
+    padding: 0% 9.5%;
     z-index: 4;
     background-color: white;
-    /* gap: 5px; */
+    box-sizing: border-box;
+    justify-content: space-between;
     align-items: center;
     font-family: TT Norms, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";;
 }
@@ -26,6 +27,7 @@
     cursor: pointer;
     width: 22px;
     height: 22px;
+    margin-right: 10px;
     left: 5%;
     font-size: 18px;
 }
@@ -87,10 +89,10 @@
 .navi {
     display: flex;
     align-items: center;
-    width: 50%;
-    gap: 10px;
+    width: 40%;
+    gap: 6px;
     padding: 16px;
-    /* position: relative; */
+    box-sizing: border-box;
 }
 
 .page {
@@ -100,7 +102,7 @@
     font-weight: 600;
 }
 
-#side-bar > span:hover {
+#side-bar > span:not(.page):hover {
     border-radius: 8px;
     font-weight: 600;
     background-color: #f7f7f7
@@ -116,14 +118,14 @@
     align-items: center;
     justify-content: flex-end;
     gap: 10px;
-    width: 50%;
+    width: 55%;
 
 }
 
 #my-address {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 6px;
     padding: 0px 8px;
     cursor: pointer;
     position: relative;
@@ -288,9 +290,10 @@
     z-index: 10;
     position: absolute;
     font-family: TT Norms, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";;
-    right: -160%;
+    /* right: -160%; */
     bottom: 10%;
     width: 352px;
+    top: 20%;
     outline: none;
 }
 
@@ -315,7 +318,6 @@
     gap: 0.6%;
     font-size: 14px;
     position: sticky;
-    height: 100%;
     box-sizing: border-box;
     width: 220px;
 
@@ -338,7 +340,7 @@
     /* width: 100%; */
     position: sticky;
     border-right: 1px solid rgb(231, 231, 231);
-    height: 100%;
+    /* height: 100%; */
 }
 
 #side-bar > span {
@@ -380,9 +382,13 @@
     white-space: nowrap;
     cursor: pointer;
 }
-
-.profile > span:hover {
+/*
+.profile > span:not(.page):hover {
     background-color: rgb(247, 247, 247);
+} */
+
+.page:hover {
+    color: red
 }
 
 .profile > span > p, #acc > p {
@@ -426,6 +432,20 @@
     border-top: 1px solid rgb(231, 231, 231);
     border-bottom: 1px solid rgb(231, 231, 231);
     background: rgb(247, 247, 247);
+}
+
+#si-butt, #su-butt {
+    height: 32px;
+    border-radius: 24px;
+    border: 0;
+    font-size: 14px;
+    background-color: rgb(231, 231, 231);
+    box-shadow: transparent 0px 0px 0px 1px inset;
+    color: rgb(25, 25, 25);
+    cursor: pointer;
+    font-weight: 600;
+    padding: 0px 12px;
+    white-space: nowrap;
 }
 
 #english {

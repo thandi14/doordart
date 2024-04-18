@@ -110,7 +110,6 @@ export const thunkCreateCartItem = (id, data) => async (dispatch) => {
 };
 
 export const thunkUpdateCartItem = (id, data) => async (dispatch) => {
-  console.log(data)
     const response = await csrfFetch(`/api/shoppingcarts/${id}/item`, {
       method: 'PUT',
       headers: {
@@ -120,6 +119,20 @@ export const thunkUpdateCartItem = (id, data) => async (dispatch) => {
     })
     const data1 = await response.json();
     dispatch(getUpdates(data1));
+    return response;
+};
+
+export const thunkUpdateCart = (id, data) => async (dispatch) => {
+  console.log(data)
+    const response = await csrfFetch(`/api/shoppingcarts/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    const data1 = await response.json();
+    dispatch(getCart(data1));
     return response;
 };
 
