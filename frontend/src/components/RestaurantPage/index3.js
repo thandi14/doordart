@@ -16,6 +16,16 @@ import Profile from "../HomePage/Profile";
 import ProfileButton from "../HomePage/ProfileButton";
 import HomeNav from "../HomePage/HomeNav";
 
+const filterCategories = (categories, search) => {
+    const filteredCategories = {};
+    Object.entries(categories).forEach(([category, items]) => {
+      filteredCategories[category] = items.filter(item =>
+        item.item.toLowerCase().includes(search.toLowerCase())
+      );
+    });
+    return filteredCategories;
+  };
+
 function FranchiseTwo({ isLoaded }) {
   const { user } = useSelector((state) => state.session );
   const { restaurant } = useSelector((state) => state.restaurants);
@@ -27,12 +37,65 @@ function FranchiseTwo({ isLoaded }) {
   const [ hide, setHide ] = useState(true)
   const [ bar, setBar ] = useState(false)
   const [ scroll, setScroll ] = useState(false)
+  const [ search, setSearch ] = useState("")
   const dispatch = useDispatch()
   const { location, setRecentId, profile, setProfile } = useFilters()
   const { setModalContent } = useModal()
   const targetRef = useRef()
   const divRefs = useRef({});
   const history = useHistory()
+  const [categories, setCategories] = useState({});
+  const [unfilteredCategories, setUnfilteredCategories] = useState({});
+  const [menu, setMenu] = useState([]);
+
+  useEffect(() => {
+    if (restaurant?.MenuItems?.length) {
+      setMenu(restaurant.MenuItems);
+    }
+  }, [restaurant]);
+
+  useEffect(() => {
+    if (menu.length) {
+      const cat = processCategories(menu);
+      setCategories(cat);
+      setUnfilteredCategories(cat);
+    }
+  }, [menu]);
+
+  useEffect(() => {
+    if (search) {
+      const filteredCategories = filterCategories(unfilteredCategories, search);
+      setCategories(filteredCategories);
+    } else {
+      setCategories(unfilteredCategories);
+    }
+  }, [search, unfilteredCategories]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    async function fetchData() {
+        dispatch(cartActions.thunkGetCart(id))
+        setRecentId(id)
+    }
+    fetchData()
+
+  }, []);
+
+  const processCategories = (menu) => {
+    const cat = {};
+    menu.forEach(item => {
+      const categories = item.category.includes(',') ? item.category.split(',').map(c => c.trim()) : [item.category.trim()];
+      categories.forEach(category => {
+        const key = category;
+        if (!cat[key]) {
+          cat[key] = [];
+        }
+        cat[key].push(item);
+      });
+    });
+    return cat;
+  };
+
 
 
   useEffect(() => {
@@ -184,31 +247,16 @@ function FranchiseTwo({ isLoaded }) {
         night = time[1]
     }
 
-    let menu = restaurant.MenuItems
-    let categories = {};
-    let set = new Set();
 
-if (menu?.length) {
-    for (let item of menu) {
-        let category = item.category.trim();
-        let cs = category.includes(',') ? category.split(",").map(c => c.trim()) : [category];
-        for (let c of cs) {
-            if (!set.has(c.toLowerCase())) {
-                categories[c] = [];
-                set.add(c.toLowerCase());
-            }
-        }
-    }
+    let keys = []
 
-    for (let item of menu) {
-        let category = item.category.trim();
-        let cs = category.includes(',') ? category.split(",").map(c => c.trim()) : [category];
-        for (let c of cs) {
-            categories[c].push(item);
+    for (let key of Object.keys(categories)) {
+        if (categories[key].length) {
+            keys.push(key)
         }
-    }
-}
-    let keys = Object.keys(categories);
+    };
+
+
 
     let items = []
 
@@ -236,7 +284,7 @@ if (menu?.length) {
 
         <div id="rp-st">
 
-            <div className="rp-h" id={ hide ? "hidden" : "rp-head"}>
+            <div className="rp-h" id={"hidden"}>
                         <div id="rp-h-one">
 
                             <div style={{ width: "50%", display: "flex", gap: "5px", flexDirection: "column"}}>
@@ -249,7 +297,15 @@ if (menu?.length) {
                             <div style={{ display: "flex", justifyContent: "flex-end", width: "50%", alignItems: "flex-end"}}>
                             <div id="item-search">
                             <i class="fi fi-rr-search"></i>
-                            <input placeholder={`Search store menu`}></input>
+                            <input
+                            // value={search}
+                            // onChange={((e) => setSearch(e.target.value))}
+                            onKeyDown={((e) => {
+                                if (e.key === 'Enter') {
+                                    setSearch(e.target.value);
+                                  }
+                            })}
+                            placeholder={`Search store menu`}></input>
                             </div>
                             </div>
                         </div>
@@ -287,7 +343,7 @@ if (menu?.length) {
                                 setMark(-1)
                                 })}  style={{ position: "relative",  overflow: "hidden", margin: "0px" }}>
                                 <div id={mark == -1 ? "mark-two" : "hidden"}></div>
-                                <p style={{ padding: "2px 0px", overflow: "hidden" }}>Reviews</p>
+                                <p style={{ color: mark == -1 ? "black" : "rgb(73, 73, 73)",  padding: "2px 0px" }}>Reviews</p>
                             </p>
                             {keys.map((category, i) =>
                             <p onClick={(() => {
@@ -295,11 +351,14 @@ if (menu?.length) {
                                 setMark(i)
                                 })}  style={{ position: "relative",  overflow: "hidden", margin: "0px"  }}>
                                 <div id={mark == i ? "mark-two" : "hidden"}></div>
-                                <p style={{ padding: "2px 0px" }}>{category}</p>
+                                <p style={{ color: mark == i ? "black" : "rgb(73, 73, 73)",  padding: "2px 0px" }}>{category}</p>
                             </p>
                             )}
                             </span>
+
+
             </div>
+
         <div className="rp">
             <div id="pages"> <span>Home</span> / <span>{restaurant.address?.split(",")[1]}</span> / <span>{restaurant.type}</span> / <span>{restaurant.name}</span> </div>
             <div style={{ backgroundImage: `url(${restaurant.RestaurantImage?.bannerUrl})`, borderRadius: "16px" }} id="rp-one">
@@ -493,6 +552,72 @@ if (menu?.length) {
         </div>
                 </div>
             </div>
+            <div className="rp-h" style={{ border: "0px" }}id={"rp-head"}>
+                        <div id="rp-h-one">
+
+                            <div style={{ width: "50%", display: "flex", gap: "5px", flexDirection: "column"}}>
+                            <h1 style={{ gap: "10px", fontSize: "20px", whiteSpace: "nowrap", display: "flex", alignItems: "center" }}>Lunch Menu <i style={{ width: "20px", height: "20px", fontSize: "20px" }} class="fi fi-rr-angle-small-down"></i></h1>
+                            <p style={{ width: "100%", gap: "4px", margin: "0px", color: "#767676", fontSize: "13px", display: "flex", alignItems: "center"}}>
+                                {restaurant.RestaurantTime?.monday}
+                            </p>
+                            </div>
+
+                            <div style={{ display: "flex", justifyContent: "flex-end", width: "50%", alignItems: "flex-end"}}>
+                            <div id="item-search">
+                            <i class="fi fi-rr-search"></i>
+                            <input placeholder={`Search store menu`}></input>
+                            </div>
+                            </div>
+                        </div>
+                        <span id="scroll-to" style={{ gap: "15px", justifyContent: "center", fontSize: "13px", width: "100%", display: "flex", color: "#767676"}}>
+                            {/* <p onClick={(() => {
+                                setScroll(true)
+                                setMark(-5)
+                                })} style={{ position: "relative",  overflow: "hidden" }}>
+                                <div id={mark == -5 ? "mark-two" : "hidden"}></div>
+                                <p style={{ padding: "2px 0px" }}>Order it again</p>
+                            </p>
+                            <p onClick={(() => {
+                                setScroll(true)
+                                setMark(-4)
+                                })}  style={{ position: "relative",  overflow: "hidden" }}>
+                                <div id={mark == -4 ? "mark-two" : "hidden"}></div>
+                                <p style={{ padding: "2px 0px" }}>Item Deals</p>
+                            </p>
+                            <p onClick={(() => {
+                                setScroll(true)
+                                setMark(-3)
+                                })}  style={{ position: "relative",  overflow: "hidden" }}>
+                                <div id={mark == -3 ? "mark-two" : "hidden"}></div>
+                                <p style={{ padding: "2px 0px" }}>Reviews</p>
+                            </p>
+                            <p onClick={(() => {
+                                setScroll(true)
+                                setMark(-2)
+                                })}  style={{ position: "relative",  overflow: "hidden" }}>
+                                <div id={mark == -2 ? "mark-two" : "hidden"}></div>
+                                <p style={{ padding: "2px 0px" }}>Most Ordered</p>
+                            </p> */}
+                            <p onClick={(() => {
+                                setScroll(true)
+                                setMark(-1)
+                                })}  style={{ position: "relative",  overflow: "hidden", margin: "0px" }}>
+                                <div id={mark == -1 ? "mark-two" : "hidden"}></div>
+                                <p style={{ color: mark == -1 ? "black" : "rgb(73, 73, 73)",  padding: "2px 0px" }}>Reviews</p>
+                            </p>
+                            {keys.map((category, i) =>
+                            <p onClick={(() => {
+                                setScroll(true)
+                                setMark(i)
+                                })}  style={{ position: "relative",  overflow: "hidden", margin: "0px"  }}>
+                                <div id={mark == i ? "mark-two" : "hidden"}></div>
+                                <p style={{ color: mark == i ? "black" : "rgb(73, 73, 73)",  padding: "2px 0px" }}>{category}</p>
+                            </p>
+                            )}
+                            </span>
+                                <div style={{ backgroundColor: "rgb(231, 231, 231)", height: "1px", width: "80%" }}></div>
+
+            </div>
             <div id="rp-three">
                     { keys.map((key, i) =>
                     <div ref={el => divRefs.current[`mi-${i}`] = el} style={{ margin: "20px 0px" }} id={`mi-${i}`} className="menu">
@@ -530,7 +655,7 @@ if (menu?.length) {
                             <i style={{ width: "24px", height: "24px", fontSize: "24px", marginTop: "10px", marginBottom: "0px" }} class="fi fi-rs-marker"></i>
                         <h1 style={{  marginTop: "0px"}} id="r-addy">{restaurant.type} <h1 style={{ color: "#767676" }}>delivered from</h1> {restaurant.name}%#39;s <h1 style={{ color: "#767676" }}>at</h1> {restaurant.address}</h1>
                         </div>
-                        <div>
+                        <div style={{ padding: "4% 0%" }}>
                         <h1 style={{ fontSize: "32px", whiteSpace: "nowrap", margin: "0px" }}>Ratings & Reviews</h1>
                                 <p style={{ gap: "3px", margin: "18px 0px", color: "#767676", fontSize: "16px", display: "flex", alignItems: "center"}}>
                                     <span style={{ color: "black", fontSize: "18px", fontWeight: "600" }}>{allReviews(restaurant.Reviews)}</span>

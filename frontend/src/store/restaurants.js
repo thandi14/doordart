@@ -9,6 +9,8 @@ const UPDATE_REVIEW = "restaurant/updateReview";
 const DELETE_REVIEW = "restaurant/deleteReview";
 const GET_SAVE_DETAILS = "restaurant/getSaveDetails";
 const GET_SAVES = "restaurant/getSaves";
+const GET_ORDERS = "restaurant/getOrders";
+const GET_SEARCHS = "restaurant/getSearchs";
 const DELETE_SAVE = "restaurant/deleteSave";
 
 const getRestaurants = (restaurants) => {
@@ -39,6 +41,22 @@ const getSaves = (saves) => {
     saves,
   };
 };
+
+const getOrders = (orders) => {
+  return {
+    type: GET_ORDERS,
+    orders,
+  };
+};
+
+const getSearch = (searchs) => {
+  return {
+    type: GET_SEARCHS,
+    searchs,
+  };
+};
+
+
 
 const getSaveDetails = (details) => {
   return {
@@ -132,6 +150,22 @@ export const thunkGetSaves = (id) => async (dispatch) => {
   return data1;
 };
 
+export const thunkGetOrders = (id) => async (dispatch) => {
+  const response = await csrfFetch(`/api/shoppingcarts/orders`)
+  const data1 = await response.json();
+  dispatch(getOrders(data1));
+  return data1;
+};
+
+export const thunkGetSearch = (search) => async (dispatch) => {
+  console.log("hello!", search)
+  const response = await csrfFetch(`/api/restaurants/search?search=${search}`)
+  const data1 = await response.json();
+  dispatch(getSearch(data1));
+  return data1;
+};
+
+
 
 export const thunkGetReviews = (id, page) => async (dispatch) => {
   const response = await csrfFetch(`/api/restaurants/${id}/reviews?page=${page}`)
@@ -214,6 +248,9 @@ let initialState = {
    reviews: {},
    review: {},
    saves: {},
+   orders: {},
+   searchs: {}
+
 }
 
 
@@ -222,13 +259,13 @@ const restaurantReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_RESTAURANTS:
       newState = { ...state };
-      if (action.restaurants.length) action.restaurants.forEach(
+      if (action.restaurants?.length) action.restaurants?.forEach(
         (restaurant) => (newState.restaurants[restaurant.id] = { ...restaurant})
       );
       return newState;
     case GET_REVIEWS:
       newState = { ...state };
-      if (action.reviews.length) action.reviews.forEach(
+      if (action.reviews?.length) action.reviews?.forEach(
         (review) => (newState.reviews[review.id] = { ...review})
       );
       return newState;
@@ -250,10 +287,21 @@ const restaurantReducer = (state = initialState, action) => {
       return newState;
     case GET_SAVES:
       newState = { ...state };
-      if (action.saves.length) action.saves.forEach(
+      if (action.saves?.length) action.saves?.forEach(
         (save) => (newState.saves[save.id] = { ...save })
       );
       return newState;
+    case GET_ORDERS:
+    newState = { ...state };
+    if (action.orders?.length) action.orders?.forEach(
+      (order) => (newState.orders[order.id] = { ...order })
+    );
+    case GET_SEARCHS:
+      newState = { ...state };
+      if (action.searchs?.length) action.searchs?.forEach(
+        (search) => (newState.searchs[search.id] = { ...search })
+      );
+    return newState;
     case GET_SAVE_DETAILS:
       newState = { ...state };
       const sDetails = action.details;

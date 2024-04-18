@@ -29,6 +29,8 @@ function HomeNavTwo({ isLoaded }) {
   const autocompleteRef = useRef(null);
   const dispatch = useDispatch()
   const [dropTwo, setDropTwo] = useState(false)
+  const [search, setSearch] = useState("")
+
 
 
   const handlePlaceChanged = () => {
@@ -42,6 +44,7 @@ function HomeNavTwo({ isLoaded }) {
   };
 
   const submitPlaceChanged = async (place) => {
+      localStorage.setItem('place', place);
       setLocation(place);
 
       let data = {
@@ -70,6 +73,21 @@ function HomeNavTwo({ isLoaded }) {
 
   }, []);
 
+  const handleSearch = async (event) => {
+    let data = []
+      if (event.key === 'Enter') {
+        data = await dispatch(restaurantActions.thunkGetSearch(search));
+        if (data.length == 1) {
+          history.push(`/restaurant/${data[0].id}`)
+        }
+        else {
+          history.push(`/restaurants/search`)
+        }
+      }
+
+  };
+
+
   return (
     <>
     {/* <Profile user={sessionUser} d={true} /> */}
@@ -82,7 +100,11 @@ function HomeNavTwo({ isLoaded }) {
         <div style={{ width: "60%" }} className="navi">
         <div style={{ marginLeft: "16px" }} id="search">
             <i class="fi fi-rr-search"></i>
-            <input defaultValue="Search DoorDart"></input>
+            <input
+            value={search}
+            onChange={((e) => setSearch(e.target.value))}
+            onKeyDown={handleSearch}
+            defaultValue="Search DoorDart"></input>
         </div>
         <div style={{ position: "relative" }}>
           { lMenu &&
@@ -153,8 +175,8 @@ function HomeNavTwo({ isLoaded }) {
                 Pickup
             </button>
         </div>
-        <i style={{ fontSize: "16px"}} onClick={(() => setDropTwo(!dropTwo))} id={Object.values(shoppingCarts).length  > 0 ? "cart-two" : "cart"} class="fi fi-rr-shopping-cart">
-        <p>{Object.values(shoppingCarts).length}</p>
+        <i style={{ fontSize: "16px"}} onClick={(() => setDropTwo(!dropTwo))} id={Object.values(shoppingCarts).length  == 0 ? "cart-three" : "cart-two"} class="fi fi-rr-shopping-cart">
+        {Object.values(shoppingCarts).length  > 0 && <p>{Object.values(shoppingCarts).length}</p>}
         </i>
 
         </div>

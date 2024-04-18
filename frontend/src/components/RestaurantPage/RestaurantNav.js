@@ -59,6 +59,7 @@ function RestaurantNav() {
   };
 
   const submitPlaceChanged = async (place) => {
+      localStorage.setItem('place', place);
       setLocation(place);
 
       let data = {
@@ -101,7 +102,7 @@ function RestaurantNav() {
         <img src="https://freepnglogo.com/images/all_img/1706201578doordash-icon-png.png"></img>
           <span>DOORDART</span>
         </div>
-        <div style={{ width: "100%" }} className="search">
+        <div style={{ width: "82%" }} className="search">
         <div style={{ position: "relative" }}>
         <div ref={targetRef} onClick={(() => setLMenu(!lMenu))} id="my-address-two">
         <i class="fi fi-rs-marker"></i>
@@ -112,7 +113,7 @@ function RestaurantNav() {
 
         </div>
         {/* <div className="search"> */}
-        <i onClick={(() => setDropTwo(!dropTwo))} id={sc?.length > 0 || Object.values(shoppingCart).length > 0 ? "cart-two" : "cart-three"} class="fi fi-rr-shopping-cart">
+        <i style={{ width: "30px" }} onClick={(() => setDropTwo(!dropTwo))} id={sc?.length > 0 || Object.values(shoppingCart).length > 0 ? "cart-two" : "cart-three"} class="fi fi-rr-shopping-cart">
           { lMenu &&
           <div style={{ right: "0" }}  onClick={((e) => e.stopPropagation())} id="addy-menu">
             <div id="a-menu" style={{ padding: "16px", color: "black" }}>

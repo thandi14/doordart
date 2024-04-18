@@ -14,6 +14,7 @@ import RestaurantFoot from "../RestaurantPage/RestaurantFoot";
 import './ReviewPage.css'
 import Profile from "../HomePage/Profile";
 import HomeNav from "../HomePage/HomeNav";
+import HomeNavTwo from "../HomePage/HomeNavTwo";
 
 function ReviewPage({ isLoaded }) {
   const { user } = useSelector((state) => state.session );
@@ -108,7 +109,7 @@ function ReviewPage({ isLoaded }) {
 
   return (
     <div style={{ position: "relative"}}>
-    {user ? <RestaurantNav /> : <HomeNav />}
+    {user ? <HomeNavTwo /> : <HomeNav /> }
     <div style={{ display: "flex"}}>
     <div className="side-bar" style={{ position: "sticky", height: "100vh", top: "64px", zIndex: 10}}>
 
@@ -169,20 +170,22 @@ function ReviewPage({ isLoaded }) {
     </div>
     <div style={{ width: "100%"}} >
         <div className="review-page">
-            <div id="rev-page">
-            <div id="reviewed-one">
             <div id="review-head">
+                <div style={{ padding: "0px 4%"}} >
                 <div id="ro-one">
                     <i onClick={(() => history.push(`/restaurant/${restaurant.id}`))} class="fi fi-sr-angle-circle-left"></i>
                     <div id="ro-name"> <p style={{ margin: "0px", fontSize: "14px", textDecoration: "underline"}}>{restaurant.name}</p> <span style={{ color: "#767676", fontSize: "14px", marginLeft: "5px"}}>/</span></div>
                 </div>
-                <h1 style={{ marginBottom: "5px"}} >Rating & Reviews</h1>
+                <h1 style={{ margin: "15px 0px"}} >Rating & Reviews</h1>
+                </div>
             </div>
+            <div id="rev-page">
+            <div id="reviewed-one">
             <div style={{ gap: "10px"}} id="ro-rating">
             <h1 style={{ margin: "0px"}}>{rating(allReviews)}</h1>
             <i class="fi fi-sr-star" style={{ width: "30px", height: "30px", fontSize: "30px", color: "gold"}}></i>
             </div>
-            <p style={{ lineHeight: '16px', gap: "3px", margin: "0px", color: "rgb(73, 73, 73)", fontSize: "13px",}}>
+            <p style={{ whiteSpace: "nowrap", lineHeight: '16px', gap: "3px", margin: "0px", color: "rgb(73, 73, 73)", fontSize: "13px",}}>
                                     {restaurant.Reviews?.length}+
                                     ratings ratings,
                                     {/* <i style={{ width: "8px", height: "8px", fontSize: "8px" }} class="fi fi-sr-bullet"></i> */}

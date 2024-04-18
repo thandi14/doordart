@@ -337,8 +337,7 @@ if (menu?.length) {
         </div> : null}
     </div>}
         </div>
-        {/* <Franchise /> */}
-        <FranchiseTwo />
+        { user ? <Franchise /> : <FranchiseTwo />}
 {/*
         <div id="rp-st">
 

@@ -1,6 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const { check } = require('express-validator');
+const { Op } = require('sequelize');
 const { handleValidationErrors } = require('../../utils/validation');
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
 const { User, Save, Restaurant, MenuItem, RestaurantTime, Review, RestaurantImage, Offer, ItemOption, ShoppingCart, CartItem, CartItemNotes, ItemSelection } = require('../../db/models');
@@ -126,11 +127,69 @@ router.get('/', async (req, res) => {
 
 })
 
+router.get('/search', async (req, res) => {
+    const search = req.query.search
+
+    let franchise = []
+
+    franchise = await Restaurant.findAll({
+        where: {
+            name: {
+                [Op.like]: `%${search}%`
+            }
+        },
+        include: [
+            { model: MenuItem },
+            { model: RestaurantTime },
+            { model: Review },
+            { model: Offer },
+            { model: RestaurantImage },
+            { model: Save }
+
+        ]
+    })
+
+    if (!franchise.length) {
+
+        franchise = await Restaurant.findAll({
+            where: {
+                type: {
+                    [Op.like]: `%${search}%`
+                }
+
+            },
+            include: [
+                { model: MenuItem },
+                { model: RestaurantTime },
+                { model: Review },
+                { model: Offer },
+                { model: RestaurantImage },
+                { model: Save }
+
+            ]
+        })
+
+    }
+
+
+    res.json( franchise )
+
+})
+
 router.get('/saves', async (req, res) => {
     const { user } = req
-    const userId = user.dataValues.id
+    const userId = user?.dataValues.id
 
-    let saves = await Save.findAll({
+    if (!userId) {
+
+        return res.json({"message": "Please login"});
+
+    }
+
+
+    let saves = []
+
+    saves = await Save.findAll({
         where : {
             userId,
         },
@@ -295,7 +354,13 @@ router.get('/:id/cart', async (req, res) => {
     let restaurantId = req.params.id;
     let restaurantExist = await Restaurant.findByPk(restaurantId);
     const { user } = req
-    const userId = user.dataValues.id
+    const userId = user?.dataValues.id
+
+    if (!userId) {
+
+        res.json({"message": "Please login"});
+
+    }
 
     if (!restaurantExist) {
 

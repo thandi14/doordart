@@ -16,6 +16,16 @@ import Profile from "../HomePage/Profile";
 import ProfileButton from "../HomePage/ProfileButton";
 import HomeNav from "../HomePage/HomeNav";
 
+const filterCategories = (categories, search) => {
+    const filteredCategories = {};
+    Object.entries(categories).forEach(([category, items]) => {
+      filteredCategories[category] = items.filter(item =>
+        item.item.toLowerCase().includes(search.toLowerCase())
+      );
+    });
+    return filteredCategories;
+  };
+
 function Franchise({ isLoaded }) {
   const { user } = useSelector((state) => state.session );
   const { restaurant } = useSelector((state) => state.restaurants);
@@ -26,6 +36,7 @@ function Franchise({ isLoaded }) {
   const [ mark, setMark ] = useState(-1)
   const [ hide, setHide ] = useState(true)
   const [ bar, setBar ] = useState(false)
+  const [ search, setSearch ] = useState("")
   const [ scroll, setScroll ] = useState(false)
   const dispatch = useDispatch()
   const { location, setRecentId, profile, setProfile } = useFilters()
@@ -33,7 +44,32 @@ function Franchise({ isLoaded }) {
   const targetRef = useRef()
   const divRefs = useRef({});
   const history = useHistory()
+  const [categories, setCategories] = useState({});
+  const [unfilteredCategories, setUnfilteredCategories] = useState({});
+  const [menu, setMenu] = useState([]);
 
+  useEffect(() => {
+    if (restaurant?.MenuItems?.length) {
+      setMenu(restaurant.MenuItems);
+    }
+  }, [restaurant]);
+
+  useEffect(() => {
+    if (menu.length) {
+      const cat = processCategories(menu);
+      setCategories(cat);
+      setUnfilteredCategories(cat);
+    }
+  }, [menu]);
+
+  useEffect(() => {
+    if (search) {
+      const filteredCategories = filterCategories(unfilteredCategories, search);
+      setCategories(filteredCategories);
+    } else {
+      setCategories(unfilteredCategories);
+    }
+  }, [search, unfilteredCategories]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -44,6 +80,23 @@ function Franchise({ isLoaded }) {
     fetchData()
 
   }, []);
+
+  const processCategories = (menu) => {
+    const cat = {};
+    menu.forEach(item => {
+      const categories = item.category.includes(',') ? item.category.split(',').map(c => c.trim()) : [item.category.trim()];
+      categories.forEach(category => {
+        const key = category;
+        if (!cat[key]) {
+          cat[key] = [];
+        }
+        cat[key].push(item);
+      });
+    });
+    return cat;
+  };
+
+    console.log(categories)
 
   const saveRestaurant = (id) => {
     dispatch(restaurantActions.thunkCreateSave(id))
@@ -140,13 +193,13 @@ function Franchise({ isLoaded }) {
 
   const goToNext = (e) => {
       e.stopPropagation()
-      setLength(length + 1)
+      setLength(1)
 
     };
 
     const goToPrev = (e) => {
         e.stopPropagation();
-        setLength(length - 1)
+        setLength(0)
     };
 
   const sliderStyle = {
@@ -184,31 +237,43 @@ function Franchise({ isLoaded }) {
         night = time[1]
     }
 
-    let menu = restaurant.MenuItems
-    let categories = {};
-    let set = new Set();
+    // let menu = restaurant.MenuItems
+    // let cat = {};
+    // let set = new Set();
 
-if (menu?.length) {
-    for (let item of menu) {
-        let category = item.category.trim();
-        let cs = category.includes(',') ? category.split(",").map(c => c.trim()) : [category];
-        for (let c of cs) {
-            if (!set.has(c.toLowerCase())) {
-                categories[c] = [];
-                set.add(c.toLowerCase());
-            }
-        }
-    }
+    // if (menu?.length) {
+    // for (let item of menu) {
+    //     let category = item.category.trim();
+    //     let cs = category.includes(',') ? category.split(",").map(c => c.trim()) : [category];
+    //     for (let c of cs) {
+    //         if (!set.has(c.toLowerCase())) {
+    //             cat[c] = [];
+    //             set.add(c.toLowerCase());
+    //         }
+    //     }
+    // }
 
-    for (let item of menu) {
-        let category = item.category.trim();
-        let cs = category.includes(',') ? category.split(",").map(c => c.trim()) : [category];
-        for (let c of cs) {
-            categories[c].push(item);
+    // for (let item of menu) {
+    //     let category = item.category.trim();
+    //     let cs = category.includes(',') ? category.split(",").map(c => c.trim()) : [category];
+    //     for (let c of cs) {
+    //         cat[c].push(item);
+    //     }
+    // }
+    // setCategories(cat)
+    // }
+
+
+
+    let keys = []
+
+    for (let key of Object.keys(categories)) {
+        if (categories[key].length) {
+            keys.push(key)
         }
-    }
-}
-    let keys = Object.keys(categories);
+    };
+
+
 
     let items = []
 
@@ -216,6 +281,7 @@ if (menu?.length) {
 
     let reviews = []
     reviews = restaurant.Reviews
+    let peakRev = reviews?.slice(0, 3)
 
     function formatTimestamp(timestamp) {
         const date = new Date(timestamp);
@@ -230,11 +296,14 @@ if (menu?.length) {
     }
 
 
+
+
+
   return (
 
         <div id="rp-st">
 
-            <div id={ hide ? "hidden" : "rp-head"}>
+            <div id={ hide ? "hidden" : "rp-head-two"}>
                         <div style={{ width: "50%", display: "flex", gap: "5px", flexDirection: "column"}}>
                         <h1 style={{ margin: "0px", fontSize: "20px"}} >{restaurant.name}</h1>
                         <p style={{ width: "100%", gap: "4px", margin: "0px", color: "#767676", fontSize: "13px", display: "flex", alignItems: "center"}}>
@@ -249,9 +318,17 @@ if (menu?.length) {
                         </p>
                         </div>
                         <div style={{ display: "flex", justifyContent: "flex-end", width: "50%", alignItems: "flex-end"}}>
-                        <div id="item-search">
+                        <div style={{ width: "45%" }} id="item-search">
                         <i class="fi fi-rr-search"></i>
-                        <input placeholder={`Search ${restaurant.name}`}></input>
+                        <input
+                        // value={search}
+                        // onChange={((e) => setSearch(e.target.value))}
+                        onKeyDown={((e) => {
+                            if (e.key === 'Enter') {
+                                setSearch(e.target.value);
+                              }
+                        })}
+                        placeholder={`Search ${restaurant.name}`}></input>
                         </div>
                     </div>
             </div>
@@ -265,7 +342,7 @@ if (menu?.length) {
                 </div>
             </div>
             <div id="rp-two">
-                <div id="r-info">
+                <div style={{ paddingBottom: "8%"}} id="r-info">
                     <div id="info-one">
                         <h1 style={{ marginBottom: "36px"}} >{restaurant.name}</h1>
                         <h2 style={{ fontSize: "20px", whiteSpace: "nowrap"}}>Store Info</h2>
@@ -301,35 +378,35 @@ if (menu?.length) {
                                 setMark(-5)
                                 })} style={{ position: "relative"}}>
                                 <div id={mark == -5 ? "mark" : "hidden"}></div>
-                                <p style={{ marginLeft: "16px"}}>Order it again</p>
+                                <p style={{ color: mark == -1 ? "black" : "rgb(73, 73, 73)", marginLeft: "16px"}}>Order it again</p>
                             </p>
                             <p onClick={(() => {
                                 setScroll(true)
                                 setMark(-4)
                                 })}   style={{ position: "relative"}}>
                                 <div id={mark == -4 ? "mark" : "hidden"}></div>
-                                <p style={{ marginLeft: "16px"}}>Item Deals</p>
+                                <p style={{ color: mark == -1 ? "black" : "rgb(73, 73, 73)", marginLeft: "16px"}}>Item Deals</p>
                             </p>
                             <p onClick={(() => {
                                 setScroll(true)
                                 setMark(-3)
                                 })}  style={{ position: "relative"}}>
                                 <div id={mark == -3 ? "mark" : "hidden"}></div>
-                                <p style={{ marginLeft: "16px"}}>Reviews</p>
+                                <p style={{ color: mark == -1 ? "black" : "rgb(73, 73, 73)", marginLeft: "16px"}}>Reviews</p>
                             </p>
                             <p onClick={(() => {
                                 setScroll(true)
                                 setMark(-2)
                                 })}  style={{ position: "relative"}}>
                                 <div id={mark == -2 ? "mark" : "hidden"}></div>
-                                <p style={{ marginLeft: "16px"}}>Most Ordered</p>
+                                <p style={{ color: mark == -1 ? "black" : "rgb(73, 73, 73)", marginLeft: "16px"}}>Most Ordered</p>
                             </p> */}
                             <p onClick={(() => {
                                 setScroll(true)
                                 setMark(-1)
                                 })}  style={{ position: "relative"}}>
                                 <div id={mark == -1 ? "mark" : "hidden"}></div>
-                                <p style={{ marginLeft: "16px"}}>Reviews</p>
+                                <p style={{ color: mark == -1 ? "black" : "rgb(73, 73, 73)", marginLeft: "16px"}}>Reviews</p>
                             </p>
                             {keys.map((category, i) =>
                             <p onClick={(() => {
@@ -337,7 +414,7 @@ if (menu?.length) {
                                 setMark(i)
                                 })}  style={{ position: "relative"}}>
                                 <div id={mark == i ? "mark" : "hidden"}></div>
-                                <p style={{ marginLeft: "16px"}}>{category}</p>
+                                <p style={{ color: mark == i ? "black" : "rgb(73, 73, 73)", marginLeft: "16px"}}>{category}</p>
                             </p>
                             )}
                             </span>
@@ -380,8 +457,8 @@ if (menu?.length) {
                             <div id="add-r">
                                 <button onClick={(() => setModalContent(<ReviewFormModal />))}>Add Review</button>
                                 <span>
-                                { <i id="gotobutt-two" style={{ left: "0"}} onClick={goToPrev} class="fi fi-sr-angle-circle-left"></i>}
-                                { <i id="gotobutt-two" style={{ right: "0"}} onClick={goToNext} class="fi fi-sr-angle-circle-right"></i>}
+                                { <i id="gotobutt-two" style={{ left: "0", color: length == 0 && "rgb(247, 247, 247)", backgroundColor: length == 0 && "rgb(178, 178, 178)" }} onClick={goToPrev} class="fi fi-sr-angle-circle-left"></i>}
+                                { <i id="gotobutt-two"style={{ left: "0", color: length == 1 && "rgb(247, 247, 247)", backgroundColor: length == 1 && "rgb(178, 178, 178)", right: "0"}} onClick={goToNext} class="fi fi-sr-angle-circle-right"></i>}
                                 </span>
                             </div>
                         </div>
@@ -396,7 +473,7 @@ if (menu?.length) {
                                 <p style={{ fontSize: "11px" }}>of 5 stars</p>
                                 </div>
                             </div>
-                            { reviews?.map((review, i) =>
+                            { peakRev?.map((review, i) =>
                                 <div onClick={(() => setModalContent(<ReviewFormThreeModal rev={review} />))} style={{ cursor: "pointer" }}>
                                     <span id="pp">
                                         <div id="profile-pic">
@@ -428,7 +505,7 @@ if (menu?.length) {
                     <div ref={el => divRefs.current[`mi-${i}`] = el} style={{ margin: "20px 0px" }} id={`mi-${i}`} className="menu">
                         <h1 style={{ fontSize: "24px", whiteSpace: "nowrap" }}>{key}</h1>
                         <div className="item">
-                            { categories[key].map((item, i) =>
+                            { categories[key]?.map((item, i) =>
                                 <>
                                 <div onClick={(() => setModalContent(<ItemFormModal itemId={item.id}/>))} id="menu-item">
                                     <div id="item">

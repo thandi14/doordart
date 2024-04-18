@@ -10,15 +10,16 @@ import HomeNav from "../HomePage/HomeNav";
 import HomeFoot from "../HomePage/HomeFoot";
 import Profile from "../HomePage/Profile";
 import HomeNavTwo from "../HomePage/HomeNavTwo";
+import "./SearchPage.css"
 
 
-function SavedPage({ isLoaded }) {
+function SearchPage({ isLoaded }) {
   const { user } = useSelector((state) => state.session );
-  const { restaurants, saves } = useSelector((state) => state.restaurants);
+  const { restaurants, saves, searchs } = useSelector((state) => state.restaurants);
   const [ length, setLength ] = useState(0)
   const [ lengthTwo, setLengthTwo ] = useState(0)
   const [ index, setIndex ] = useState(0)
-  const [ category, setCategory ] = useState("")
+  const [ mark, setMark ] = useState(0)
   const dispatch = useDispatch()
   const { location, setRecentId, profile, setProfile } = useFilters()
   const history = useHistory()
@@ -66,6 +67,8 @@ function SavedPage({ isLoaded }) {
     return result.toFixed(1)
 
   };
+
+  let searched = Object.values(searchs)
 
 
   return (
@@ -129,12 +132,85 @@ function SavedPage({ isLoaded }) {
     </div>}
 </div>}
     </div>
-    <div style={{ height: "100%"}} className="hp">
-    <div id="results">
-         <div><h1 style={{ fontSize: "32px"}}>Saved Stores</h1></div>
-    </div>
-    <div className="restaurants">
-        {saved.map((f, id) =>
+    <div className="search-page">
+
+       { searched.length > 0 && <div style={{ position: "sticky", width: "100%", top: "64px"}} >
+        <div id="sp-head">
+            <div id="types-two">
+                <p id="s-categories" onClick={(() => {
+                    // setScroll(true)
+                    setMark(0)
+                    })}  style={{ position: "relative"}}>
+                    <div id={mark == 0 ? "mark-two" : "hidden"}></div>
+                    <p style={{ color: mark == 0 ? "black" : "rgb(73, 73, 73)"}}>All</p>
+                </p>
+                <p id="s-categories" onClick={(() => {
+                    // setScroll(true)
+                    setMark(1)
+                    })}  style={{ position: "relative"}}>
+                    <div id={mark == 1 ? "mark-two" : "hidden"}></div>
+                    <p style={{ color: mark == 1 ? "black" : "rgb(73, 73, 73)"}}>Restaurant</p>
+                </p>
+                <p id="s-categories" onClick={(() => {
+                    // setScroll(true)
+                    setMark(2)
+                    })}  style={{ position: "relative"}}>
+                    <div id={mark == 2 ? "mark-two" : "hidden"}></div>
+                    <p style={{ color: mark == 2 ? "black" : "rgb(73, 73, 73)"}}>Grocery</p>
+                </p>
+                <p id="s-categories" onClick={(() => {
+                    // setScroll(true)
+                    setMark(3)
+                    })}  style={{ position: "relative"}}>
+                    <div id={mark == 3 ? "mark-two" : "hidden"}></div>
+                    <p style={{ color: mark == 3 ? "black" : "rgb(73, 73, 73)"}}>Retail</p>
+                </p>
+            </div>
+            <div id="search-t">
+                <div id="types">
+                <button>
+                    Delivery Fees: Under $3
+                    <div id="line-two"></div>
+                    <i class="fi fi-rr-angle-small-down"></i>
+                </button>
+                <button>
+                    <i style={{ fontSize: "14px"}} class="fi fi-sr-tags"></i>
+                    Offers
+                </button>
+                <button>
+                    Pickup
+                </button>
+                <button>
+                    Over 4.5
+                    <i style={{ fontSize: "14px"}} class="fi fi-sr-star"></i>
+                    <div id="line-two"></div>
+                    <i class="fi fi-rr-angle-small-down"></i>
+                </button>
+                <button>
+                    Under 30 min
+                </button>
+                <button>
+                    Price
+                    <i class="fi fi-rr-angle-small-down"></i>
+                </button>
+                <button>
+                    DashPass
+                </button>
+            </div>
+                </div>
+            </div>
+        </div>}
+    <div style={{ height: "100%", width: "100%", padding: "0px"}} className="hp">
+    <div style={{ padding: "0.4% 2%"}} className="restaurants">
+        {searched.length == 0 ? <div id="no-results">
+            <img src="https://media3.giphy.com/media/Uj3qigQZ3aYkK1dbz4/giphy.gif?cid=6c09b9527rmk8o3ivw71840rvk02ag0e8vkvqgdbs3zosfb5&ep=v1_internal_gif_by_id&rid=giphy.gif&ct=s"></img>
+            <h1 style={{ margin: "0px 4px"}}>No Results</h1>
+            <p>Try a different search or browse everything
+                DoorDash offers in your area.</p>
+            <button id="browse-again" onClick={(() => history.push('/home'))}>Browse DoorDart</button>
+        </div> :
+        <>
+         {searched.map((f, id) =>
         <>
             <div onClick={(() => history.push(`/restaurant/${f.id}`))} className="restaurant" id={`r-${id}`}>
                 <img style={{ marginBottom: "6px", height: "58%" }}src={f.RestaurantImage?.thumbnailUrl}></img>
@@ -164,12 +240,16 @@ function SavedPage({ isLoaded }) {
             </div>
         </>
     )}
-    </div>
+        </>
+
+        }
     </div>
     </div>
     <HomeFoot />
     </div>
+    </div>
+    </div>
   );
 }
 
-export default SavedPage;
+export default SearchPage;

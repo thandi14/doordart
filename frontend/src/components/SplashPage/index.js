@@ -34,7 +34,10 @@ const handlePlaceChanged = () => {
 
   const submitPlaceChanged = async (place) => {
 
-      console.log('Selected place:', place);
+    const saveDataToSession = () => {
+        localStorage.setItem('place', place);
+      };
+
       setLocation(place);
 
       let data = {
