@@ -41,7 +41,7 @@ const handlePlaceChanged = () => {
         address: address
       };
 
-      await dispatch(restaurantActions.thunkGetResturants(data));
+      await dispatch(restaurantActions.thunkGetRestaurants(data));
       history.push("/home");
 
   };

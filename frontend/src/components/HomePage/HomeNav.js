@@ -12,9 +12,12 @@ import { useModal } from "../../context/Modal";
 import SignupFormModal from "../SignupForm";
 import { GoogleMap, LoadScript, Autocomplete } from '@react-google-maps/api';
 import * as restaurantActions from "../../store/restaurants"
+import ShoppingCart from "../RestaurantPage/ShoppingCart";
+import ShoppingCarts from "../RestaurantPage/ShoppingCarts";
 
 function HomeNav({ isLoaded }) {
   const sessionUser = useSelector((state) => state.session.user);
+  const { cartItem, shoppingCarts }  = useSelector((state) => state.cart);
   const history = useHistory()
   const [drop, setDrop] = useState(false)
   const { location } = useFilters()
@@ -24,6 +27,8 @@ function HomeNav({ isLoaded }) {
   const { setLocation } = useFilters()
   const autocompleteRef = useRef(null);
   const dispatch = useDispatch()
+  const [dropTwo, setDropTwo] = useState(false)
+
 
   const handlePlaceChanged = () => {
     const autocomplete = autocompleteRef.current;
@@ -42,9 +47,10 @@ function HomeNav({ isLoaded }) {
         address: place
       };
 
-      await dispatch(restaurantActions.thunkGetResturants(data));
+      await dispatch(restaurantActions.thunkGetRestaurants(data));
 
   };
+
 
   useEffect(() => {
 
@@ -66,6 +72,7 @@ function HomeNav({ isLoaded }) {
   return (
     <>
     <ProfileButton user={sessionUser} d={drop} />
+    <ShoppingCarts user={sessionUser} d={dropTwo} />
     <div id="nav">
         <div className="navi">
         <button onClick={(() => setDrop(!drop))} id ="menu">
@@ -83,14 +90,14 @@ function HomeNav({ isLoaded }) {
                 Pickup
             </button>
         </div>
+        <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
         <div id="line"></div>
-        <div style={{ position: "relative" }}>
         <div ref={targetRef} onClick={(() => setLMenu(!lMenu))} id="my-address">
-        <h1 style={{ fontSize: "14px" }}>{location.split(',')[0]}</h1>
+        <h1 style={{ fontSize: "14px" }}>{location ? location?.split(',')[0] : sessionUser?.address }</h1>
         <i class="fi fi-rr-angle-small-down"></i>
         </div>
           { lMenu &&
-          <div onClick={((e) => e.stopPropagation())} id="addy-menu">
+          <div style={{ left: "0" }} onClick={((e) => e.stopPropagation())} id="addy-menu">
             <div id="a-menu" style={{ padding: "16px" }}>
               <h1>Enter Your Address</h1>
               <div>
@@ -122,8 +129,18 @@ function HomeNav({ isLoaded }) {
             <div style={{ padding: "16px" }} id="a-recent">
             <i class="fi fi-bs-dot-circle"></i>
             <div>
+            { location &&
+           <>
             <h1 style={{ fontSize: "16px", margin: "0px" }}>{location.split(',')[0]}</h1>
             <p style={{ fontSize: "12px", margin: "0px" }}>{location.split(',')[1]}, {location.split(',')[2]}, {location.split(',')[3]}</p>
+           </>
+            }
+            { !location &&
+           <>
+            <h1 style={{ fontSize: "16px", margin: "0px" }}>{sessionUser?.address}</h1>
+            <p style={{ fontSize: "12px", margin: "0px" }}>{sessionUser?.city}, {sessionUser?.state}, {sessionUser?.zipCode}</p>
+           </>
+            }
             </div>
             </div>
           </div>
@@ -136,8 +153,12 @@ function HomeNav({ isLoaded }) {
             <i class="fi fi-rr-search"></i>
             <input defaultValue="Search stores, dishes, products"></input>
         </div>
-        <i id="notify" class="fi fi-rr-cowbell"></i>
-        <i class="fi fi-rr-shopping-cart"></i>
+        {/* <i style={{ fontSize: "18px"}} id="notify" class="fi fi-rr-cowbell"></i> */}
+        <i style={{ fontSize: "16px"}} onClick={(() => setDropTwo(!dropTwo))} id={Object.values(shoppingCarts).length == 0 ? "cart-two" : "cart"} class="fi fi-rr-shopping-cart">
+        <p>{Object.values(shoppingCarts).length}</p>
+        </i>
+        <button onClick={(() => setModalContent(<LoginForm />))} style={{ backgroundColor: "transparent"}} id="si-butt">Sign In</button>
+        <button onClick={(() => setModalContent(<SignupForm />))} id="su-butt">Sign Up</button>
         </div>
     </div>
     </>

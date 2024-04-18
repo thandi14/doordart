@@ -4,6 +4,8 @@ import * as sessionActions from '../../store/session';
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import SignupFormModal from "../SignupForm";
 import { useModal } from "../../context/Modal";
+import LoginFormModal from "../LoginForm";
+import { useFilters } from "../../context/Filters";
 
 function ProfileButton({ user, d }) {
   const dispatch = useDispatch();
@@ -29,10 +31,12 @@ function ProfileButton({ user, d }) {
     <div className={ulClassName} id="profile-menu">
       <div style={{position: "absolute"}}>
       <div id="close">
-      <i onClick={(() => setDrop(false))} class="fi fi-br-cross"></i>
+      <i onClick={(() => {
+        setDrop(false)
+      })} class="fi fi-br-cross"></i>
       </div>
       <div className="profile">
-        <span>
+       <span onClick={(() => history.push('/home'))}>
         <i class="fi fi-rs-house-chimney"></i>
         <p>Home</p>
         </span>
@@ -65,7 +69,7 @@ function ProfileButton({ user, d }) {
         <i class="fi fi-br-clipboard-user"></i>
         <div id="acc">
         { !user && <p onClick={(() => {
-                setModalContent(<SignupFormModal />)
+                setModalContent(<LoginFormModal />)
               })}>Sign Up or Sign In</p>}
         { user &&
           <>
@@ -78,7 +82,7 @@ function ProfileButton({ user, d }) {
       { user &&
         <>
         <div id="line-three"></div>
-        <span>
+        <span onClick={(() => history.push(`/restaurants/saves`))}>
            <i class="fi fi-rs-heart" ></i>
           <p>Saved Stores</p>
         </span>

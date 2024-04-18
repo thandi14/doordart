@@ -11,7 +11,7 @@ function HomeFoot({ isLoaded }) {
     <>
     <div className="sp-foot">
         <div>
-        <div id="foot-two">
+        <div id="foot-four">
             <span>
             <h1 style={{ fontSize: "16px", color: "black" }}>Get To Know Us</h1>
                 <p>About Us</p>

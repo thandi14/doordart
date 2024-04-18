@@ -11,8 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       ShoppingCart.belongsTo(
-        models.Resturant,
-          { foreignKey: 'resturantId' }
+        models.Restaurant,
+          { foreignKey: 'restaurantId' }
       );
       ShoppingCart.belongsTo(
         models.User,
@@ -26,10 +26,14 @@ module.exports = (sequelize, DataTypes) => {
         models.Deal,
           { foreignKey: 'dealId' }
       );
+      ShoppingCart.hasMany(
+        models.CartItem,
+          { foreignKey: 'cartId', onDelete: 'CASCADE',  hooks: true }
+      );
     }
   }
   ShoppingCart.init({
-    resturantId: DataTypes.INTEGER,
+    restaurantId: DataTypes.INTEGER,
     userId: DataTypes.INTEGER,
     offerId: DataTypes.INTEGER,
     dealId: DataTypes.INTEGER,
@@ -38,7 +42,11 @@ module.exports = (sequelize, DataTypes) => {
     gift: DataTypes.BOOLEAN,
     pickup: DataTypes.BOOLEAN,
     group: DataTypes.BOOLEAN,
-    price: DataTypes.INTEGER
+    price: DataTypes.INTEGER,
+    status: {
+      type: DataTypes.STRING,
+      defaultValue: "Ordering"
+    }
   }, {
     sequelize,
     modelName: 'ShoppingCart',

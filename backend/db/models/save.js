@@ -11,8 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       Save.belongsTo(
-        models.Resturant,
-          { foreignKey: 'resturantId' }
+        models.Restaurant,
+          { foreignKey: 'restaurantId' }
       );
       Save.belongsTo(
         models.User,
@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Save.init({
-    resturantId: DataTypes.INTEGER,
+    restaurantId: DataTypes.INTEGER,
     userId: DataTypes.INTEGER
   }, {
     sequelize,

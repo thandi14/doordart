@@ -10,10 +10,9 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
       Offer.belongsTo(
-        models.Resturant,
-          { foreignKey: 'resturantId' }
+        models.Restaurant,
+          { foreignKey: 'restaurantId' }
       );
       Offer.hasMany(
         models.ShoppingCart,
@@ -22,13 +21,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Offer.init({
-    resturantId: DataTypes.INTEGER,
+    restaurantId: DataTypes.INTEGER,
     offer: DataTypes.STRING,
     discount: DataTypes.INTEGER,
-    type: {
-      type: DataTypes.STRING,
-      isIn: [['%', '$']],
-    },
+    type: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Offer',

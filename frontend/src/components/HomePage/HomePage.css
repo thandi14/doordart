@@ -1,5 +1,5 @@
 .hp {
-    padding: 0.4% 9.5%;
+    padding: 0.4% 2%;
     box-sizing: border-box;
     display: flex;
     justify-content: center;
@@ -165,10 +165,26 @@
     background-color: transparent;
     color: black;
     padding: 2% 10%;
+    width: 100%;
     box-sizing: border-box;
     font-family: TT Norms, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";;
     margin-top: 15px;
     border-top: 1px solid rgb(231, 231, 231);
+}
+
+#nav-two {
+    height: 64px;
+    border-bottom: 1px solid rgb(231, 231, 231);
+    display: flex;
+    position: sticky;
+    padding-right: 2%;
+    box-sizing: border-box;
+    top: 0;
+    z-index: 4;
+    background-color: white;
+    font-family: TT Norms, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";;
+    /* gap: 5px; */
+    align-items: center;
 }
 
 #foot-one, #foot-two {
