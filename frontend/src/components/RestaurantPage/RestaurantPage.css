@@ -909,12 +909,33 @@
 
 }
 
+#menu-item-two {
+    border: 1px solid rgb(231, 231, 231);
+    border-radius: 12px;
+    flex-shrink: 0;
+    margin-right: 10px;
+    /* height: 100%; */
+    display: flex;
+    box-sizing: border-box;
+    align-items: center;
+    width: fit-content;
+    overflow: hidden;
+    cursor: pointer;
+
+}
+
+
 #item {
     padding-left: 16px;
-    width: 50%;
+    flex: 1 1;
+    height: 100%;
+    box-sizing: border-box;
     gap: 6px;
+    justify-content: center;
     display: flex;
+    width: 156px;
     flex-direction: column;
+    flex-shrink: 0;
 }
 
 #i {
@@ -953,9 +974,10 @@
 }
 
 #i {
-    width: 50%;
-    height: 100%;
     position: relative;
+    min-width: 156px;
+    max-width: 156px;
+    flex: 2 1 0%;
 }
 
 .item {

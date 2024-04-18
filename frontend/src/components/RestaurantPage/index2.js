@@ -20,7 +20,7 @@ const filterCategories = (categories, search) => {
     const filteredCategories = {};
     Object.entries(categories).forEach(([category, items]) => {
       filteredCategories[category] = items.filter(item =>
-        item.item.toLowerCase().includes(search.toLowerCase())
+        item.item?.toLowerCase().includes(search.toLowerCase()) || item.description?.toLowerCase().includes(search.toLowerCase())
       );
     });
     return filteredCategories;
@@ -28,10 +28,11 @@ const filterCategories = (categories, search) => {
 
 function Franchise({ isLoaded }) {
   const { user } = useSelector((state) => state.session );
-  const { restaurant } = useSelector((state) => state.restaurants);
+  const { restaurant, orders } = useSelector((state) => state.restaurants);
   const { cartItem, shoppingCart }  = useSelector((state) => state.cart);
   const { id } = useParams();
   const [ length, setLength ] = useState(0)
+  const [ lengthTwo, setLengthTwo ] = useState(0)
   const [ selection, setSelection ] = useState("Reviews")
   const [ mark, setMark ] = useState(-1)
   const [ hide, setHide ] = useState(true)
@@ -76,6 +77,7 @@ function Franchise({ isLoaded }) {
     async function fetchData() {
         dispatch(cartActions.thunkGetCart(id))
         setRecentId(id)
+        if (user?.id) dispatch(restaurantActions.thunkGetOrders())
     }
     fetchData()
 
@@ -95,8 +97,6 @@ function Franchise({ isLoaded }) {
     });
     return cat;
   };
-
-    console.log(categories)
 
   const saveRestaurant = (id) => {
     dispatch(restaurantActions.thunkCreateSave(id))
@@ -202,11 +202,52 @@ function Franchise({ isLoaded }) {
         setLength(0)
     };
 
+    let items = []
+
+    if (menu?.length) items = menu.filter((i) => i.category == "Combos")
+
+    let ordered = Object.values(orders).filter((order) => order.restaurantId == restaurant.id)
+
+    console.log(ordered)
+
+
+
+
+    const goToNextTwo = (e) => {
+        e.stopPropagation()
+        if (lengthTwo == ordered.length) {
+            setLengthTwo(lengthTwo)
+        }
+        else {
+            setLengthTwo( lengthTwo + 1)
+        }
+    };
+
+      const goToPrevTwo = (e) => {
+        e.stopPropagation();
+
+        if (lengthTwo == 0) {
+            setLengthTwo(0)
+        }
+        else {
+            setLengthTwo(lengthTwo - 1)
+        }
+
+
+      };
+
   const sliderStyle = {
     maxWidth: "100%",
     display: "flex",
     transition: "transform 0.5s ease",
     transform: `translateX(-${length * 50}%)`,
+  };
+
+  const sliderStyleTwo = {
+    maxWidth: "100%",
+    display: "flex",
+    transition: "transform 0.5s ease",
+    transform: `translateX(-${lengthTwo * 50}%)`,
   };
 
 //   const franchises = Object.values(restaurants).sort((a, b) => a.miles - b.miles)
@@ -274,11 +315,6 @@ function Franchise({ isLoaded }) {
     };
 
 
-
-    let items = []
-
-    if (menu?.length) items = menu.filter((i) => i.category == selection)
-
     let reviews = []
     reviews = restaurant.Reviews
     let peakRev = reviews?.slice(0, 3)
@@ -297,7 +333,7 @@ function Franchise({ isLoaded }) {
 
 
 
-
+    // items = items.slice(0, 3)
 
   return (
 
@@ -441,6 +477,49 @@ function Franchise({ isLoaded }) {
                             </span>
                         </div>
                     </div>
+                    { ordered.length > 0 && <div ref={el => divRefs.current[`mi-${-1}`] = el} style={{ margin: "30px 0px"}} className="review">
+                        <div id="review-one">
+                            <div>
+                                <h1 style={{ fontSize: "24px", whiteSpace: "nowrap", margin: "0px" }}>Order it again</h1>
+                                <p style={{ gap: "3px", margin: "0px", color: "#767676", fontSize: "13px", display: "flex", alignItems: "center"}}>
+                                    Quickly add items from your past orders
+                                </p>
+                            </div>
+                            <div id="add-r">
+                                <span>
+                                { <i id="gotobutt-two" style={{ left: "0", color: lengthTwo == 0 && "rgb(247, 247, 247)", backgroundColor: lengthTwo == 0 && "rgb(178, 178, 178)" }} onClick={goToPrevTwo} class="fi fi-sr-angle-circle-left"></i>}
+                                { <i id="gotobutt-two"style={{ left: "0", color: lengthTwo == ordered.length && "rgb(247, 247, 247)", backgroundColor: lengthTwo == ordered.length && "rgb(178, 178, 178)", right: "0"}} onClick={goToNextTwo} class="fi fi-sr-angle-circle-right"></i>}
+                                </span>
+                            </div>
+                        </div>
+                        <div style={sliderStyleTwo} id="order-two">
+                        { ordered?.map((order, i) =>
+                        <>
+                            { order.CartItems?.map((item, i) =>
+                                <>
+                                <div onClick={(() => setModalContent(<ItemFormModal itemId={item.MenuItem.id}/>))} id="menu-item-two">
+                                    <div id="item">
+                                    <h1 style={{ fontSize: "16px", whiteSpace: "nowrap", margin: "0" }}>{item.MenuItem.item}</h1>
+                                    {/* { item.CartItemNotes?.map((selection, i) =>
+                                    <h1 style={{ fontSize: "16px", whiteSpace: "nowrap", margin: "0" }}>{selection.ItemSelection.selection}</h1>
+                                    )} */}
+                                    <div id="i-info">
+                                    </div>
+                                    <span style={{ fontSize: "12px"}}>
+                                        <p style={{ fontWeight: "700"}}>${item.MenuItem.price}</p>
+                                    </span>
+                                    </div>
+                                    <div id="i">
+                                        <img src={item.MenuItem.imgUrl}></img>
+                                        <i class="fi fi-sr-add"></i>
+                                    </div>
+                                </div>
+                                </>
+                                )}
+                        </>
+                            )}
+                        </div>
+                    </div>}
                     <div ref={el => divRefs.current[`mi-${-1}`] = el} className="review">
                         <div id="review-one">
                             <div>
@@ -501,6 +580,18 @@ function Franchise({ isLoaded }) {
                                 </div>
                         </div>
                     </div>
+                    { keys.length == 0 && search ?
+                            <>
+                            <div style={{ textAlign: "center"}} id="no-results">
+                            <img src="https://img.cdn4dd.com/s/managed/consumer/search/NoResult.svg"></img>
+                            <h1 style={{ margin: "0px 4px"}}>No Results</h1>
+                            <p>There are no items that match your search. Try searching for a different item <br></br>
+                                or use the section tabs to browse other menu items.</p>
+                            <button style={{ margin: "40px 0px", justifyContent: "center", backgroundColor: "red", color: "white", width: "50%" }} id="browse-again" onClick={(() => setSearch(""))}>Reset Search</button>
+                            </div>
+                            </>
+                        :
+                        <>
                     { keys.map((key, i) =>
                     <div ref={el => divRefs.current[`mi-${i}`] = el} style={{ margin: "20px 0px" }} id={`mi-${i}`} className="menu">
                         <h1 style={{ fontSize: "24px", whiteSpace: "nowrap" }}>{key}</h1>
@@ -530,6 +621,7 @@ function Franchise({ isLoaded }) {
                         </div>
                     </div>
                         )}
+                    </>}
                         <div id="print">
                         <p style={{ fontSize: "13px", color: "#767676", margin: "0px"}}> Prices on this menu are set directly by the Merchant.</p>
                         <p style={{ fontSize: "13px", color: "#767676", margin: "0px"}}>2,000 calories a day is used for general nutrition advice, but calorie needs vary. Additional nutrition information available here</p>

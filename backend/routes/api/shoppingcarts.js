@@ -80,6 +80,18 @@ router.get('/orders', async (req, res) => {
                     { model: RestaurantImage },
                     { model: Save }
                     ]
+                },
+                { model: CartItem,
+                    include: [
+                        { model: MenuItem },
+                        { model: CartItemNotes,
+                            include : [
+                                {
+                                    model: ItemSelection,
+                                }
+                            ]
+                            }
+                        ]
                 }
             ]
     });

@@ -20,7 +20,7 @@ const filterCategories = (categories, search) => {
     const filteredCategories = {};
     Object.entries(categories).forEach(([category, items]) => {
       filteredCategories[category] = items.filter(item =>
-        item.item.toLowerCase().includes(search.toLowerCase())
+        item.item?.toLowerCase().includes(search.toLowerCase()) || item.description?.toLowerCase().includes(search.toLowerCase())
       );
     });
     return filteredCategories;
