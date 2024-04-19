@@ -101,7 +101,7 @@ function ItemFormModal({ itemId }) {
     closeModal()
   };
 
-  console.log(cartItem)
+  console.log(options)
 
   return (
     <div className="item-modal">
@@ -130,6 +130,7 @@ function ItemFormModal({ itemId }) {
                         </p>
                     {option.ItemSelections?.map((selection) =>
                         <div onClick={(()=> {
+                            console.log(selection.price)
                             setPrice(price + selection.price)
                             addItem(selection, option)
                             })} id="item-selection">
@@ -175,7 +176,7 @@ function ItemFormModal({ itemId }) {
                     handleSubmit()
                  }
             })}>
-                {Object.keys(items).length == validation ? "Add to cart" : `Make ${validation - Object.keys(items).length} required selections` } - ${validation == 0 ? cartItem.price : price}
+                {Object.keys(items).length == validation ? "Add to cart" : `Make ${validation - Object.keys(items).length} required selections` } - ${!options?.length ? cartItem.price : (validation == Object.keys(items).length && price == 0 ? cartItem.price : price)}
             </button>
         </div>
     </div>

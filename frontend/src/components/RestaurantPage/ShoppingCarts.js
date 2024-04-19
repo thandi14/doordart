@@ -88,8 +88,20 @@ function ShoppingCarts({ user, d }) {
     let data = {
       price
     }
+    
     await dispatch(cartActions.thunkUpdateCart(id, data));
-    history.push('/')
+    if (user) {
+        history.push('/home')
+    }
+    else if (!user) {
+        if (Object.values(shoppingCarts).length) {
+            history.push('/home')
+        }
+        else {
+            history.push('/')
+        }
+    }
+
     window.alert("Order placed! :)")
 
   };

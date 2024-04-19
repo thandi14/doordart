@@ -51,7 +51,7 @@
     width: 100%;
     position: sticky;
     top: 64px;
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 
 .search-page {

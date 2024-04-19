@@ -82,7 +82,9 @@ function ProfileButton({ user, d }) {
       { user &&
         <>
         <div id="line-three"></div>
-        <span onClick={(() => history.push(`/restaurants/saves`))}>
+        <span onClick={((e) => {
+          e.stopPropagation()
+          history.push(`/restaurants/saves`)})}>
            <i class="fi fi-rs-heart" ></i>
           <p>Saved Stores</p>
         </span>

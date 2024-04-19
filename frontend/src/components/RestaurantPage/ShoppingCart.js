@@ -49,9 +49,13 @@ function ShoppingCart({ user, d }) {
       price
     }
     await dispatch(cartActions.thunkUpdateCart(id, data));
-    history.push('/')
+    if (user) {
+      history.push('/home')
+    }
+    else {
+      history.push('/')
+    }
     window.alert("Order was placed! :)")
-
   };
 
 
