@@ -11,7 +11,7 @@ function HomeFoot({ isLoaded }) {
     <>
     <div className="sp-foot">
         <div>
-        <div id="foot-four">
+        <div onClick={(() => window.alert("Feature coming soon!"))} id="foot-four">
             <span>
             <h1 style={{ fontSize: "16px", color: "black" }}>Get To Know Us</h1>
                 <p>About Us</p>
@@ -43,7 +43,7 @@ function HomeFoot({ isLoaded }) {
                 <p>Get DoorDash for Business</p>
             </span>
         </div>
-        <div id="foot-three">
+        <div onClick={(() => window.alert("Feature coming soon!"))} id="foot-three">
             <div>
             <img src="https://freepnglogo.com/images/all_img/1706201578doordash-icon-png.png"></img>
             <span id="ft-one">

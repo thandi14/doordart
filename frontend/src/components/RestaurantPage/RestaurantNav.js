@@ -113,7 +113,7 @@ function RestaurantNav() {
 
         </div>
         {/* <div className="search"> */}
-        <i style={{ width: "30px" }} onClick={(() => setDropTwo(!dropTwo))} id={sc?.length > 0 || Object.values(shoppingCart).length > 0 ? "cart-two" : "cart-three"} class="fi fi-rr-shopping-cart">
+        <i style={{ width: "30px" }} onClick={(() => setDropTwo(!dropTwo))} id={sc?.length > 0 || Object.values(shoppingCart).length > 0 ? "cart-three" : "cart-two"} class="fi fi-rr-shopping-cart">
           { lMenu &&
           <div style={{ right: "0" }}  onClick={((e) => e.stopPropagation())} id="addy-menu">
             <div id="a-menu" style={{ padding: "16px", color: "black" }}>

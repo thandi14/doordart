@@ -104,7 +104,7 @@ function HomeNavTwo({ isLoaded }) {
             value={search}
             onChange={((e) => setSearch(e.target.value))}
             onKeyDown={handleSearch}
-            defaultValue="Search DoorDart"></input>
+            placeholder="Search DoorDart"></input>
         </div>
         <div style={{ position: "relative" }}>
           { lMenu &&
@@ -171,7 +171,7 @@ function HomeNavTwo({ isLoaded }) {
             <button>
                 Delivery
             </button>
-            <button>
+            <button onClick={(() => window.alert("Feature coming soon!"))}>
                 Pickup
             </button>
         </div>

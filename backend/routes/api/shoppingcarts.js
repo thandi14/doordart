@@ -7,51 +7,92 @@ const { User, Save, Offer, Restaurant, ShoppingCart, MenuItem, CartItem, CartIte
 
 const router = express.Router();
 
-router.get('/', async (req, res) => {
+router.post('/', async (req, res) => {
     const { user } = req
+    let { sessionId } = req.body
     const userId = user?.dataValues.id
 
-    if (!userId) {
+    if (!userId && sessionId) {
 
-        return res.json({"message": "Please login"});
+        let cart = await ShoppingCart.findAll({
+            where : {
+                sessionId,
+                status: "Ordering"
+            },
+            include : [
+                { model: CartItem,
+                    include : [
+                        { model: MenuItem },
+                        {
+                            model: CartItemNotes,
+                            include : [
+                                {
+                                    model: ItemSelection,
+                                }
+                            ]
+                        }
+                    ]
+                 },
+                { model: Restaurant,
+                    include : [
+                        { model: RestaurantImage }
+                    ]
+                 }
+            ]
+        });
+
+        if (!cart) {
+
+            res.json({"message": "Shopping Cart couldn't be found"});
+
+        }
+
+        res.json( cart )
+
+    }
+    else if (userId) {
+
+        let cart = await ShoppingCart.findAll({
+            where : {
+                userId,
+                status: "Ordering"
+            },
+            include : [
+                { model: CartItem,
+                    include : [
+                        { model: MenuItem },
+                        {
+                            model: CartItemNotes,
+                            include : [
+                                {
+                                    model: ItemSelection,
+                                }
+                            ]
+                        }
+                    ]
+                 },
+                { model: User },
+                { model: Restaurant,
+                    include : [
+                        { model: RestaurantImage }
+                    ]
+                 }
+            ]
+        });
+
+        if (!cart) {
+
+            res.json({"message": "Shopping Cart couldn't be found"});
+
+        }
+
+        res.json( cart )
+    }
+    else {
+        res.json({"message": "Please try again later"});
 
     }
 
-    let cart = await ShoppingCart.findAll({
-        where : {
-            userId,
-            status: "Ordering"
-        },
-        include : [
-            { model: CartItem,
-                include : [
-                    { model: MenuItem },
-                    {
-                        model: CartItemNotes,
-                        include : [
-                            {
-                                model: ItemSelection,
-                            }
-                        ]
-                    }
-                ]
-             },
-            { model: User },
-            { model: Restaurant,
-                include : [
-                    { model: RestaurantImage }
-                ]
-             }
-        ]
-    });
-
-    if (!cart) {
-
-        res.status(404).json({"message": "Shopping Cart couldn't be found"});
-
-    }
-
-    res.json( cart )
 
 })
 
@@ -115,7 +156,7 @@ router.put('/:id', async (req, res) => {
 
     if (!cartExist) {
 
-        res.status(404).json({"message": "Shopping cart couldn't be found"});
+        res.json({"message": "Shopping cart couldn't be found"});
 
     }
 
@@ -152,7 +193,7 @@ router.put('/:id', async (req, res) => {
 
     if (!cart) {
 
-        res.status(404).json({"message": "Shopping Cart couldn't be found"});
+        res.json({"message": "Shopping Cart couldn't be found"});
 
     }
 
@@ -163,13 +204,33 @@ router.put('/:id', async (req, res) => {
 router.post('/:id', async (req, res) => {
     let restaurantId = req.params.id;
     let restaurantExist = await Restaurant.findByPk(restaurantId);
-    let { cartId } = req.body;
+    let { sessionId } = req.body;
     const { user } = req
-    const userId = user.dataValues.id
+    const userId = user?.dataValues.id
+
+    console.log(sessionId)
+
+    if (!userId) {
+
+        let cart = await ShoppingCart.create({
+            restaurantId,
+            sessionId
+        })
+
+        let c = await ShoppingCart.findByPk(cart.dataValues.id, {
+            include : [
+                { model: CartItem },
+                { model: Restaurant }
+            ]
+        });
+
+        res.json( c )
+
+    }
 
     if (!restaurantExist) {
 
-        res.status(404).json({"message": "Restaurant couldn't be found"});
+        res.json({"message": "Restaurant couldn't be found"});
 
     }
 
@@ -195,11 +256,10 @@ router.post('/:id/item', async (req, res) => {
     let cartExist = await ShoppingCart.findByPk(cartId);
     let { itemId, options, quantity } = req.body;
     const { user } = req
-    const userId = user.dataValues.id
 
     if (!cartExist) {
 
-        res.status(404).json({"message": "Restaurant couldn't be found"});
+        res.json({"message": "Restaurant couldn't be found"});
 
     }
 
@@ -308,7 +368,7 @@ router.put('/:id/item', async (req, res) => {
 
     if (!itemExsit) {
 
-        res.status(404).json({"message": "Cart item couldn't be found"});
+        res.json({"message": "Cart item couldn't be found"});
 
     }
 
@@ -347,7 +407,7 @@ router.delete('/:id', async (req, res) => {
 
     if (!cartExist) {
 
-        res.status(404).json({"message": "Shopping Cart couldn't be found"});
+        res.json({"message": "Shopping Cart couldn't be found"});
 
     }
 
@@ -364,7 +424,7 @@ router.delete('/:id/item', async (req, res) => {
 
     if (!itemExsit) {
 
-        res.status(404).json({"message": "Cart Item couldn't be found"});
+        res.json({"message": "Cart Item couldn't be found"});
 
     }
 

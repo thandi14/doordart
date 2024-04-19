@@ -28,14 +28,15 @@
 }
 
 #categories > img {
-    width: 65px;
-    height: 65px;
+    width: 64px;
+    height: 64px;
 }
 
 #categories > p {
     display: flex;
     white-space: nowrap;
     margin: 6px;
+    font-size: 12px;
 }
 
 .food-type {
@@ -121,11 +122,12 @@
     display: flex;
     box-sizing: border-box;
     flex-wrap: wrap;
-    gap: 15px;
+    column-gap: 30px;
+    row-gap: 32px;
 }
 
 .restaurant {
-    flex-basis: calc(33.33% - 10px);
+    flex-basis: calc(33.33% - 24px);
     cursor: pointer;
 
 }

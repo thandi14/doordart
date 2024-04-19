@@ -49,6 +49,7 @@ function Franchise({ isLoaded }) {
   const [unfilteredCategories, setUnfilteredCategories] = useState({});
   const [menu, setMenu] = useState([]);
 
+
   useEffect(() => {
     if (restaurant?.MenuItems?.length) {
       setMenu(restaurant.MenuItems);
@@ -193,25 +194,29 @@ function Franchise({ isLoaded }) {
 
   const goToNext = (e) => {
       e.stopPropagation()
-      setLength(1)
+      if (length == 2) {
+        setLength(length)
+      }
+      else {
+          setLength(length + 1)
+      }
 
     };
 
     const goToPrev = (e) => {
         e.stopPropagation();
-        setLength(0)
+        if (length > 0) {
+            setLength( length - 1)
+        }
+        else {
+            setLength(0)
+
+        }
     };
 
     let items = []
 
     if (menu?.length) items = menu.filter((i) => i.category == "Combos")
-
-    let ordered = Object.values(orders).filter((order) => order.restaurantId == restaurant.id)
-
-    console.log(ordered)
-
-
-
 
     const goToNextTwo = (e) => {
         e.stopPropagation()
@@ -235,6 +240,18 @@ function Franchise({ isLoaded }) {
 
 
       };
+
+      function getRandomColor() {
+        // Generate random values for the RGB components
+        const red = Math.floor(Math.random() * 256); // Random value between 0 and 255
+        const green = Math.floor(Math.random() * 256);
+        const blue = Math.floor(Math.random() * 256);
+
+        // Construct the RGB color string
+        const color = `rgb(${red}, ${green}, ${blue})`;
+
+        return color;
+      }
 
   const sliderStyle = {
     maxWidth: "100%",
@@ -272,38 +289,50 @@ function Franchise({ isLoaded }) {
   let morning = ""
   let night = ""
 
-    if (time) {
+    if (times) {
         time = times.split(" - ")
         morning = time[0]
         night = time[1]
     }
 
-    // let menu = restaurant.MenuItems
-    // let cat = {};
-    // let set = new Set();
+    let or = Object.values(orders).filter((order) => order.restaurantId == restaurant.id)
+    let cat = {};
+    let catTwo = {};
+    let set = new Set();
 
-    // if (menu?.length) {
-    // for (let item of menu) {
-    //     let category = item.category.trim();
-    //     let cs = category.includes(',') ? category.split(",").map(c => c.trim()) : [category];
-    //     for (let c of cs) {
-    //         if (!set.has(c.toLowerCase())) {
-    //             cat[c] = [];
-    //             set.add(c.toLowerCase());
+    if (or?.length) {
+        for (const o of or) {
+          for (const item of o.CartItems) {
+            const name = item.MenuItem.item.toLowerCase(); // Ensure consistent case
+            if (!set.has(name)) {
+              cat[name] = [];
+              cat[name].push(item);
+              catTwo[name] = 0;
+              set.add(name);
+            }
+            catTwo[name] += 1;
+          }
+        }
+      }
+
+    // if (or?.length) {
+    //     for (let o of or) {
+    //         for (let item of o.CartItems) {
+    //         let name = item.MenuItem.item
+    //             if (set.has(name.toLowerCase())) {
+    //             }
     //         }
     //     }
     // }
+    let ordered = []
+    let arr = Object.values(cat)
 
-    // for (let item of menu) {
-    //     let category = item.category.trim();
-    //     let cs = category.includes(',') ? category.split(",").map(c => c.trim()) : [category];
-    //     for (let c of cs) {
-    //         cat[c].push(item);
-    //     }
-    // }
-    // setCategories(cat)
-    // }
+    for (let o of arr) {
+        for ( let ci of o) {
+            ordered.push(ci)
 
+        }
+    }
 
 
     let keys = []
@@ -332,6 +361,7 @@ function Franchise({ isLoaded }) {
     }
 
 
+    console.log(peakRev)
 
     // items = items.slice(0, 3)
 
@@ -493,9 +523,7 @@ function Franchise({ isLoaded }) {
                             </div>
                         </div>
                         <div style={sliderStyleTwo} id="order-two">
-                        { ordered?.map((order, i) =>
-                        <>
-                            { order.CartItems?.map((item, i) =>
+                        { ordered?.map((item, i) =>
                                 <>
                                 <div onClick={(() => setModalContent(<ItemFormModal itemId={item.MenuItem.id}/>))} id="menu-item-two">
                                     <div id="item">
@@ -508,6 +536,9 @@ function Franchise({ isLoaded }) {
                                     <span style={{ fontSize: "12px"}}>
                                         <p style={{ fontWeight: "700"}}>${item.MenuItem.price}</p>
                                     </span>
+                                    <span style={{ fontSize: "12px"}}>
+                                        <p style={{ fontWeight: "700", color: "#00838aff"}}>Orderd {catTwo[item.MenuItem.item.toLowerCase()]} {catTwo[item.MenuItem.item.toLowerCase()] == 1 ? "time" : "times"}</p>
+                                    </span>
                                     </div>
                                     <div id="i">
                                         <img src={item.MenuItem.imgUrl}></img>
@@ -515,8 +546,6 @@ function Franchise({ isLoaded }) {
                                     </div>
                                 </div>
                                 </>
-                                )}
-                        </>
                             )}
                         </div>
                     </div>}
@@ -537,7 +566,7 @@ function Franchise({ isLoaded }) {
                                 <button onClick={(() => setModalContent(<ReviewFormModal />))}>Add Review</button>
                                 <span>
                                 { <i id="gotobutt-two" style={{ left: "0", color: length == 0 && "rgb(247, 247, 247)", backgroundColor: length == 0 && "rgb(178, 178, 178)" }} onClick={goToPrev} class="fi fi-sr-angle-circle-left"></i>}
-                                { <i id="gotobutt-two"style={{ left: "0", color: length == 1 && "rgb(247, 247, 247)", backgroundColor: length == 1 && "rgb(178, 178, 178)", right: "0"}} onClick={goToNext} class="fi fi-sr-angle-circle-right"></i>}
+                                { <i id="gotobutt-two"style={{ left: "0", color: length == 2 && "rgb(247, 247, 247)", backgroundColor: length == 2 && "rgb(178, 178, 178)", right: "0"}} onClick={goToNext} class="fi fi-sr-angle-circle-right"></i>}
                                 </span>
                             </div>
                         </div>

@@ -17,6 +17,7 @@ import ProfileButton from "../HomePage/ProfileButton";
 import HomeNav from "../HomePage/HomeNav";
 import Franchise from "./index2";
 import FranchiseTwo from "./index3";
+import RestaurantNavTwo from "./RestaurantNavTwo";
 
 function RestaurantPage({ isLoaded }) {
   const { user } = useSelector((state) => state.session );
@@ -40,25 +41,16 @@ function RestaurantPage({ isLoaded }) {
   useEffect(() => {
     window.scrollTo(0, 0);
     async function fetchData() {
-        dispatch(cartActions.thunkGetCart(id))
+        const sessionId = localStorage.getItem('sessionId');
+        let data = {
+            sessionId
+        }
+        dispatch(cartActions.thunkGetCart(id, data))
         setRecentId(id)
     }
     fetchData()
 
   }, []);
-
-  const saveRestaurant = (id) => {
-    dispatch(restaurantActions.thunkCreateSave(id))
-
-  };
-
-  const deleteSave = (saves, restaurantId) => {
-    let save = saves.find((s) => s.userId == user.id)
-    dispatch(restaurantActions.thunkDeleteSave(save.id, restaurantId))
-  };
-
-
-
 
 
 
@@ -238,7 +230,7 @@ if (menu?.length) {
 
   return (
     <div id="restaurant-p" style={{ position: "relative"}}>
-    {user ? <RestaurantNav /> : <HomeNav />}
+    {user ? <RestaurantNav /> : <RestaurantNavTwo />}
 
     <div style={{ display: "flex"}} >
     <div className="side-bar" onMouseEnter={(() => setBar(true))} onMouseLeave={(() => setBar(false))}  style={{ position: "sticky", height: "100vh", top: "64px", zIndex: 10}}>
@@ -282,8 +274,10 @@ if (menu?.length) {
             <i class="fi fi-rr-user"></i>
         </span>
     </div>}
-    { bar && <div style={{ position: "absolute", backgroundColor:"white", height: "100vh", top: "0", boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.2) " }} id="side-bar">
-        <span onClick={(() => history.push('/home'))} className="page">
+    { bar && <div  onClick={(() => window.alert("Feature coming soon!"))} style={{ position: "absolute", backgroundColor:"white", height: "100vh", top: "0", boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.2) " }} id="side-bar">
+        <span onClick={((e) => {
+            e.stopPropagation()
+            history.push('/home')})} className="page">
             <i class="fi fi-rs-house-chimney"></i>
             <p>Home</p>
         </span>
@@ -328,7 +322,9 @@ if (menu?.length) {
             <i class="fi fi-rr-receipt"></i>
             <p>Orders</p>
         </span>
-        <span onClick={(() => setProfile(true))} >
+        <span onClick={((e) => {
+            e.stopPropagation()
+            setProfile(true)})} >
             <i class="fi fi-rr-user"></i>
             <p>Account</p>
         </span>

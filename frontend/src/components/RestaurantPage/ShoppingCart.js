@@ -50,6 +50,7 @@ function ShoppingCart({ user, d }) {
     }
     await dispatch(cartActions.thunkUpdateCart(id, data));
     history.push('/')
+    window.alert("Order was placed! :)")
 
   };
 

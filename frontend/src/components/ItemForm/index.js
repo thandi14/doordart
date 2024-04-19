@@ -20,6 +20,7 @@ function ItemFormModal({ itemId }) {
   const [ data, setData ] = useState({})
   const [ validation, setValidation ] = useState(0)
   const [ optionIds, setOptionIds ] = useState([]);
+  const [ price, setPrice ] = useState(0)
 
 
   let options = cartItem.ItemOptions
@@ -44,9 +45,13 @@ function ItemFormModal({ itemId }) {
    useEffect(() => {
     async function validateItem() {
         let required = 0
-        let ops = Object.values(cartItem.ItemOptions)
-        for (let o of ops) {
-            if (o.required) required++
+        let ops = []
+        ops = cartItem.ItemOptions
+        if (ops?.length) {
+            for (let o of ops) {
+                if (o.required) required++
+            }
+
         }
         setValidation(required)
     }
@@ -64,6 +69,13 @@ function ItemFormModal({ itemId }) {
   }, [dispatch, itemId])
 
   const handleSubmit = async (e) => {
+
+    const generateRandomSessionId = () => {
+        return Math.random().toString(36).substring(2);
+    };
+
+
+
     // e.preventDefault();
     setCount(quantity)
     setItem(cartItem)
@@ -72,12 +84,24 @@ function ItemFormModal({ itemId }) {
     let data = { itemId, options: ops, quantity }
     let data1
     if (!shoppingCart?.id) {
-        data1 = await dispatch(cartActions.thunkCreateCart(restaurant.id))
+        let sessionId = localStorage.getItem('sessionId');
+
+        if (!sessionId) sessionId = generateRandomSessionId();
+
+        const requestBody = {
+            sessionId,
+        };
+
+        console.log(sessionId)
+        localStorage.setItem('sessionId', sessionId);
+        data1 = await dispatch(cartActions.thunkCreateCart(restaurant.id, requestBody))
         if (data1) await dispatch(cartActions.thunkCreateCartItem(data1.id, data))
     }
     if (shoppingCart?.id) await dispatch(cartActions.thunkCreateCartItem(shoppingCart.id, data))
     closeModal()
   };
+
+  console.log(cartItem)
 
   return (
     <div className="item-modal">
@@ -105,7 +129,10 @@ function ItemFormModal({ itemId }) {
                             Select {option.number}
                         </p>
                     {option.ItemSelections?.map((selection) =>
-                        <div onClick={(()=> addItem(selection, option))} id="item-selection">
+                        <div onClick={(()=> {
+                            setPrice(price + selection.price)
+                            addItem(selection, option)
+                            })} id="item-selection">
                             {
                             items[option.id]?.some((i) => i == selection.id) ?
                             <i style={{ width: "16px", height: "16px", fontSize: "16px" }} class="fi fi-bs-dot-circle"></i> :
@@ -148,7 +175,7 @@ function ItemFormModal({ itemId }) {
                     handleSubmit()
                  }
             })}>
-                {Object.keys(items).length == validation ? "Add to cart" : `Make ${validation - Object.keys(items).length} required selections` } - ${cartItem.price * quantity}
+                {Object.keys(items).length == validation ? "Add to cart" : `Make ${validation - Object.keys(items).length} required selections` } - ${validation == 0 ? cartItem.price : price}
             </button>
         </div>
     </div>

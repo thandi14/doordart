@@ -14,7 +14,7 @@ function SplashFoot({ isLoaded }) {
         <div>
             <h1 style={{ fontSize: "16px", color: "white" }}>Popular Categories</h1>
         </div>
-        <div style={{ marginBottom: "40px"}}  id="foot-one">
+        <div onClick={(() => window.alert("Feature coming soon!"))} style={{ marginBottom: "40px"}}  id="foot-one">
             <span style={{ color: "rgb(196, 196, 196)"}}>
                 <p>Alchol Delivery</p>
                 <p>Back To School Delivery</p>
@@ -22,21 +22,21 @@ function SplashFoot({ isLoaded }) {
                 <p>Beauty Supplies</p>
                 <p>Catering Near Me</p>
             </span>
-            <span style={{ color: "rgb(196, 196, 196)"}}>
+            <span onClick={(() => window.alert("Feature coming soon!"))} style={{ color: "rgb(196, 196, 196)"}}>
                 <p>Convenience Stores Canada</p>
                 <p>Dashmart Near Me</p>
                 <p>Deck The Doorstep</p>
                 <p> Drugstores Canada</p>
                 <p>Flower Delivery</p>
             </span>
-            <span style={{ color: "rgb(196, 196, 196)"}}>
+            <span onClick={(() => window.alert("Feature coming soon!"))} style={{ color: "rgb(196, 196, 196)"}}>
                 <p>Grocery Delivery Canada</p>
                 <p>Halloween</p>
                 <p>Medicine Delivery</p>
                 <p>Pet Store Near Me</p>
                 <p>Retail Stores Near Me</p>
             </span>
-            <span style={{ color: "rgb(196, 196, 196)"}}>
+            <span onClick={(() => window.alert("Feature coming soon!"))} style={{ color: "rgb(196, 196, 196)"}}>
                 <p>Seasonal Holidays </p>
                 <p>Snap Ebt </p>
                 <p>Valentines Day</p>
@@ -47,9 +47,9 @@ function SplashFoot({ isLoaded }) {
         <div style={{ display: "flex", justifyContent: "space-between" }}>
 
         </div> */}
-        <div id="foot-two">
+        <div onClick={(() => window.alert("Feature coming soon!"))} id="foot-two">
             <span>
-            <h1 style={{ fontSize: "16px", color: "white" }}>Get To Know Us</h1>
+                <h1 style={{ fontSize: "16px", color: "white" }}>Get To Know Us</h1>
                 <p style={{ color: "rgb(196, 196, 196)"}}>About Us</p>
                 <p style={{ color: "rgb(196, 196, 196)"}}>Careers</p>
                 <p style={{ color: "rgb(196, 196, 196)"}}>Investors</p>
@@ -79,7 +79,7 @@ function SplashFoot({ isLoaded }) {
                 <p style={{ color: "rgb(196, 196, 196)"}}>Get DoorDash for Business</p>
             </span>
         </div>
-        <div style={{ justifyContent: "flex-start"}} id="foot-three">
+        <div onClick={(() => window.alert("Feature coming soon!"))} style={{ justifyContent: "flex-start"}} id="foot-three">
             <img src="https://www.pngall.com/wp-content/uploads/15/Door-Dash-Logo-PNG-Photo.png"></img>
             <span  style={{ color: "rgb(196, 196, 196)"}} id="ft-one">
             <p>Terms of Service</p>

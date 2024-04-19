@@ -159,12 +159,12 @@ function HomePage({ isLoaded }) {
     <div style={{ display: "flex"}} >
     <div className="side-bar" style={{ position: "sticky", height: "100vh", top: "64px", zIndex: 10}}>
 
-    { user?.id && <div id="side-bar">
-        <span className="page">
+    { user?.id && <div onClick={(() => window.alert("Feature coming soon!"))} id="side-bar">
+        <span onClick={((e) => e.stopPropagation())} className="page">
             <i class="fi fi-rs-house-chimney"></i>
             <p>Home</p>
         </span>
-        <span>
+        <span >
             <i class="fi fi-rr-apple-whole"></i>
             <p>Grocery</p>
         </span>
@@ -205,7 +205,10 @@ function HomePage({ isLoaded }) {
             <i class="fi fi-rr-receipt"></i>
             <p>Orders</p>
         </span>
-        <span onClick={(() => setProfile(true))} >
+        <span onClick={((e) => {
+            e.stopPropagation()
+            setProfile(true)
+        })} >
             <i class="fi fi-rr-user"></i>
             <p>Account</p>
         </span>
@@ -215,7 +218,7 @@ function HomePage({ isLoaded }) {
     </div>}
         </div>
 
-    <div style={{ padding: !user?.id ? "0.4% 9.5%" : "0.4% 2%"}} className="hp">
+    <div style={{ padding: !user?.id ? "0.4% 9.5%" : "0.4% 3%"}} className="hp">
     <div className="food-type">
     { length > 0 && <i id="gotobutt" style={{ left: "0"}} onClick={goToPrev} class="fi fi-sr-angle-circle-left"></i>}
     <div style={sliderStyle} id="food-type">
@@ -416,13 +419,13 @@ function HomePage({ isLoaded }) {
     { category ? <div id="results">
     <h1 style={{ fontSize: "26px"}}>{franchises.length} results</h1>
     <button onClick={(() => setCategory(""))}>Reset</button>
-    </div> : <div><h1 style={{ fontSize: "32px"}}>All Stores</h1></div> }
+    </div> : <div><h1 style={{ fontSize: "30px"}}>All Stores</h1></div> }
     </div>
     <div className="restaurants">
         {franchises.map((f, id) =>
         <>
             <div onClick={(() => history.push(`/restaurant/${f.id}`))} className="restaurant" id={`r-${id}`}>
-                <img style={{ marginBottom: "6px", height: "58%" }}src={f.RestaurantImage?.thumbnailUrl}></img>
+                <img style={{ marginBottom: "6px", height: "62%" }}src={f.RestaurantImage?.thumbnailUrl}></img>
                 <div id="r-name">
                     <h1 style={{ fontSize: "16px", margin: "2px 0px"}} >{f.name} </h1>
                     { user?.id && <>

@@ -70,7 +70,7 @@ router.get('/', async (req, res) => {
                 query: restaurant.name,
                 location: address,
                 radius: 50000, // Search radius in meters (adjust as needed)
-                key: 'AIzaSyA9ZZhYki6tunwewDOEljGqWu9sSY6VC9k'
+                key: 'AIzaSyA9ZZhYki6tunwewDOEljGqWu9sSY6VC9k',
             }
         });
 
@@ -81,6 +81,9 @@ router.get('/', async (req, res) => {
         if (places.length > 0) {
             location = places[0].formatted_address;
         }
+
+        console.log(places[0])
+
 
         let franchise = await Restaurant.findOne({
             where: {
@@ -102,7 +105,9 @@ router.get('/', async (req, res) => {
                 address: location,
                 miles,
                 mins,
-                franchiseId: places[0]?.place_id
+                franchiseId: places[0]?.place_id,
+                level: places[0]?.price_level
+
             });
 
             await franchise.save();
@@ -210,7 +215,7 @@ router.get('/saves', async (req, res) => {
 
     if (!saves) {
 
-        res.status(404).json({"message": "Saves couldn't be found"});
+        res.json({"message": "Saves couldn't be found"});
 
     }
 
@@ -226,7 +231,7 @@ router.post('/:id/save', async (req, res) => {
 
     if (!restaurantExist) {
 
-        res.status(404).json({"message": "Restaurant couldn't be found"});
+        res.json({"message": "Restaurant couldn't be found"});
 
     }
 
@@ -254,7 +259,7 @@ router.post('/:id/save', async (req, res) => {
 
     if (!save) {
 
-        res.status(404).json({"message": "Save couldn't be found"});
+        res.json({"message": "Save couldn't be found"});
 
     }
 
@@ -270,7 +275,7 @@ router.delete('/save/:id', async (req, res) => {
 
     if (!saveExist) {
 
-        res.status(404).json({"message": "Save couldn't be found"});
+        res.json({"message": "Save couldn't be found"});
 
     }
 
@@ -294,7 +299,9 @@ router.post('/', async (req, res) => {
                 query: restaurant.name,
                 location: address,
                 radius: 50000, // Search radius in meters (adjust as needed)
-                key: 'AIzaSyA9ZZhYki6tunwewDOEljGqWu9sSY6VC9k'
+                key: 'AIzaSyA9ZZhYki6tunwewDOEljGqWu9sSY6VC9k',
+                // place_level: 'PLACE_LEVEL',
+
             }
         });
 
@@ -326,7 +333,9 @@ router.post('/', async (req, res) => {
                 address: location,
                 miles,
                 mins,
-                franchiseId: places[0]?.place_id
+                franchiseId: places[0]?.place_id,
+                level: places[0]?.price_level
+
             });
 
             await franchise.save();
@@ -350,27 +359,26 @@ router.post('/', async (req, res) => {
 
 })
 
-router.get('/:id/cart', async (req, res) => {
+router.post('/:id/cart', async (req, res) => {
     let restaurantId = req.params.id;
     let restaurantExist = await Restaurant.findByPk(restaurantId);
     const { user } = req
+    const { sessionId } = req.body
+
     const userId = user?.dataValues.id
 
-    if (!userId) {
-
-        res.json({"message": "Please login"});
-
-    }
 
     if (!restaurantExist) {
 
-        res.status(404).json({"message": "Restaurant couldn't be found"});
+        res.json({"message": "Restaurant couldn't be found"});
 
     }
 
-    let cart = await ShoppingCart.findOne({
+    if (!userId && sessionId) {
+
+         let cart = await ShoppingCart.findOne({
         where : {
-            userId,
+            sessionId,
             restaurantId,
             status: "Ordering"
         },
@@ -391,7 +399,6 @@ router.get('/:id/cart', async (req, res) => {
                     }
                 ]
              },
-            { model: User },
             { model: Restaurant }
         ]
     });
@@ -399,11 +406,57 @@ router.get('/:id/cart', async (req, res) => {
 
     if (!cart) {
 
-        res.status(404).json({"message": "Shopping Cart couldn't be found"});
+        res.json({"message": "Shopping Cart couldn't be found"});
 
     }
 
     res.json( cart )
+
+    }
+    else if (userId) {
+
+
+            let cart = await ShoppingCart.findOne({
+                where : {
+                    userId,
+                    restaurantId,
+                    status: "Ordering"
+                },
+                include : [
+                    {
+                        model: CartItem,
+                        include : [
+                            {
+                                model: MenuItem,
+                            },
+                            {
+                                model: CartItemNotes,
+                                include : [
+                                    {
+                                        model: ItemSelection,
+                                    }
+                                ]
+                            }
+                        ]
+                     },
+                    { model: User },
+                    { model: Restaurant }
+                ]
+            });
+
+
+            if (!cart) {
+
+                res.json({"message": "Shopping Cart couldn't be found"});
+
+            }
+
+            res.json( cart )
+    }
+    else {
+        res.json({"message": "Please try again later" });
+
+    }
 
 })
 
@@ -415,7 +468,7 @@ router.get('/:id/reviews', async (req, res) => {
 
     if (!restaurantExist) {
 
-        res.status(404).json({"message": "Restaurant couldn't be found"});
+        res.json({"message": "Restaurant couldn't be found"});
 
     }
 
@@ -441,7 +494,7 @@ router.post('/:id', async (req, res) => {
 
     if (!restaurantExist) {
 
-        res.status(404).json({"message": "Restaurant couldn't be found"});
+        res.json({"message": "Restaurant couldn't be found"});
 
     }
 
@@ -478,7 +531,7 @@ router.post('/:id/review', async (req, res) => {
 
     if (!restaurantExist) {
 
-        res.status(404).json({"message": "Restaurant couldn't be found"});
+        res.json({"message": "Restaurant couldn't be found"});
 
     }
 

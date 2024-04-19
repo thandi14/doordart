@@ -227,7 +227,7 @@ function ReviewPage({ isLoaded }) {
                      </div>
                      <div style={{ padding: "16px 0px 0px"}}></div>
                      <div>
-                     <button id="helpful"><i class="fi fi-rr-bulb"></i>Helpful</button>
+                     <button onClick={(() =>  window.alert("Feature coming soon!"))} id="helpful"><i class="fi fi-rr-bulb"></i>Helpful</button>
                      </div>
              </div>
                 )}

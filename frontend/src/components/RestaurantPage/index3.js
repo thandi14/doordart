@@ -24,7 +24,7 @@ const filterCategories = (categories, search) => {
       );
     });
     return filteredCategories;
-  };
+};
 
 function FranchiseTwo({ isLoaded }) {
   const { user } = useSelector((state) => state.session );
@@ -107,16 +107,6 @@ function FranchiseTwo({ isLoaded }) {
     fetchData()
 
   }, []);
-
-  const saveRestaurant = (id) => {
-    dispatch(restaurantActions.thunkCreateSave(id))
-
-  };
-
-  const deleteSave = (saves, restaurantId) => {
-    let save = saves.find((s) => s.userId == user.id)
-    dispatch(restaurantActions.thunkDeleteSave(save.id, restaurantId))
-  };
 
 
   const checkInCenter = (id) => {
@@ -241,7 +231,7 @@ function FranchiseTwo({ isLoaded }) {
   let morning = ""
   let night = ""
 
-    if (time) {
+    if (times) {
         time = times.split(" - ")
         morning = time[0]
         night = time[1]

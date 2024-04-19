@@ -422,6 +422,9 @@
 }
 
 #rp-two {
+    width: 100%;
+    box-sizing: border-box;
+    flex-grow: 0;
     display: flex;
     gap: 2%
 }
@@ -648,8 +651,8 @@
     flex: 1 1;
     flex-direction: column;
     box-sizing: border-box;
-    max-width: 100%;
-    width: 110vh;
+    max-width: 94%;
+    /* width: 110vh; */
 }
 
 #cart-form {
@@ -1009,7 +1012,7 @@
     cursor: pointer;
 }
 
-#add-r > button:hover {
+#add-r > button:hover,  #helpful:hover {
     background-color: rgb(196, 196, 196);
 }
 
@@ -1111,7 +1114,7 @@
 
 .shopping-menu {
     position: sticky;
-    z-index: 5;
+    z-index: 15;
     top: 0;
 }
 

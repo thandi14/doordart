@@ -61,18 +61,34 @@ const deleteCart = (id) => {
 };
 
 
-export const thunkGetCart = (id) => async (dispatch) => {
-  const response = await csrfFetch(`/api/restaurants/${id}/cart`)
-  const data = await response.json();
-  dispatch(getCart(data));
+export const thunkGetCart = (id, data) => async (dispatch) => {
+  console.log("cart", data)
+
+  const response = await csrfFetch(`/api/restaurants/${id}/cart`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  })
+  const data1 = await response.json();
+  dispatch(getCart(data1));
   return response;
 };
 
 
-export const thunkGetCarts = () => async (dispatch) => {
-  const response = await csrfFetch(`/api/shoppingcarts/`)
-  const data = await response.json();
-  dispatch(getCarts(data));
+export const thunkGetCarts = (data) => async (dispatch) => {
+  console.log("carts", data)
+
+  const response = await csrfFetch(`/api/shoppingcarts/`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  })
+  const data1 = await response.json();
+  dispatch(getCarts(data1));
   return response;
 };
 
@@ -84,6 +100,7 @@ export const thunkGetItem = (id) => async (dispatch) => {
   };
 
 export const thunkCreateCart = (id, data) => async (dispatch) => {
+  console.log("create", data)
     const response = await csrfFetch(`/api/shoppingcarts/${id}`, {
       method: 'POST',
       headers: {

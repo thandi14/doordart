@@ -1,11 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import ProfileButton from "./ProfileButton";
 import OpenModalButton from "../OpenModalButton";
 import LoginForm from "../LoginForm";
 import SignupForm from "../SignupForm";
-import "./Navigation.css";
+import "../HomePage/Navigation.css";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { useFilters } from "../../context/Filters";
 import { useModal } from "../../context/Modal";
@@ -14,21 +13,42 @@ import { GoogleMap, LoadScript, Autocomplete } from '@react-google-maps/api';
 import * as restaurantActions from "../../store/restaurants"
 import ShoppingCart from "../RestaurantPage/ShoppingCart";
 import ShoppingCarts from "../RestaurantPage/ShoppingCarts";
+import ProfileButton from "../HomePage/ProfileButton";
 
-function HomeNav({ isLoaded }) {
+function RestaurantNavTwo({ isLoaded }) {
   const sessionUser = useSelector((state) => state.session.user);
-  const { cartItem, shoppingCarts }  = useSelector((state) => state.cart);
+  const { shoppingCarts, shoppingCart }  = useSelector((state) => state.cart);
+  const { restaurant } = useSelector((state) => state.restaurants);
   const history = useHistory()
   const [drop, setDrop] = useState(false)
   const { location } = useFilters()
   const [ lMenu, setLMenu ] = useState(false)
+  const [ cMenu, setCMenu ] = useState(false)
   const targetRef = useRef()
   const { setModalContent } = useModal()
-  const { setLocation } = useFilters()
+  const { setLocation, item, setItem, count } = useFilters()
   const autocompleteRef = useRef(null);
   const dispatch = useDispatch()
   const [dropTwo, setDropTwo] = useState(false)
   const [search, setSearch] = useState("")
+  const [ cartItem, setCartItem ] = useState({})
+//   const [ count, setCount ] = useState(0)
+
+
+
+
+    useEffect(() => {
+
+        if (Object.values(item).length) {
+            setCMenu(true)
+            setCartItem(item)
+            setItem({})
+            setTimeout(() =>{
+                setCMenu(false)
+            }, 2500)
+        }
+
+    }, [item]);
 
 
   useEffect(() => {
@@ -107,7 +127,7 @@ function HomeNav({ isLoaded }) {
   return (
     <>
     <ProfileButton user={sessionUser} d={drop} />
-    <ShoppingCarts user={sessionUser} d={dropTwo} />
+    <ShoppingCart user={sessionUser} d={dropTwo} />
     <div id="nav">
         <div className="navi">
         <button onClick={(() => setDrop(!drop))} id ="menu">
@@ -193,8 +213,30 @@ function HomeNav({ isLoaded }) {
             placeholder="Search stores, dishes, products"></input>
         </div>
         {/* <i style={{ fontSize: "18px"}} id="notify" class="fi fi-rr-cowbell"></i> */}
-        <i style={{ fontSize: "16px"}} onClick={(() => setDropTwo(!dropTwo))} id={Object.values(shoppingCarts).length == 0 ? "cart-two" : "cart"} class="fi fi-rr-shopping-cart">
-        <p>{Object.values(shoppingCarts).length}</p>
+        <i style={{ fontSize: "16px"}} onClick={(() => setDropTwo(!dropTwo))} id={shoppingCart.CartItems?.length == 0 ? "cart-two" : "cart"} class="fi fi-rr-shopping-cart">
+        <p>{shoppingCart.CartItems?.length}</p>
+        { cMenu &&
+          <div style={{ right: "0" }}  onClick={((e) => e.stopPropagation())} id="cart-menu">
+            <div style={{ cursor: "default" }} id="c-menu">
+                <div  style={{ padding: "10px", borderBottom: "1px solid rgb(231, 231, 231)" }}>
+                <h1 style={{ fontSize: "18px", marginBottom: "0px", color: "black"}}>{restaurant.name}</h1>
+                <p style={{ fontSize: "10px", color: "black"}}>{count} item</p>
+                </div>
+                <div id="cart-m">
+                <div style={{ padding: "8px", boxSizing: "border-box" }} id="cart-pic">
+                    <img style={{ width: "30%"}} src={cartItem.imgUrl}></img>
+                    <span style={{ width: "70%"}}>
+                        <h2 style={{ fontSize: "14px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{cartItem.item}</h2>
+                        <p style={{ fontSize: "12px", margin: "0px" }}> {cartItem.price}</p>
+                    </span>
+                </div>
+                <div style={{backgroundColor: "rgb(231, 231, 231)", height: "1px", width: "100%"}} id="divider-two"></div>
+                <button onClick={(() => setDropTwo(!dropTwo))} style={{ display: "flex", justifyContent: "center" }}><p>Go to cart</p></button>
+                <button id="cart-c" style={{ backgroundColor: "red", color: "white" }}><p>Checkout</p> {cartItem.price * count}</button>
+                </div>
+            </div>
+          </div>
+          }
         </i>
         <button onClick={(() => setModalContent(<LoginForm />))} style={{ backgroundColor: "transparent"}} id="si-butt">Sign In</button>
         <button onClick={(() => setModalContent(<SignupForm />))} id="su-butt">Sign Up</button>
@@ -204,4 +246,4 @@ function HomeNav({ isLoaded }) {
   );
 }
 
-export default HomeNav;
+export default RestaurantNavTwo;

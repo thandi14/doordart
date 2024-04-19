@@ -21,7 +21,11 @@ function App() {
 
 
   useEffect(() => {
-    dispatch(cartActions.thunkGetCarts())
+    const sessionId = localStorage.getItem('sessionId');
+    let data = {
+      sessionId
+    }
+    dispatch(cartActions.thunkGetCarts(data))
     dispatch(restaurantActions.thunkGetSaves())
     dispatch(sessionActions.restoreUser()).then(() => setIsLoaded(true));
   }, [dispatch]);
