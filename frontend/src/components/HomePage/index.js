@@ -166,6 +166,8 @@ function HomePage({ isLoaded }) {
     }
   });
 
+  console.log(category)
+
   return (
     <div style={{ position: "relative"}}>
     {user ? <HomeNavTwo /> : <HomeNav /> }
@@ -566,7 +568,7 @@ function HomePage({ isLoaded }) {
         </div>
 
     </div>
-    { category || Object.values(catTwo).length > 0 && <div className="types">
+    { (category || Object.values(catTwo).length > 0) && <div className="types">
      <div id="results">
     <h1 style={{ fontSize: "26px"}}>{results} results</h1>
     <button onClick={handleReset}>Reset</button>
