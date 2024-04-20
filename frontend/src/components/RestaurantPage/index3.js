@@ -221,7 +221,7 @@ function FranchiseTwo({ isLoaded }) {
         sum += review.rating
     }
 
-    let result = sum / reviews.length
+    let result = sum / reviews?.length
 
     return result.toFixed(1)
 
@@ -484,7 +484,8 @@ function FranchiseTwo({ isLoaded }) {
                             </div>
                                     )}
                                     <div style={{ padding: "0px 16px", paddingBottom: "16px" }}>
-                                    <button onClick={(() => setRoll(true))} id="more-reviews-two">See More Reviews <i style={{ width: "16px", height: "16px", fontSize: "16px", color: "black"}} class="fi fi-rr-arrow-small-down"></i></button>
+
+                                    <button onClick={(() => setRoll(true))} id="more-reviews-two">{reviews?.length ? "See More Reviews" : "No Reviews"} { reviews?.length > 0 && <i style={{ width: "16px", height: "16px", fontSize: "16px", color: "black"}} class="fi fi-rr-arrow-small-down"></i>}</button>
                                     </div>
                             </div>
                         </div>
@@ -635,6 +636,21 @@ function FranchiseTwo({ isLoaded }) {
 
             </div>
             <div id="rp-three">
+                        {keys?.length == 0 ?
+                            <>
+                            <div style={{ textAlign: "center"}} id="no-results">
+                            <img src="https://img.cdn4dd.com/s/managed/consumer/search/NoResult.svg"></img>
+                            { !search ? <h1 style={{ margin: "0px 4px"}}>Menu Unavilable</h1> :
+                                <>
+                                <h1 style={{ margin: "0px 4px"}}>No Results</h1>
+                            <p>There are no items that match your search. Try searching for a different item <br></br>
+                                or use the section tabs to browse other menu items.</p>
+                            <button style={{ margin: "40px 0px", justifyContent: "center", backgroundColor: "red", color: "white", width: "50%" }} id="browse-again" onClick={(() => setSearch(""))}>Reset Search</button>
+                                </>
+                            }
+                            </div>
+                            </>
+                        : <>
                     { keys.map((key, i) =>
                     <div ref={el => divRefs.current[`mi-${i}`] = el} style={{ margin: "20px 0px" }} id={`mi-${i}`} className="menu">
                         <h1 style={{ fontSize: "24px", whiteSpace: "nowrap" }}>{key}</h1>
@@ -664,6 +680,7 @@ function FranchiseTwo({ isLoaded }) {
                         </div>
                     </div>
                         )}
+                        </>}
                         <div id="print">
                         <p style={{ fontSize: "13px", color: "#767676", margin: "0px"}}> Prices on this menu are set directly by the Merchant.</p>
                         <p style={{ fontSize: "13px", color: "#767676", margin: "0px"}}>2,000 calories a day is used for general nutrition advice, but calorie needs vary. Additional nutrition information available here</p>
@@ -671,7 +688,7 @@ function FranchiseTwo({ isLoaded }) {
                             <i style={{ width: "24px", height: "24px", fontSize: "24px", marginTop: "10px", marginBottom: "0px" }} class="fi fi-rs-marker"></i>
                         <h1 style={{  marginTop: "0px"}} id="r-addy">{restaurant.type} <h1 style={{ color: "#767676" }}>delivered from</h1> {restaurant.name}%#39;s <h1 style={{ color: "#767676" }}>at</h1> {restaurant.address}</h1>
                         </div>
-                        <div style={{ padding: "4% 0%" }}>
+                        { reviews?.length == 0 && <div style={{ padding: "4% 0%" }}>
                         <h1 style={{ fontSize: "32px", whiteSpace: "nowrap", margin: "0px" }}>Ratings & Reviews</h1>
                                 <p style={{ gap: "3px", margin: "18px 0px", color: "#767676", fontSize: "16px", display: "flex", alignItems: "center"}}>
                                     <span style={{ color: "black", fontSize: "18px", fontWeight: "600" }}>{allReviews(restaurant.Reviews)}</span>
@@ -720,7 +737,7 @@ function FranchiseTwo({ isLoaded }) {
                                         <button onClick={(() => history.push(`/restaurant/${id}/reviews`))} id="more-reviews-two" >See More<i style={{ width: "16px", height: "16px", fontSize: "16px", color: "black"}} class="fi fi-rr-arrow-small-down"></i></button>
                                     </div>
                                 </div>
-                        </div>
+                        </div>}
             </div>
     <RestaurantFoot />
         </div>

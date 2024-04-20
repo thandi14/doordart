@@ -611,14 +611,18 @@ function Franchise({ isLoaded }) {
                                 </div>
                         </div>
                     </div>
-                    { keys.length == 0 && search ?
+                    { keys.length == 0 ?
                             <>
                             <div style={{ textAlign: "center"}} id="no-results">
                             <img src="https://img.cdn4dd.com/s/managed/consumer/search/NoResult.svg"></img>
-                            <h1 style={{ margin: "0px 4px"}}>No Results</h1>
+                            { !search ? <h1 style={{ margin: "0px 4px"}}>Menu Unavilable</h1> :
+                                <>
+                                <h1 style={{ margin: "0px 4px"}}>No Results</h1>
                             <p>There are no items that match your search. Try searching for a different item <br></br>
                                 or use the section tabs to browse other menu items.</p>
                             <button style={{ margin: "40px 0px", justifyContent: "center", backgroundColor: "red", color: "white", width: "50%" }} id="browse-again" onClick={(() => setSearch(""))}>Reset Search</button>
+                                </>
+                            }
                             </div>
                             </>
                         :
