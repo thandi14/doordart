@@ -45,7 +45,7 @@ const handlePlaceChanged = () => {
       };
 
       await dispatch(restaurantActions.thunkGetRestaurants(data));
-      window.alert("GOOGLE API MAY NOT BE AVIALBLE SO MILES/TIMES/PRICE LEVEL MAY NOT BE ACCURATE OR DISPLAY")
+      window.alert("GOOGLE API MAY NOT BE AVAILABLE SO MILES/TIMES/PRICE LEVEL MAY NOT BE ACCURATE OR DISPLAY")
       history.push("/home");
 
   };
