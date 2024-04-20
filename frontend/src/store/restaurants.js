@@ -282,6 +282,9 @@ const restaurantReducer = (state = initialState, action) => {
     case GET_REVIEW_DETAILS:
       newState = { ...state };
       const details = action.details;
+      if (newState.restaurant.Reviews?.length == 0) {
+        newState.restaurant.Reviews = []
+      }
       newState.restaurant.Reviews?.push(details);
       newState.review = { ...details };
       return newState;
