@@ -11,7 +11,7 @@ import HomeFoot from "../HomePage/HomeFoot";
 import Profile from "../HomePage/Profile";
 import HomeNavTwo from "../HomePage/HomeNavTwo";
 import "./SearchPage.css"
-import HomePageThree from "../HomePage/index3";
+import HomePageThree from "../HomePage/RestaurantsTwo";
 
 function milesToTime(miles, speed) {
     // Check if speed is greater than zero to avoid division by zero

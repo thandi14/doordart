@@ -24,7 +24,7 @@ const filterCategories = (categories, search) => {
       );
     });
     return filteredCategories;
-  };
+};
 
 function Franchise({ isLoaded }) {
   const { user } = useSelector((state) => state.session );
@@ -214,10 +214,6 @@ function Franchise({ isLoaded }) {
         }
     };
 
-    let items = []
-
-    if (menu?.length) items = menu.filter((i) => i.category == "Combos")
-
     const goToNextTwo = (e) => {
         e.stopPropagation()
         if (lengthTwo == ordered.length) {
@@ -360,10 +356,6 @@ function Franchise({ isLoaded }) {
         return `${month}/${day}/${year}`;
     }
 
-
-    console.log(peakRev)
-
-    // items = items.slice(0, 3)
 
   return (
 
@@ -615,7 +607,7 @@ function Franchise({ isLoaded }) {
                             <>
                             <div style={{ textAlign: "center"}} id="no-results">
                             <img src="https://img.cdn4dd.com/s/managed/consumer/search/NoResult.svg"></img>
-                            { !search ? <h1 style={{ margin: "0px 4px"}}>Menu Unavilable</h1> :
+                            { !search ? <h1 style={{ margin: "0px 4px"}}>Menu Unavailable</h1> :
                                 <>
                                 <h1 style={{ margin: "0px 4px"}}>No Results</h1>
                             <p>There are no items that match your search. Try searching for a different item <br></br>

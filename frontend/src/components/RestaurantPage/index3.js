@@ -26,6 +26,33 @@ const filterCategories = (categories, search) => {
     return filteredCategories;
 };
 
+function calculateRatingPercentages(reviews) {
+    const ratingCounts = {
+      1: 0,
+      2: 0,
+      3: 0,
+      4: 0,
+      5: 0
+    };
+
+    reviews.forEach(review => {
+      const rating = review.rating;
+      ratingCounts[rating]++;
+    });
+
+    const totalReviews = reviews.length;
+
+    const ratingPercentages = {};
+    for (const rating in ratingCounts) {
+      const count = ratingCounts[rating];
+      const percentage = (count / totalReviews) * 100;
+      ratingPercentages[rating] = percentage.toFixed(0);
+    }
+
+    return ratingPercentages;
+}
+
+
 function FranchiseTwo({ isLoaded }) {
   const { user } = useSelector((state) => state.session );
   const { restaurant } = useSelector((state) => state.restaurants);
@@ -292,6 +319,21 @@ function FranchiseTwo({ isLoaded }) {
 
     }, [roll]);
 
+    let revCount = {
+        1: 0,
+        2: 0,
+        3: 0,
+        4: 0,
+        5: 0
+      };
+
+    if (reviews?.length) {
+       revCount = calculateRatingPercentages(reviews)
+    }
+
+
+    console.log(revCount, reviews)
+
 
 
   return (
@@ -438,11 +480,11 @@ function FranchiseTwo({ isLoaded }) {
                             </div>
                             <div id="more-ratings" style={{ height: "100%", width: "80%", justifyContent: "center" }}>
                                 <div style={{ height: "100%", fontSize: "12px", display: "flex", flexDirection: "column", gap: "6px" }} >
-                                    <span style={{ maxWidth: "450px", display: "flex", alignItems: "center", gap: "10px", width: "100%" }} >5 <div id="a-bar"></div></span>
-                                    <span style={{ maxWidth: "450px", display: "flex", alignItems: "center", gap: "10px", width: "100%" }} >4 <div id="a-bar"></div></span>
-                                    <span style={{ maxWidth: "450px", display: "flex", alignItems: "center", gap: "10px", width: "100%" }} >3 <div id="a-bar"></div></span>
-                                    <span style={{ maxWidth: "450px", display: "flex", alignItems: "center", gap: "10px", width: "100%" }} >2 <div id="a-bar"></div></span>
-                                    <span style={{ maxWidth: "450px", display: "flex", alignItems: "center", gap: "10px", width: "100%" }} >1 <div id="a-bar"></div></span>
+                                    <span style={{ maxWidth: "450px", display: "flex", alignItems: "center", gap: "10px", width: "100%" }} >5 <div id="a-bar"><div style={{ width: `${revCount["5"]}%`}} id="in-a-bar"></div></div></span>
+                                    <span style={{ maxWidth: "450px", display: "flex", alignItems: "center", gap: "10px", width: "100%" }} >4 <div id="a-bar"><div style={{ width: `${revCount["4"]}%`}} id="in-a-bar"></div></div></span>
+                                    <span style={{ maxWidth: "450px", display: "flex", alignItems: "center", gap: "10px", width: "100%" }} >3 <div id="a-bar"><div style={{ width: `${revCount["3"]}%`}} id="in-a-bar"></div></div></span>
+                                    <span style={{ maxWidth: "450px", display: "flex", alignItems: "center", gap: "10px", width: "100%" }} >2 <div id="a-bar"><div style={{ width: `${revCount["2"]}%`}} id="in-a-bar"></div></div></span>
+                                    <span style={{ maxWidth: "450px", display: "flex", alignItems: "center", gap: "10px", width: "100%" }} >1 <div id="a-bar"><div style={{ width: `${revCount["1"]}%`}} id="in-a-bar"></div></div></span>
                                 </div>
                             </div>
                             </div>
@@ -635,7 +677,7 @@ function FranchiseTwo({ isLoaded }) {
                                 <div style={{ backgroundColor: "rgb(231, 231, 231)", height: "1px", width: "80%" }}></div>
 
             </div>
-            <div id="rp-three">
+            <div style={{ width: keys?.length == 0 && "100%", boxSizing: keys?.length == 0 && "border-box" }} id="rp-three">
                         {keys?.length == 0 ?
                             <>
                             <div style={{ textAlign: "center"}} id="no-results">
@@ -688,7 +730,7 @@ function FranchiseTwo({ isLoaded }) {
                             <i style={{ width: "24px", height: "24px", fontSize: "24px", marginTop: "10px", marginBottom: "0px" }} class="fi fi-rs-marker"></i>
                         <h1 style={{  marginTop: "0px"}} id="r-addy">{restaurant.type} <h1 style={{ color: "#767676" }}>delivered from</h1> {restaurant.name}%#39;s <h1 style={{ color: "#767676" }}>at</h1> {restaurant.address}</h1>
                         </div>
-                        { reviews?.length == 0 && <div style={{ padding: "4% 0%" }}>
+                        { reviews?.length > 0 && <div style={{ padding: "4% 0%" }}>
                         <h1 style={{ fontSize: "32px", whiteSpace: "nowrap", margin: "0px" }}>Ratings & Reviews</h1>
                                 <p style={{ gap: "3px", margin: "18px 0px", color: "#767676", fontSize: "16px", display: "flex", alignItems: "center"}}>
                                     <span style={{ color: "black", fontSize: "18px", fontWeight: "600" }}>{allReviews(restaurant.Reviews)}</span>

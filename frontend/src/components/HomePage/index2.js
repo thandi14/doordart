@@ -12,6 +12,7 @@ import taco from "./images/taco.png"
 import cake from "./images/cake.png"
 import sandwich from "./images/sandwich.png"
 import chicken from "./images/chickenBucket.png"
+import american from "./images/hotDog.png"
 import croissant from "./images/croissant.png"
 import salad from "./images/salad.png"
 import pizza from "./images/pizza.png"
@@ -29,31 +30,66 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import HomeNavTwo from "./HomeNavTwo";
 import ProfileButton from "./ProfileButton";
 import Profile from "./Profile";
+import Restaurants from "./Restaurants";
+import RestaurantsTwo from "./RestaurantsTwo";
 
 
-function HomePageTwo({ arr, title }) {
+function SideBar({ isLoaded }) {
   const { user } = useSelector((state) => state.session );
   const { restaurants, saves, orders } = useSelector((state) => state.restaurants);
   const [ length, setLength ] = useState(0)
   const [ lengthTwo, setLengthTwo ] = useState(0)
-  const [ hide, setHide ] = useState(false)
+  const [ index, setIndex ] = useState(0)
+  const [ fee, setFee ] = useState(3)
+  const [ stars, setStars ] = useState(4.5)
+  const [ price, setPrice ] = useState(2)
+  const [ fMenu, setFMenu ] = useState("")
   const [ category, setCategory ] = useState("")
+  const [ filter, setFilter ] = useState({})
+  const [ catOne, setCatOne ] = useState("")
+  const [ catTwo, setCatTwo ] = useState({})
+  const [ hide, setHide ] = useState(false)
   const dispatch = useDispatch()
-  const { location, setProfile, profile, setLocation } = useFilters()
+  const { location, setProfile, profile, setLocation, results } = useFilters()
   const history = useHistory()
   const targetRef = useRef()
+  const targetRef2 = useRef(null)
+  const targetRef3 = useRef(null)
+  const targetRef4 = useRef(null)
+
+
+
 
  useEffect(() => {
      async function fetchData() {
-         if ( !location && user?.id ) await dispatch(restaurantActions.thunkGetUserRestaurants())
+         if (!location && user?.id ) await dispatch(restaurantActions.thunkGetUserRestaurants())
          dispatch(cartActions.thunkGetCarts())
          if (user?.id) dispatch(restaurantActions.thunkGetSaves())
-         console.log('hello?')
          if (user?.id) dispatch(restaurantActions.thunkGetOrders())
         }
      fetchData()
 
   }, [dispatch, location, user])
+
+  useEffect(() => {
+
+    const handleDocumentClick = (event) => {
+        if (targetRef2.current && !targetRef2.current.contains(event.target) &&
+        targetRef3.current && !targetRef3.current.contains(event.target) &&
+        targetRef4.current && !targetRef4.current.contains(event.target)) {
+            setFMenu(false);
+
+        }
+
+      };
+
+      document.addEventListener('click', handleDocumentClick);
+      return () => {
+          document.removeEventListener('click', handleDocumentClick);
+      };
+
+    }, []);
+
 
   useEffect(() => {
     const place = localStorage.getItem('place');
@@ -62,111 +98,142 @@ function HomePageTwo({ arr, title }) {
     }
   }, [location]);
 
-    const goToNextTwo = (e) => {
-        e.stopPropagation()
-        setLengthTwo(lengthTwo + 1)
+
+  useEffect(() => {
+    setCategory(catOne)
+  }, [catOne]);
+
+
+  const goToNext = (e) => {
+      e.stopPropagation()
+      setLength(length + 1)
 
     };
 
-    const goToPrevTwo = (e) => {
+    const handleResults = (e) => {
+        setCatOne(category)
+        setCatTwo(filter)
+    };
+
+
+    const goToPrev = (e) => {
         e.stopPropagation();
-        setLengthTwo(lengthTwo - 1)
+        setLength(length - 1)
     };
 
-  const sliderStyleTwo = {
+  const sliderStyle = {
     maxWidth: "100%",
     display: "flex",
     transition: "transform 0.5s ease",
-    transform: `translateX(-${lengthTwo * 50}%)`,
-    margin: "10px 0px"
-  };
-
-  const saveRestaurant = (id) => {
-    dispatch(restaurantActions.thunkCreateSave(id))
-
-  };
-
-  const deleteSave = (saves, restaurantId) => {
-    let save = saves.find((s) => s.userId == user.id)
-    dispatch(restaurantActions.thunkDeleteSave(save.id, restaurantId))
+    transform: `translateX(-${length * 50}%)`,
+    marginBottom: "10px"
   };
 
   let franchises = Object.values(restaurants).sort((a, b) => a.miles - b.miles)
 
-  if (category) {
-    franchises = franchises.filter((f) => f.type.includes(category))
+  let saved = []
+
+  if (Object.values(saves).length) {
+    for (let save of Object.values(saves)) {
+        saved.push(save.Restaurant)
+    }
   }
 
-  const reviews = (reviews) => {
+  let ordered = []
+  let set = new Set()
 
-    if (!reviews.length) return 0
-
-    let sum = 0
-    for (let review of reviews) {
-        sum += review.rating
+  if (Object.values(orders).length) {
+    for (let order of Object.values(orders)) {
+        if (!set.has(order.Restaurant.name)) {
+            ordered.push(order.Restaurant)
+            set.add(order.Restaurant.name)
+        }
     }
+  }
 
-    let result = sum / reviews.length
-
-    return result.toFixed(1)
-
+  const handleReset = () => {
+    setCatOne("")
+    setCatTwo({})
   };
+
+
+  window.addEventListener('scroll', function() {
+    const element = document.getElementById('types');
+    const scrollAmount = 150;
+
+    if (window.scrollY > scrollAmount) {
+        setHide(true);
+    } else {
+        setHide(false);
+    }
+  });
 
   console.log(category)
 
-
-
   return (
 
-    <div className="types">
-    { arr.length > 0 && !category && <div style={{ overflow: "hidden"}} className="saved">
-    <div style={{ boxSizing: "border-box"}} id="saved">
-    <h1 style={{ fontSize: "26px", margin: "0px"}}>{title}</h1>
-        <div style={{ display: "flex", gap: "18px", alignItems: "center", fontSize: "14px", fontWeight: "600"}}>
-            <p>See All</p>
-            <span style={{ display: "flex", gap: "10px", boxSizing: "border-box"}}>
-                { <i id="gotobutt-two" style={{ cursor: lengthTwo == 0 && "not-allowed", left: "0", color: lengthTwo == 0 && "rgb(247, 247, 247)", backgroundColor: lengthTwo == 0 && "rgb(178, 178, 178)" }} onClick={goToPrevTwo} class="fi fi-sr-angle-circle-left"></i>}
-                { <i id="gotobutt-two" style={{ cursor: lengthTwo == arr.length - 1 && "not-allowed", left: "0", color: lengthTwo == arr.length - 1 && "rgb(247, 247, 247)", backgroundColor: lengthTwo == arr.length - 1 && "rgb(178, 178, 178)", right: "0"}} onClick={goToNextTwo} class="fi fi-sr-angle-circle-right"></i>}
-            </span>
-        </div>
-    </div>
-    <div style={sliderStyleTwo} id="saves">
-    {arr.map((f, id) =>
-        <>
-            <div style={{ height: "100%"}} onClick={(() => history.push(`/restaurant/${f.id}`))} className="restaurant" id={`r-${id}`}>
-                <img style={{ marginBottom: "6px"}}src={f.RestaurantImage?.thumbnailUrl}></img>
-                <div id="r-name">
-                    <h1 style={{ fontSize: "16px", margin: "2px 0px"}} >{f.name} </h1>
-                    { user && f.Saves?.some((s) => s.userId == user?.id && s.restaurantId == f.id) ?
-                    <i onClick={((e) => {
-                        e.stopPropagation()
-                        deleteSave(f.Saves, f.id)})} style={{ color: "red", fontSize: "16px", margin: "4px"}} class="fi fi-ss-heart"></i> :
-                    <i onClick={((e) => {
-                        e.stopPropagation()
-                        saveRestaurant(f.id)})} style={{ color: "#767676", fontSize: "16px", margin: "4px"}} class="fi fi-rs-heart"></i>
-                    }
-                </div>
-                <div id="r-info">
-                    <h1 style={{ fontSize: "12px"}}>
-                    <span style={{ color: "black"}}>{reviews(f.Reviews)}</span>
-                    <i class="fi fi-sr-star" style={{ fontSize: "12px", color: "#e4e404" }}></i>
-                    ({f.Reviews?.length})
-                    <i style={{ width: "10px", height: "10px" }} class="fi fi-sr-bullet"></i>
-                    {f.miles} mi
-                    <i style={{ width: "10px", height: "10px" }} class="fi fi-sr-bullet"></i>
-                    {f.mins + 10} mins
-                    </h1>
-                </div>
-                <h1 style={{ fontSize: "12px", color: "#767676"}}>${f.deliveryFee} Delivery Fee</h1>
-            </div>
-        </>
-        )}
-    </div>
-    </div>}
+    <div className="side-bar" style={{ position: "sticky", height: "100vh", top: "64px", zIndex: 14}}>
 
-    </div>
+    { user?.id && <div onClick={(() => window.alert("Feature coming soon!"))} id="side-bar">
+        <span onClick={((e) => e.stopPropagation())} className="page">
+            <i class="fi fi-rs-house-chimney"></i>
+            <p>Home</p>
+        </span>
+        <span >
+            <i class="fi fi-rr-apple-whole"></i>
+            <p>Grocery</p>
+        </span>
+        <span>
+            <i class="fi fi-rr-shopping-bag"></i>
+            <p>Retail</p>
+        </span>
+        <span>
+             <i class="fi fi-rr-hamburger-soda"></i>
+            <p>Convenience</p>
+        </span>
+        <span>
+            <i class="fi fi-rr-glass-cheers"></i>
+            <p>Alcohol</p>
+        </span>
+        <span>
+        <i class="fi fi-rr-tags"></i>
+            <p>Offers</p>
+        </span>
+        <span>
+        <i class="fi fi-rr-lipstick"></i>
+            <p>Beauty</p>
+        </span>
+        <span>
+            <i class="fi fi-rr-paw"></i>
+            <p>Pets</p>
+        </span>
+        <span>
+        <i class="fi fi-rr-search-alt"></i>
+        <p>Browse All</p>
+        </span>
+        <div id="line-bar"></div>
+        <span>
+            <i id="notify" class="fi fi-rr-cowbell"></i>
+            <p>Notifications</p>
+        </span>
+        <span>
+            <i class="fi fi-rr-receipt"></i>
+            <p>Orders</p>
+        </span>
+        <span onClick={((e) => {
+            e.stopPropagation()
+            setProfile(true)
+        })} >
+            <i class="fi fi-rr-user"></i>
+            <p>Account</p>
+        </span>
+        { profile && <div ref={targetRef} style={{ left: "220px"}}  id="profile-modal">
+            <Profile user={user} d={profile} />
+        </div>}
+    </div>}
+        </div>
 
   );
 }
 
-export default HomePageTwo;
+export default SideBar;

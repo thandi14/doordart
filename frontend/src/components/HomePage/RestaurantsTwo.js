@@ -8,7 +8,7 @@ import { useFilters } from "../../context/Filters";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 
-function HomePageThree({ filter, category, restaurants }) {
+function RestaurantsTwo({ filter, category, restaurants }) {
   const { user } = useSelector((state) => state.session );
   const { saves, orders } = useSelector((state) => state.restaurants);
   const [ length, setLength ] = useState(0)
@@ -181,4 +181,4 @@ function HomePageThree({ filter, category, restaurants }) {
   );
 }
 
-export default HomePageThree;
+export default RestaurantsTwo;
