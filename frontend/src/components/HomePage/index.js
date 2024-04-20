@@ -31,8 +31,8 @@ import HomeNavTwo from "./HomeNavTwo";
 import ProfileButton from "./ProfileButton";
 import Profile from "./Profile";
 import Restaurants from "./Restaurants";
-import RestaurantsTwo from "./RestaurantsTwo";
 import SideBar from "./index2";
+import RestaurantsTwo from "./RestaurantsTwo";
 
 
 function HomePage({ isLoaded }) {
