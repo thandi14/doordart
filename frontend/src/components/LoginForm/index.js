@@ -28,6 +28,14 @@ function LoginFormModal() {
       });
   };
 
+  const handleDemoSubmit = async (e) => {
+    e.preventDefault();
+    dispatch(sessionActions.login({ credential: "demo@user.io", password: "password" }));
+    history.push('/home')
+    closeModal();
+  };
+
+
   return (
     <div id="login-form">
       <div id="login-head">
@@ -73,6 +81,11 @@ function LoginFormModal() {
         <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
         <button id="submit-one">Continue to Sign In</button>
         <p style={{ fontSize: "14px", color: "#767676", margin: "0px" }} >By continuing with the sign in process, we may send you a one-time verification code via text message to the phone number associated with your account. Message and data rates may apply.</p>
+        <div style={{ padding: "20px 0px" }} id="continue">
+        <div id="line-eight"></div>
+        <p style={{ fontSize: "14px", color: "#767676", margin: "0" }}>or login as Demo-lition</p>
+        </div>
+        <button onClick={handleDemoSubmit} id="submit-one">Demo Lition</button>
         </div>
       </form>
     </div>

@@ -12,16 +12,31 @@ import RestaurantPage from "./components/RestaurantPage";
 import ReviewPage from "./components/ReviewPage";
 import { useFilters } from "./context/Filters";
 import SavedPage from "./components/SavedPage";
+import SearchPage from "./components/SearchPage";
 
 function App() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
+  const { setLocation } = useFilters();
+
 
   useEffect(() => {
-    dispatch(cartActions.thunkGetCarts())
+    const sessionId = localStorage.getItem('sessionId');
+    let data = {
+      sessionId
+    }
+    dispatch(cartActions.thunkGetCarts(data))
     dispatch(restaurantActions.thunkGetSaves())
     dispatch(sessionActions.restoreUser()).then(() => setIsLoaded(true));
   }, [dispatch]);
+
+  useEffect(() => {
+    const address = localStorage.getItem('place');
+    if (address) {
+      setLocation(address);
+    }
+
+  }, []);
 
   return (
     <>
@@ -40,6 +55,9 @@ function App() {
     </Route>
     <Route exact path="/restaurants/saves">
       <SavedPage />
+    </Route>
+    <Route exact path="/restaurants/search">
+      <SearchPage />
     </Route>
   </Switch>
 </>

@@ -19,9 +19,30 @@ function ShoppingCarts({ user, d }) {
   const history = useHistory()
   const { setModalContent } = useModal()
   const { recentId } = useFilters()
+  const [shoppingCart, setShoppingCart] = useState({});
+  const [otherCarts, setOtherCarts] = useState([]);
 
-  let shoppingCart = Object.values(shoppingCarts).find((cart) => cart.id == recentId)
-  let otherCarts = Object.values(shoppingCarts).filter((cart) => cart.id != recentId)
+  useEffect(() => {
+
+    let cart
+    let carts = [];
+    if (recentId) {
+        cart = Object.values(shoppingCarts).find(cart => cart.restaurantId == recentId);
+        carts = Object.values(shoppingCarts).filter(cart => cart.restaurantId != recentId);
+        setShoppingCart(cart);
+        console.log(recentId, cart)
+    }
+    if (!cart) {
+        cart = Object.values(shoppingCarts)[0] || null;
+        setShoppingCart(cart);
+        carts = Object.values(shoppingCarts).filter(cart => cart.restaurantId != shoppingCart.id);
+
+    }
+
+    setOtherCarts(carts);
+
+  }, [recentId, shoppingCarts]);
+
 
   useEffect(() => {
       setDrop(d)
@@ -67,8 +88,23 @@ function ShoppingCarts({ user, d }) {
     let data = {
       price
     }
+
     await dispatch(cartActions.thunkUpdateCart(id, data));
-    history.push('/')
+    if (user) {
+        history.push('/home')
+    }
+    else if (!user) {
+        if (Object.values(shoppingCarts).length) {
+            history.push('/home')
+        }
+        else {
+            history.push('/')
+        }
+    }
+
+    await dispatch(cartActions.thunkCreateOrder(id))
+
+    window.alert("Order placed! :)")
 
   };
 

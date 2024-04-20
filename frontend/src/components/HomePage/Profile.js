@@ -41,7 +41,7 @@ function Profile({ user, d }) {
 
 
   const logout = (e) => {
-    e.preventDefault();
+    e.stopPropagation();
     history.push('/')
     dispatch(sessionActions.logout());
   };
@@ -51,7 +51,7 @@ function Profile({ user, d }) {
   const ulClassName = drop ? "" : "hidden";
 
   return (
-    <div ref={targetRef} className={ulClassName} id="profile-menu">
+    <div ref={targetRef} style={{ height: user.id ? "600" : "100%"}} className={ulClassName} id="profile-menu">
       <div style={{position: "absolute"}}>
       <div id="close-a">
       <h1 id="acc-sett">Account</h1>
@@ -73,7 +73,9 @@ function Profile({ user, d }) {
       { user &&
         <>
         <div id="line-three"></div>
-        <span onClick={(() => history.push(`/restaurants/saves`))}>
+        <span onClick={((e) => {
+            e.stopPropagation()
+            history.push(`/restaurants/saves`)})}>
            <i class="fi fi-rs-heart" ></i>
           <p>Saved Stores</p>
         </span>
@@ -97,7 +99,7 @@ function Profile({ user, d }) {
         <span>
         <div id="acc">
             <p style={{ fontSize: "16px", fontWeight: "500"}}>Account</p>
-            <p style={{ fontSize: "12px", color: "#767676"}}>Thandi Mpofu</p>
+            <p style={{ fontSize: "12px", color: "#767676"}}>{user.firstName} {user.lastName}</p>
         </div>
         </span>
         <span>
@@ -112,7 +114,7 @@ function Profile({ user, d }) {
         <span onClick={logout}>
         <p style={{ fontSize: "16px", fontWeight: "500"}}>Sign Out</p>
         </span>
-        <span>
+        {/* <span>
         <p style={{ fontSize: "16px", fontWeight: "500"}}>Engineering Blog</p>
         </span>
         <span>
@@ -129,7 +131,7 @@ function Profile({ user, d }) {
         </span>
         <span>
         <p style={{ fontSize: "16px"}}>////</p>
-        </span>
+        </span> */}
       </div>
     </div>
       </div>

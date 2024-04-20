@@ -23,6 +23,9 @@ module.exports = {
       },
       onDelete: 'cascade'
       },
+      franchiseId: {
+        type: Sequelize.INTEGER
+      },
       name: {
         type: Sequelize.STRING
       },
@@ -31,6 +34,15 @@ module.exports = {
       },
       deliveryTime: {
         type: Sequelize.STRING
+      },
+      state: {
+        type: Sequelize.STRING
+      },
+      city: {
+        type: Sequelize.STRING
+      },
+      zipCode: {
+        type: Sequelize.INTEGER
       },
       address: {
         type: Sequelize.STRING
@@ -44,14 +56,8 @@ module.exports = {
       phone: {
         type: Sequelize.NUMBER
       },
-      miles: {
-        type: Sequelize.NUMBER
-      },
-      mins: {
+      level: {
         type: Sequelize.INTEGER
-      },
-      franchiseId: {
-        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,

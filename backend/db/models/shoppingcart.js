@@ -42,8 +42,9 @@ module.exports = (sequelize, DataTypes) => {
     gift: DataTypes.BOOLEAN,
     pickup: DataTypes.BOOLEAN,
     group: DataTypes.BOOLEAN,
-    price: DataTypes.INTEGER,
-    status: {
+    price: DataTypes.NUMBER,
+    status: DataTypes.STRING,
+    sessionId: {
       type: DataTypes.STRING,
       defaultValue: "Ordering"
     }

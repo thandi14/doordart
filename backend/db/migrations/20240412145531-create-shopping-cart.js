@@ -1,4 +1,5 @@
 'use strict';
+
 let options = {};
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;  // define your schema in options object
@@ -62,11 +63,14 @@ module.exports = {
         type: Sequelize.BOOLEAN
       },
       price: {
-        type: Sequelize.INTEGER
+        type: Sequelize.NUMBER
       },
       status: {
         type: Sequelize.STRING,
         defaultValue: "Ordering"
+      },
+      sessionId: {
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,

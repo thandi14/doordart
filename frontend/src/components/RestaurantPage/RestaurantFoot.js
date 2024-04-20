@@ -11,8 +11,8 @@ function RestaurantFoot({ isLoaded }) {
     <>
     <div className="sp-foot">
         <div>
-        <div id="foot-four">
-            <span>
+        <div onClick={(() => window.alert("Feature coming soon!"))}id="foot-four">
+            <span >
             <h1 style={{ fontSize: "16px", color: "black" }}>Trending Restaurant</h1>
                 <p>54th Street</p>
                 <p>Outback Steakhouse</p>
@@ -37,7 +37,7 @@ function RestaurantFoot({ isLoaded }) {
                 <p>Tapas near me</p>
             </span>
         </div>
-        <div id="foot-four">
+        <div onClick={(() => window.alert("Feature coming soon!"))} id="foot-four">
             <span>
             <h1 style={{ fontSize: "16px", color: "black" }}>Trending Categories</h1>
                     <p>American near me</p>
@@ -63,7 +63,7 @@ function RestaurantFoot({ isLoaded }) {
                 <p>Quebec City</p>
             </span>
         </div>
-        <div id="foot-four">
+        <div onClick={(() => window.alert("Feature coming soon!"))} id="foot-four">
             <span>
             <h1 style={{ fontSize: "16px", color: "black" }}>Get To Know Us</h1>
                 <p>About Us</p>
@@ -95,7 +95,7 @@ function RestaurantFoot({ isLoaded }) {
                 <p>Get DoorDash for Business</p>
             </span>
         </div>
-        <div id="foot-three">
+        <div onClick={(() => window.alert("Feature coming soon!"))} id="foot-three">
             <div>
             <img src="https://freepnglogo.com/images/all_img/1706201578doordash-icon-png.png"></img>
             <span id="ft-one">

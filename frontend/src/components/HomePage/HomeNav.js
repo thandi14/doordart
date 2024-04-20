@@ -6,7 +6,7 @@ import OpenModalButton from "../OpenModalButton";
 import LoginForm from "../LoginForm";
 import SignupForm from "../SignupForm";
 import "./Navigation.css";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { useHistory, useLocation } from "react-router-dom/cjs/react-router-dom.min";
 import { useFilters } from "../../context/Filters";
 import { useModal } from "../../context/Modal";
 import SignupFormModal from "../SignupForm";
@@ -28,6 +28,25 @@ function HomeNav({ isLoaded }) {
   const autocompleteRef = useRef(null);
   const dispatch = useDispatch()
   const [dropTwo, setDropTwo] = useState(false)
+  const [search, setSearch] = useState("")
+  const locations = useLocation();
+  const currentPage = locations.pathname;
+
+
+  useEffect(() => {
+    async function fetchData() {
+      const address = localStorage.getItem('place');
+        if ( location ) {
+          let data = {
+            address
+          };
+
+          await dispatch(restaurantActions.thunkGetRestaurants(data));
+        }
+       }
+    fetchData()
+
+ }, [dispatch, location])
 
 
   const handlePlaceChanged = () => {
@@ -41,6 +60,7 @@ function HomeNav({ isLoaded }) {
   };
 
   const submitPlaceChanged = async (place) => {
+      localStorage.setItem('place', place);
       setLocation(place);
 
       let data = {
@@ -48,6 +68,26 @@ function HomeNav({ isLoaded }) {
       };
 
       await dispatch(restaurantActions.thunkGetRestaurants(data));
+
+  };
+
+
+  const handleSearch = async (event) => {
+    let data = []
+      if (event.key === 'Enter') {
+        data = await dispatch(restaurantActions.thunkGetSearch(search));
+
+        if (!currentPage.includes("search")) {
+          if (data.length == 1) {
+            history.push(`/restaurant/${data[0].id}`)
+          }
+          else {
+            history.push(`restaurants/search`)
+
+          }
+        }
+      }
+
 
   };
 
@@ -86,7 +126,7 @@ function HomeNav({ isLoaded }) {
             <button>
                 Delivery
             </button>
-            <button>
+            <button onClick={(() => window.alert("Feature coming soon!"))}>
                 Pickup
             </button>
         </div>
@@ -151,7 +191,11 @@ function HomeNav({ isLoaded }) {
         <div className="search">
         <div id="search">
             <i class="fi fi-rr-search"></i>
-            <input defaultValue="Search stores, dishes, products"></input>
+            <input
+            value={search}
+            onChange={((e) => setSearch(e.target.value))}
+            onKeyDown={handleSearch}
+            placeholder="Search stores, dishes, products"></input>
         </div>
         {/* <i style={{ fontSize: "18px"}} id="notify" class="fi fi-rr-cowbell"></i> */}
         <i style={{ fontSize: "16px"}} onClick={(() => setDropTwo(!dropTwo))} id={Object.values(shoppingCarts).length == 0 ? "cart-two" : "cart"} class="fi fi-rr-shopping-cart">

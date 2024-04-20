@@ -1,8 +1,7 @@
 .hp {
     padding: 0.4% 2%;
-    box-sizing: border-box;
     display: flex;
-    justify-content: center;
+    width:  100%;
     overflow: hidden;
     flex-direction: column;
     align-items: center;
@@ -14,9 +13,10 @@
     font-size: 32px;
     color: white;
     background-color: rgb(25, 25, 25);
-    height: 32px;
+    height: 30px;
     box-shadow: 1px 1px 5px 1px #ccc;
     display: flex;
+    width: 30px;
     border-radius: 100%;
     margin: 0% 1%;
     align-self: center;
@@ -27,14 +27,15 @@
 }
 
 #categories > img {
-    width: 65px;
-    height: 65px;
+    width: 70px;
+    height: 70px;
 }
 
 #categories > p {
     display: flex;
     white-space: nowrap;
     margin: 6px;
+    font-size: 12px;
 }
 
 .food-type {
@@ -59,6 +60,16 @@
     font-weight: 500;
 }
 
+#filterings {
+    padding: 1.4% 3%;
+    width: 100%;
+    position: sticky;
+    font-family: TT Norms, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";;
+    background-color: white;
+    top: 64px;
+    z-index: 10;
+}
+
 .types {
     width: 100%;
     display: flex;
@@ -70,7 +81,9 @@
 #types {
     width: 100%;
     display: flex;
-    gap: 5px
+    gap: 5px;
+    font-family: TT Norms, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";;
+
 }
 
 #types > button:hover, #results > button:hover {
@@ -99,6 +112,194 @@
     font-size: 16px;
 }
 
+#types > div > button:hover, #results > button:hover {
+    background-color: rgb(247, 247, 247)
+}
+
+#types > div > button, #results > button {
+    background-color: rgb(231, 231, 231);
+    height: 32px;
+    border-radius: 24px;
+    border: 0;
+    font-size: 14px;
+    box-shadow: transparent 0px 0px 0px 1px inset;
+    color: rgb(25, 25, 25);
+    cursor: pointer;
+    font-weight: 600;
+    padding: 0px 12px;
+    display: flex;
+    align-items: center;
+    gap: 5px
+}
+
+#types > div {
+    position: relative;
+}
+
+#types > div > button > i, #results > button > i{
+    width: 16px;
+    height: 16px;
+    font-size: 16px;
+}
+
+#filter-menu {
+    position: absolute;
+    z-index: 2;
+    min-width: 200%;
+    border: 1px solid rgb(231, 231, 231);
+    background-color: rgb(255, 255, 255);
+    box-sizing: border-box;
+    border-radius: 16px;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 8px;
+}
+
+#num-line {
+    background-color: rgb(231, 231, 231);
+    height: 2px;
+    border-radius: 8px;
+    width: 100%
+}
+
+#s-num > div {
+    position: relative;
+    width: calc(25% - 0px);
+}
+
+#p-price > div {
+    width: calc(25% - 0px);
+
+}
+
+#p-price {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
+#types {
+    position: sticky;
+    top: 64px;
+    position: sticky;
+    top: 64px;
+    z-index: 5;
+}
+
+#p-price > div > button {
+    background-color: rgb(231, 231, 231);
+    min-height: 40px;
+    width: 100%;
+    border-radius: 24px;
+    align-items: center;
+    color: black;
+    border: 0;
+    font-size: 16px;
+    box-shadow: transparent 0px 0px 0px 1px inset;
+    cursor: pointer;
+    font-weight: 600;
+    padding: 0px 12px;
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+}
+
+#p-num > div {
+    position: relative;
+    width: calc(33.33% - 0px);
+}
+
+#numbers, #p-num, #s-num {
+    display: flex;
+    width: 100%;
+    position: relative;
+
+}
+
+#numbers {
+    display: flex;
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
+    justify-content: center;
+    margin-bottom: 40px;
+}
+
+#p-num > div, #s-num > div {
+    color: rgb(231, 231, 231)
+}
+
+#filter-menu > div {
+    padding: 16px 16px;
+    color: rgb(118, 118, 118);
+    font-weight: 500;
+}
+
+#numbers > div {
+    color: black;
+    font-size: 10px;
+    box-sizing: border-box;
+    margin: 0px 16px;
+    display: flex;
+}
+
+#filter-menu > div > p {
+    width: 100%
+}
+
+#filter-menu > div > h1 {
+    white-space: nowrap;
+}
+
+#p-num > div > i {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    top: -4px;
+    width: 0%;
+    cursor: pointer;
+    /* left: -4px; */
+}
+
+#p-num > i {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    top: -4px;
+    right: 0;
+}
+
+#s-num > div > i {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    top: -4px;
+    width: 0%;
+    /* left: -4px; */
+}
+
+#s-num > i {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    top: -4px;
+    right: 0;
+}
+
+#filter-menu > div > button {
+    height: 32px;
+    border-radius: 24px;
+    border: 0;
+    font-size: 14px;
+    color: black;
+    box-shadow: transparent 0px 0px 0px 1px inset;
+    background-color: red;
+    cursor: pointer;
+    font-weight: 600;
+    padding: 0px 12px;
+}
 
 
 #results {
@@ -120,13 +321,12 @@
     display: flex;
     box-sizing: border-box;
     flex-wrap: wrap;
-    justify-content: space-between;
-    row-gap: 20px;
-
+    column-gap: 18px;
+    row-gap: 32px;
 }
 
 .restaurant {
-    flex-basis: calc(33.33% - 20px);
+    flex-basis: calc(33.33% - 16px);
     cursor: pointer;
 
 }
@@ -134,8 +334,7 @@
 .restaurant > img {
     width: 100%;
     border-radius: 16px;
-
-    /* height: 100% */
+    height: 174px
 }
 
 #r-info > h1 {
@@ -168,7 +367,7 @@
     width: 100%;
     box-sizing: border-box;
     font-family: TT Norms, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";;
-    margin-top: 15px;
+    /* margin-top: 15px; */
     border-top: 1px solid rgb(231, 231, 231);
 }
 
@@ -180,7 +379,7 @@
     padding-right: 2%;
     box-sizing: border-box;
     top: 0;
-    z-index: 4;
+    z-index: 16;
     background-color: white;
     font-family: TT Norms, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";;
     /* gap: 5px; */

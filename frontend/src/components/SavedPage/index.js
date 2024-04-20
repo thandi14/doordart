@@ -9,6 +9,7 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import HomeNav from "../HomePage/HomeNav";
 import HomeFoot from "../HomePage/HomeFoot";
 import Profile from "../HomePage/Profile";
+import HomeNavTwo from "../HomePage/HomeNavTwo";
 
 
 function SavedPage({ isLoaded }) {
@@ -69,12 +70,14 @@ function SavedPage({ isLoaded }) {
 
   return (
     <div style={{ position: "relative"}}>
-    <HomeNav />
+    {user ? <HomeNavTwo /> : <HomeNav /> }
     <div style={{ display: "flex"}}>
     <div className="side-bar" style={{ position: "sticky", height: "100vh", top: "64px", zIndex: 10}}>
 
-{ user?.id && <div id="side-bar">
-    <span onClick={(() => history.push('/home'))} className="page">
+{ user?.id && <div onClick={(() => window.alert("Feature coming soon"))} id="side-bar">
+    <span onClick={((e) => {
+        e.stopPropagation()
+        history.push('/home')})} className="page">
         <i class="fi fi-rs-house-chimney"></i>
         <p>Home</p>
     </span>
@@ -119,7 +122,9 @@ function SavedPage({ isLoaded }) {
         <i class="fi fi-rr-receipt"></i>
         <p>Orders</p>
     </span>
-    <span onClick={(() => setProfile(true))} >
+    <span onClick={((e) => {
+        e.stopPropagation()
+        setProfile(true)})} >
         <i class="fi fi-rr-user"></i>
         <p>Account</p>
     </span>

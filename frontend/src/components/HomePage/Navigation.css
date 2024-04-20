@@ -11,8 +11,8 @@
     display: flex;
     position: sticky;
     top: 0;
-    padding: 0% 9.5%;
-    z-index: 4;
+    padding: 0% 2%;
+    z-index: 12;
     background-color: white;
     box-sizing: border-box;
     justify-content: space-between;
@@ -22,12 +22,11 @@
 
 #menu {
     border: 0;
-    position: absolute;
+    /* position: absolute; */
     background-color: transparent;
     cursor: pointer;
-    width: 22px;
     height: 22px;
-    margin-right: 10px;
+    margin-right: 2%;
     left: 5%;
     font-size: 18px;
 }
@@ -96,7 +95,7 @@
 }
 
 .page {
-    background-color: #ff000029;
+    background-color: rgb(255, 240, 237);
     border-radius: 8px;
     color: red;
     font-weight: 600;
@@ -210,19 +209,23 @@
     position: sticky;
     left: 0;
     top: 0;
-    z-index: 10;
+    width: 100%;
+    z-index: 13;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 24px;
     background-color: white;
 
 }
+
 .profile {
     background-color: white;
     overflow-y: scroll;
+    overflow-x: hidden;
     position: absolute;
     left: 0;
+    border-radius: 8px;
     width: 352px;
-    /* display: flex; */
-    height: 100vh;
-    flex-direction: column;
+    padding-bottom: 20px;
+    height: 600px;
 }
 
 .hidden {
@@ -285,15 +288,15 @@
     box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 24px;
     display: flex;
     align-items: flex-start;
-    overflow: hidden;
-    height: 600px;
+    padding-bottom: 40px;
+    height: 500px;
     z-index: 10;
     position: absolute;
-    font-family: TT Norms, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";;
+    font-family: TT Norms, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     /* right: -160%; */
     bottom: 10%;
     width: 352px;
-    top: 20%;
+    top: 5%;
     outline: none;
 }
 
@@ -302,6 +305,7 @@
     width: 352px;
     box-sizing: border-box;
     display: flex;
+    border-radius: 8px;
     align-items: center;
     background-color: white;
     position: sticky;
@@ -349,6 +353,7 @@
     gap: 15px;
     height: 35px;
     padding: 4px 16px;
+    margin-bottom: 5px;
     cursor: pointer;
 }
 

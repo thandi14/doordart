@@ -16,6 +16,16 @@ import Profile from "../HomePage/Profile";
 import ProfileButton from "../HomePage/ProfileButton";
 import HomeNav from "../HomePage/HomeNav";
 
+const filterCategories = (categories, search) => {
+    const filteredCategories = {};
+    Object.entries(categories).forEach(([category, items]) => {
+      filteredCategories[category] = items.filter(item =>
+        item.item?.toLowerCase().includes(search.toLowerCase()) || item.description?.toLowerCase().includes(search.toLowerCase())
+      );
+    });
+    return filteredCategories;
+};
+
 function FranchiseTwo({ isLoaded }) {
   const { user } = useSelector((state) => state.session );
   const { restaurant } = useSelector((state) => state.restaurants);
@@ -27,13 +37,40 @@ function FranchiseTwo({ isLoaded }) {
   const [ hide, setHide ] = useState(true)
   const [ bar, setBar ] = useState(false)
   const [ scroll, setScroll ] = useState(false)
+  const [ roll, setRoll ] = useState(false)
+  const [ search, setSearch ] = useState("")
   const dispatch = useDispatch()
   const { location, setRecentId, profile, setProfile } = useFilters()
   const { setModalContent } = useModal()
   const targetRef = useRef()
   const divRefs = useRef({});
   const history = useHistory()
+  const [categories, setCategories] = useState({});
+  const [unfilteredCategories, setUnfilteredCategories] = useState({});
+  const [menu, setMenu] = useState([]);
 
+  useEffect(() => {
+    if (restaurant?.MenuItems?.length) {
+      setMenu(restaurant.MenuItems);
+    }
+  }, [restaurant]);
+
+  useEffect(() => {
+    if (menu.length) {
+      const cat = processCategories(menu);
+      setCategories(cat);
+      setUnfilteredCategories(cat);
+    }
+  }, [menu]);
+
+  useEffect(() => {
+    if (search) {
+      const filteredCategories = filterCategories(unfilteredCategories, search);
+      setCategories(filteredCategories);
+    } else {
+      setCategories(unfilteredCategories);
+    }
+  }, [search, unfilteredCategories]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -45,15 +82,32 @@ function FranchiseTwo({ isLoaded }) {
 
   }, []);
 
-  const saveRestaurant = (id) => {
-    dispatch(restaurantActions.thunkCreateSave(id))
-
+  const processCategories = (menu) => {
+    const cat = {};
+    menu.forEach(item => {
+      const categories = item.category.includes(',') ? item.category.split(',').map(c => c.trim()) : [item.category.trim()];
+      categories.forEach(category => {
+        const key = category;
+        if (!cat[key]) {
+          cat[key] = [];
+        }
+        cat[key].push(item);
+      });
+    });
+    return cat;
   };
 
-  const deleteSave = (saves, restaurantId) => {
-    let save = saves.find((s) => s.userId == user.id)
-    dispatch(restaurantActions.thunkDeleteSave(save.id, restaurantId))
-  };
+
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    async function fetchData() {
+        dispatch(cartActions.thunkGetCart(id))
+        setRecentId(id)
+    }
+    fetchData()
+
+  }, []);
 
 
   const checkInCenter = (id) => {
@@ -167,7 +221,7 @@ function FranchiseTwo({ isLoaded }) {
         sum += review.rating
     }
 
-    let result = sum / reviews.length
+    let result = sum / reviews?.length
 
     return result.toFixed(1)
 
@@ -178,37 +232,22 @@ function FranchiseTwo({ isLoaded }) {
   let morning = ""
   let night = ""
 
-    if (time) {
+    if (times) {
         time = times.split(" - ")
         morning = time[0]
         night = time[1]
     }
 
-    let menu = restaurant.MenuItems
-    let categories = {};
-    let set = new Set();
 
-if (menu?.length) {
-    for (let item of menu) {
-        let category = item.category.trim();
-        let cs = category.includes(',') ? category.split(",").map(c => c.trim()) : [category];
-        for (let c of cs) {
-            if (!set.has(c.toLowerCase())) {
-                categories[c] = [];
-                set.add(c.toLowerCase());
-            }
-        }
-    }
+    let keys = []
 
-    for (let item of menu) {
-        let category = item.category.trim();
-        let cs = category.includes(',') ? category.split(",").map(c => c.trim()) : [category];
-        for (let c of cs) {
-            categories[c].push(item);
+    for (let key of Object.keys(categories)) {
+        if (categories[key].length) {
+            keys.push(key)
         }
-    }
-}
-    let keys = Object.keys(categories);
+    };
+
+
 
     let items = []
 
@@ -231,12 +270,35 @@ if (menu?.length) {
         return `${month}/${day}/${year}`;
     }
 
+    useEffect(() => {
+
+        const rollToTarget = () => {
+            const handleScrollOrNavigate = () => {
+                const targetElement = document.getElementById(`grid`);
+                if (targetElement && roll) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                    setRoll(false)
+                }
+            };
+
+            if (document.readyState === 'complete' || document.readyState === 'interactive') {
+                handleScrollOrNavigate();
+            } else {
+                document.addEventListener('DOMContentLoaded', handleScrollOrNavigate);
+            }
+        };
+
+        rollToTarget();
+
+    }, [roll]);
+
+
 
   return (
 
-        <div id="rp-st">
+        <div style={{ width: "100%"}} id="rp-st">
 
-            <div className="rp-h" id={ hide ? "hidden" : "rp-head"}>
+            <div className="rp-h" id={"hidden"}>
                         <div id="rp-h-one">
 
                             <div style={{ width: "50%", display: "flex", gap: "5px", flexDirection: "column"}}>
@@ -249,7 +311,15 @@ if (menu?.length) {
                             <div style={{ display: "flex", justifyContent: "flex-end", width: "50%", alignItems: "flex-end"}}>
                             <div id="item-search">
                             <i class="fi fi-rr-search"></i>
-                            <input placeholder={`Search store menu`}></input>
+                            <input
+                            // value={search}
+                            // onChange={((e) => setSearch(e.target.value))}
+                            onKeyDown={((e) => {
+                                if (e.key === 'Enter') {
+                                    setSearch(e.target.value);
+                                  }
+                            })}
+                            placeholder={`Search store menu`}></input>
                             </div>
                             </div>
                         </div>
@@ -287,7 +357,7 @@ if (menu?.length) {
                                 setMark(-1)
                                 })}  style={{ position: "relative",  overflow: "hidden", margin: "0px" }}>
                                 <div id={mark == -1 ? "mark-two" : "hidden"}></div>
-                                <p style={{ padding: "2px 0px", overflow: "hidden" }}>Reviews</p>
+                                <p style={{ color: mark == -1 ? "black" : "rgb(73, 73, 73)",  padding: "2px 0px" }}>Reviews</p>
                             </p>
                             {keys.map((category, i) =>
                             <p onClick={(() => {
@@ -295,11 +365,14 @@ if (menu?.length) {
                                 setMark(i)
                                 })}  style={{ position: "relative",  overflow: "hidden", margin: "0px"  }}>
                                 <div id={mark == i ? "mark-two" : "hidden"}></div>
-                                <p style={{ padding: "2px 0px" }}>{category}</p>
+                                <p style={{ color: mark == i ? "black" : "rgb(73, 73, 73)",  padding: "2px 0px" }}>{category}</p>
                             </p>
                             )}
                             </span>
+
+
             </div>
+
         <div className="rp">
             <div id="pages"> <span>Home</span> / <span>{restaurant.address?.split(",")[1]}</span> / <span>{restaurant.type}</span> / <span>{restaurant.name}</span> </div>
             <div style={{ backgroundImage: `url(${restaurant.RestaurantImage?.bannerUrl})`, borderRadius: "16px" }} id="rp-one">
@@ -411,7 +484,8 @@ if (menu?.length) {
                             </div>
                                     )}
                                     <div style={{ padding: "0px 16px", paddingBottom: "16px" }}>
-                                    <button id="more-reviews-two">See More Reviews <i style={{ width: "16px", height: "16px", fontSize: "16px", color: "black"}} class="fi fi-rr-arrow-small-down"></i></button>
+
+                                    <button onClick={(() => setRoll(true))} id="more-reviews-two">{reviews?.length ? "See More Reviews" : "No Reviews"} { reviews?.length > 0 && <i style={{ width: "16px", height: "16px", fontSize: "16px", color: "black"}} class="fi fi-rr-arrow-small-down"></i>}</button>
                                     </div>
                             </div>
                         </div>
@@ -475,7 +549,7 @@ if (menu?.length) {
                         </div>
                     </div> */}
                     <div style={{ padding: "0px", display: "flex", flexDirection: "column", gap: "15px" }} >
-                        <button style={{ alignItems: "center", width: "100%", justifyContent: "center", display: "flex", gap: "10px" }} id="group-butt">
+                        <button onClick={(() => window.alert("Feature coming soon"))}  style={{ alignItems: "center", width: "100%", justifyContent: "center", display: "flex", gap: "10px" }} id="group-butt">
                             <i style={{ width: "14px", width: "14px", fontSize: "14px"}} class="fi fi-sr-users-medical"></i> Group Order</button>
                         <div style={{ padding: "0px" }} className="group-two" id= "group">
                             <span>
@@ -493,7 +567,90 @@ if (menu?.length) {
         </div>
                 </div>
             </div>
+            <div className="rp-h" style={{ border: "0px" }}id={"rp-head"}>
+                        <div id="rp-h-one">
+
+                            <div style={{ width: "50%", display: "flex", gap: "5px", flexDirection: "column"}}>
+                            <h1 style={{ gap: "10px", fontSize: "20px", whiteSpace: "nowrap", display: "flex", alignItems: "center" }}>Lunch Menu
+                            {/* <i style={{ width: "20px", height: "20px", fontSize: "20px" }} class="fi fi-rr-angle-small-down"></i> */}
+                            </h1>
+                            <p style={{ width: "100%", gap: "4px", margin: "0px", color: "#767676", fontSize: "13px", display: "flex", alignItems: "center"}}>
+                                {restaurant.RestaurantTime?.monday}
+                            </p>
+                            </div>
+
+                            <div style={{ display: "flex", justifyContent: "flex-end", width: "50%", alignItems: "flex-end"}}>
+                            <div id="item-search">
+                            <i class="fi fi-rr-search"></i>
+                            <input placeholder={`Search store menu`}></input>
+                            </div>
+                            </div>
+                        </div>
+                        <span id="scroll-to" style={{ gap: "15px", justifyContent: "center", fontSize: "13px", width: "100%", display: "flex", color: "#767676"}}>
+                            {/* <p onClick={(() => {
+                                setScroll(true)
+                                setMark(-5)
+                                })} style={{ position: "relative",  overflow: "hidden" }}>
+                                <div id={mark == -5 ? "mark-two" : "hidden"}></div>
+                                <p style={{ padding: "2px 0px" }}>Order it again</p>
+                            </p>
+                            <p onClick={(() => {
+                                setScroll(true)
+                                setMark(-4)
+                                })}  style={{ position: "relative",  overflow: "hidden" }}>
+                                <div id={mark == -4 ? "mark-two" : "hidden"}></div>
+                                <p style={{ padding: "2px 0px" }}>Item Deals</p>
+                            </p>
+                            <p onClick={(() => {
+                                setScroll(true)
+                                setMark(-3)
+                                })}  style={{ position: "relative",  overflow: "hidden" }}>
+                                <div id={mark == -3 ? "mark-two" : "hidden"}></div>
+                                <p style={{ padding: "2px 0px" }}>Reviews</p>
+                            </p>
+                            <p onClick={(() => {
+                                setScroll(true)
+                                setMark(-2)
+                                })}  style={{ position: "relative",  overflow: "hidden" }}>
+                                <div id={mark == -2 ? "mark-two" : "hidden"}></div>
+                                <p style={{ padding: "2px 0px" }}>Most Ordered</p>
+                            </p> */}
+                            <p onClick={(() => {
+                                setScroll(true)
+                                setMark(-1)
+                                })}  style={{ position: "relative",  overflow: "hidden", margin: "0px" }}>
+                                <div id={mark == -1 ? "mark-two" : "hidden"}></div>
+                                <p style={{ color: mark == -1 ? "black" : "rgb(73, 73, 73)",  padding: "2px 0px" }}>Reviews</p>
+                            </p>
+                            {keys.map((category, i) =>
+                            <p onClick={(() => {
+                                setScroll(true)
+                                setMark(i)
+                                })}  style={{ position: "relative",  overflow: "hidden", margin: "0px"  }}>
+                                <div id={mark == i ? "mark-two" : "hidden"}></div>
+                                <p style={{ color: mark == i ? "black" : "rgb(73, 73, 73)",  padding: "2px 0px" }}>{category}</p>
+                            </p>
+                            )}
+                            </span>
+                                <div style={{ backgroundColor: "rgb(231, 231, 231)", height: "1px", width: "80%" }}></div>
+
+            </div>
             <div id="rp-three">
+                        {keys?.length == 0 ?
+                            <>
+                            <div style={{ textAlign: "center"}} id="no-results">
+                            <img src="https://img.cdn4dd.com/s/managed/consumer/search/NoResult.svg"></img>
+                            { !search ? <h1 style={{ margin: "0px 4px"}}>Menu Unavilable</h1> :
+                                <>
+                                <h1 style={{ margin: "0px 4px"}}>No Results</h1>
+                            <p>There are no items that match your search. Try searching for a different item <br></br>
+                                or use the section tabs to browse other menu items.</p>
+                            <button style={{ margin: "40px 0px", justifyContent: "center", backgroundColor: "red", color: "white", width: "50%" }} id="browse-again" onClick={(() => setSearch(""))}>Reset Search</button>
+                                </>
+                            }
+                            </div>
+                            </>
+                        : <>
                     { keys.map((key, i) =>
                     <div ref={el => divRefs.current[`mi-${i}`] = el} style={{ margin: "20px 0px" }} id={`mi-${i}`} className="menu">
                         <h1 style={{ fontSize: "24px", whiteSpace: "nowrap" }}>{key}</h1>
@@ -523,6 +680,7 @@ if (menu?.length) {
                         </div>
                     </div>
                         )}
+                        </>}
                         <div id="print">
                         <p style={{ fontSize: "13px", color: "#767676", margin: "0px"}}> Prices on this menu are set directly by the Merchant.</p>
                         <p style={{ fontSize: "13px", color: "#767676", margin: "0px"}}>2,000 calories a day is used for general nutrition advice, but calorie needs vary. Additional nutrition information available here</p>
@@ -530,7 +688,7 @@ if (menu?.length) {
                             <i style={{ width: "24px", height: "24px", fontSize: "24px", marginTop: "10px", marginBottom: "0px" }} class="fi fi-rs-marker"></i>
                         <h1 style={{  marginTop: "0px"}} id="r-addy">{restaurant.type} <h1 style={{ color: "#767676" }}>delivered from</h1> {restaurant.name}%#39;s <h1 style={{ color: "#767676" }}>at</h1> {restaurant.address}</h1>
                         </div>
-                        <div>
+                        { reviews?.length == 0 && <div style={{ padding: "4% 0%" }}>
                         <h1 style={{ fontSize: "32px", whiteSpace: "nowrap", margin: "0px" }}>Ratings & Reviews</h1>
                                 <p style={{ gap: "3px", margin: "18px 0px", color: "#767676", fontSize: "16px", display: "flex", alignItems: "center"}}>
                                     <span style={{ color: "black", fontSize: "18px", fontWeight: "600" }}>{allReviews(restaurant.Reviews)}</span>
@@ -579,7 +737,7 @@ if (menu?.length) {
                                         <button onClick={(() => history.push(`/restaurant/${id}/reviews`))} id="more-reviews-two" >See More<i style={{ width: "16px", height: "16px", fontSize: "16px", color: "black"}} class="fi fi-rr-arrow-small-down"></i></button>
                                     </div>
                                 </div>
-                        </div>
+                        </div>}
             </div>
     <RestaurantFoot />
         </div>
