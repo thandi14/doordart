@@ -30,8 +30,9 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import HomeNavTwo from "./HomeNavTwo";
 import ProfileButton from "./ProfileButton";
 import Profile from "./Profile";
-import HomePageTwo from "./index2";
-import HomePageThree from "./index3";
+import Restaurants from "./Restaurants";
+import RestaurantsTwo from "./RestaurantsTwo";
+import SideBar from "./index2";
 
 
 function HomePage({ isLoaded }) {
@@ -126,7 +127,7 @@ function HomePage({ isLoaded }) {
     display: "flex",
     transition: "transform 0.5s ease",
     transform: `translateX(-${length * 50}%)`,
-    marginBottom: "10px"
+    position: "relative"
   };
 
   let franchises = Object.values(restaurants).sort((a, b) => a.miles - b.miles)
@@ -173,74 +174,12 @@ function HomePage({ isLoaded }) {
   return (
     <div style={{ position: "relative"}}>
     {user ? <HomeNavTwo /> : <HomeNav /> }
+
     <div style={{ display: "flex"}} >
-
-    <div className="side-bar" style={{ position: "sticky", height: "100vh", top: "64px", zIndex: 14}}>
-
-    { user?.id && <div onClick={(() => window.alert("Feature coming soon!"))} id="side-bar">
-        <span onClick={((e) => e.stopPropagation())} className="page">
-            <i class="fi fi-rs-house-chimney"></i>
-            <p>Home</p>
-        </span>
-        <span >
-            <i class="fi fi-rr-apple-whole"></i>
-            <p>Grocery</p>
-        </span>
-        <span>
-            <i class="fi fi-rr-shopping-bag"></i>
-            <p>Retail</p>
-        </span>
-        <span>
-             <i class="fi fi-rr-hamburger-soda"></i>
-            <p>Convenience</p>
-        </span>
-        <span>
-            <i class="fi fi-rr-glass-cheers"></i>
-            <p>Alcohol</p>
-        </span>
-        <span>
-        <i class="fi fi-rr-tags"></i>
-            <p>Offers</p>
-        </span>
-        <span>
-        <i class="fi fi-rr-lipstick"></i>
-            <p>Beauty</p>
-        </span>
-        <span>
-            <i class="fi fi-rr-paw"></i>
-            <p>Pets</p>
-        </span>
-        <span>
-        <i class="fi fi-rr-search-alt"></i>
-        <p>Browse All</p>
-        </span>
-        <div id="line-bar"></div>
-        <span>
-            <i id="notify" class="fi fi-rr-cowbell"></i>
-            <p>Notifications</p>
-        </span>
-        <span>
-            <i class="fi fi-rr-receipt"></i>
-            <p>Orders</p>
-        </span>
-        <span onClick={((e) => {
-            e.stopPropagation()
-            setProfile(true)
-        })} >
-            <i class="fi fi-rr-user"></i>
-            <p>Account</p>
-        </span>
-        { profile && <div ref={targetRef} style={{ left: "220px"}}  id="profile-modal">
-            <Profile user={user} d={profile} />
-        </div>}
-    </div>}
-        </div>
-    <div style={{ display: "flex", width: user?.id ? "79.5%" : "94%"}} >
-    <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
-    <div>
-
-    </div>
-    <div style={{ margin: "0.4% 3% 0px", overflow: "hidden"}} className="food-type">
+    { user && <SideBar />}
+    <div style={{ display: "flex", flexDirection: "column", width: user ? "84%" : "100%" }}>
+    <div style={{ margin: "0.4% 3% 0px", overflow: "hidden" }} >
+    <div style={{ overflow: "hidden"}} className="food-type">
     { length > 0 && <i id="gotobutt" style={{ left: "0"}} onClick={goToPrev} class="fi fi-sr-angle-circle-left"></i>}
     <div style={sliderStyle} id="food-type">
     <span onMouseEnter={(() => setIndex(1))} onClick={(() => setCatOne("Breakfast"))} id="categories">
@@ -318,8 +257,6 @@ function HomePage({ isLoaded }) {
     </div>
     { length == 0 && <i id="gotobutt" style={{ right: "0"}} onClick={goToNext} class="fi fi-sr-angle-circle-right"></i>}
     </div>
-    <div>
-
     </div>
     <div style={{borderBottom: hide && "1px solid rgb(231, 231, 231)", padding: "1% 3%"}} id="filterings">
     <div style={{ backgroundColor: "white" }} id="types">
@@ -580,20 +517,18 @@ function HomePage({ isLoaded }) {
     </div> }
     </div>
     <div style={{ padding: "0.4% 3%"}} className="hp">
-    { !catOne && !Object.values(catTwo).length && <div className="types">
-    { saved.length > 0 && <HomePageTwo arr={saved} title={"Saved stores"} />}
-    { ordered.length > 0 && <HomePageTwo arr={ordered} title={"Order it again"} />}
+    { (saved.length > 0 || ordered.length > 0)  && <div className="types">
+    { saved.length > 0 && <Restaurants arr={saved} title={"Saved stores"} />}
+    { ordered.length > 0 && <Restaurants arr={ordered} title={"Order it again"} />}
     </div> }
     {category || Object.values(catTwo).length ? null : <div style={{ width: "100%", fontSize: "30px"}}><h1 style={{fontSize: "30px"}}>All Stores</h1></div>}
-    <HomePageThree category={catOne} filter={catTwo} restaurants={franchises} />
+    <RestaurantsTwo category={catOne} filter={catTwo} restaurants={franchises} />
     { !user?.id && <HomeFoot />}
     { user?.id && <HomeFoot />}
     </div>
     </div>
     </div>
     </div>
-        </div>
-
   );
 }
 

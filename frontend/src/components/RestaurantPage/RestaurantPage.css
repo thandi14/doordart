@@ -1134,6 +1134,12 @@
     font-family: TT Norms, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";;
 }
 
+#in-a-bar {
+    height: 100%;
+    background-color: gold;
+    border-radius: 8px;
+}
+
 #empty-cart {
     width: 100%;
     display: flex;
