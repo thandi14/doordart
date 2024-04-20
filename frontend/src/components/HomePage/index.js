@@ -12,6 +12,7 @@ import taco from "./images/taco.png"
 import cake from "./images/cake.png"
 import sandwich from "./images/sandwich.png"
 import chicken from "./images/chickenBucket.png"
+import american from "./images/hotDog.png"
 import croissant from "./images/croissant.png"
 import salad from "./images/salad.png"
 import pizza from "./images/pizza.png"
@@ -125,6 +126,7 @@ function HomePage({ isLoaded }) {
     display: "flex",
     transition: "transform 0.5s ease",
     transform: `translateX(-${length * 50}%)`,
+    marginBottom: "10px"
   };
 
   let franchises = Object.values(restaurants).sort((a, b) => a.miles - b.miles)
@@ -171,7 +173,7 @@ function HomePage({ isLoaded }) {
   return (
     <div style={{ position: "relative"}}>
     {user ? <HomeNavTwo /> : <HomeNav /> }
-    <div style={{ display: "flex", width: "79.5%"}} >
+    <div style={{ display: "flex", width: user?.id ? "79.5%" : "94%"}} >
     <div className="side-bar" style={{ position: "sticky", height: "100vh", top: "64px", zIndex: 14}}>
 
     { user?.id && <div onClick={(() => window.alert("Feature coming soon!"))} id="side-bar">
@@ -283,9 +285,9 @@ function HomePage({ isLoaded }) {
     <img style={{ transform: category == "Healthy" ? "rotate(20deg)": "" }} className={index % 2 === 0 ? "rotate-left-on-hover" : "rotate-right-on-hover"} src={salad}></img>
     <p style={{ color: category == "Healthy" ? "red" : ""  }}  >Healthy</p>
     </span>
-    <span onMouseEnter={(() => setIndex(12))} onClick={(() => setCatOne("Asian"))}id="categories">
-    <img style={{ transform: category == "Asian" ? "rotate(-20deg)": "" }} className={index % 2 === 0 ? "rotate-left-on-hover" : "rotate-right-on-hover"} src="https://media1.giphy.com/media/VJZeYN1kHRDLjfwCH2/giphy.gif?cid=6c09b952glr8drzqy88rupfm9cgb5nnzkrv7up0oz3g7iz42&ep=v1_internal_gif_by_id&rid=giphy.gif&ct=s"></img>
-    <p style={{ color: category == "Asian" ? "red" : ""  }}  >Asian</p>
+    <span onMouseEnter={(() => setIndex(12))} onClick={(() => setCatOne("American"))}id="categories">
+    <img style={{ transform: category == "American" ? "rotate(-20deg)": "" }} className={index % 2 === 0 ? "rotate-left-on-hover" : "rotate-right-on-hover"} src={american}></img>
+    <p style={{ color: category == "American" ? "red" : ""  }}  >American</p>
     </span>
     <span onMouseEnter={(() => setIndex(13))} onClick={(() => setCatOne("Pizza"))}id="categories">
     <img style={{ transform: category == "Pizza" ? "rotate(20deg)": "" }} className={index % 2 === 0 ? "rotate-left-on-hover" : "rotate-right-on-hover"} src={pizza}></img>
@@ -317,7 +319,7 @@ function HomePage({ isLoaded }) {
     <div>
 
     </div>
-    <div style={{borderBottom: hide && "1px solid rgb(231, 231, 231)"}} id="filterings">
+    <div style={{borderBottom: hide && "1px solid rgb(231, 231, 231)", padding: "1% 3%"}} id="filterings">
     <div style={{ backgroundColor: "white" }} id="types">
         <div ref={targetRef2}>
         <button onClick={(() => {
@@ -575,7 +577,7 @@ function HomePage({ isLoaded }) {
     </div>
     </div> }
     </div>
-    <div style={{ padding: !user?.id ? "0.4% 9.5%" : "0.4% 3%"}} className="hp">
+    <div style={{ padding: "0.4% 3%"}} className="hp">
     { !catOne && !Object.values(catTwo).length && <div className="types">
     { saved.length > 0 && <HomePageTwo arr={saved} title={"Saved stores"} />}
     { ordered.length > 0 && <HomePageTwo arr={ordered} title={"Order it again"} />}
@@ -585,8 +587,8 @@ function HomePage({ isLoaded }) {
     { user?.id && <HomeFoot />}
     </div>
     </div>
-    { !user?.id && <HomeFoot />}
     </div>
+    { !user?.id && <HomeFoot />}
         </div>
 
   );

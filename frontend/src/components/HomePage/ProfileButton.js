@@ -35,8 +35,10 @@ function ProfileButton({ user, d }) {
         setDrop(false)
       })} class="fi fi-br-cross"></i>
       </div>
-      <div className="profile">
-       <span onClick={(() => history.push('/home'))}>
+      <div onClick={(() => window.alert("Feature coming soon"))} style={{ height: user?.id ? "600px" : "100vh"}}  className="profile">
+       <span onClick={((e) => {
+        e.stopPropagation()
+        history.push('/home')})}>
         <i class="fi fi-rs-house-chimney"></i>
         <p>Home</p>
         </span>
@@ -58,7 +60,7 @@ function ProfileButton({ user, d }) {
         <div id="line-three"></div>
         { !user &&
         <>
-        <span>
+        <span onClick={(() => window.alert("Feature coming soon"))}>
         <i class="fi fi-rr-life-ring"></i>
         <p>Help</p>
         </span>
@@ -68,7 +70,8 @@ function ProfileButton({ user, d }) {
         <span>
         <i class="fi fi-br-clipboard-user"></i>
         <div id="acc">
-        { !user && <p onClick={(() => {
+        { !user && <p onClick={((e) => {
+          e.stopPropagation()
                 setModalContent(<LoginFormModal />)
               })}>Sign Up or Sign In</p>}
         { user &&
@@ -89,12 +92,12 @@ function ProfileButton({ user, d }) {
           <p>Saved Stores</p>
         </span>
         <div id="line-three"></div>
-        <span>
+        <span onClick={(() => window.alert("Feature coming soon"))}>
           <i class="fi fi-rs-money-bill-wave"></i>
           <p>Payment</p>
         </span>
         <div id="line-three"></div>
-        <span>
+        <span onClick={(() => window.alert("Feature coming soon"))}>
           <i class="fi fi-rr-credit-card"></i>
           <p>Gift Card</p>
         </span>
@@ -106,7 +109,7 @@ function ProfileButton({ user, d }) {
         Get 4% cash back and 1 year of DashPass</p> */}
         {user &&
         <>
-        <span>
+        <span onClick={(() => window.alert("Feature coming soon"))}>
         <i class="fi fi-rr-life-ring"></i>
         <p>Help</p>
         </span>
@@ -117,38 +120,38 @@ function ProfileButton({ user, d }) {
         </span>
         </>}
         <div id="divider"></div>
-        <div style={{ padding: "16px"}}>
+        <div onClick={(() => window.alert("Feature coming soon"))} style={{ padding: "16px"}}>
         <button id="english"><i class="fi fi-rs-globe"></i>English (US)<i class="fi fi-rr-angle-small-down"></i></button>
         </div>
-        <span>
+        <span onClick={(() => window.alert("Feature coming soon"))}>
         <p style={{ fontSize: "16px", fontWeight: "500"}}>About Us</p>
         </span>
-        <span>
+        <span onClick={(() => window.alert("Feature coming soon"))}>
         <p style={{ fontSize: "16px", fontWeight: "500"}}>Careers</p>
         </span>
-        <span>
+        <span onClick={(() => window.alert("Feature coming soon"))}>
         <p style={{ fontSize: "16px", fontWeight: "500"}}>DoorDash Newsroom</p>
         </span>
-        <span>
+        <span onClick={(() => window.alert("Feature coming soon"))}>
         <p style={{ fontSize: "16px", fontWeight: "500"}}>About Engineering</p>
         </span>
-        <span>
+        <span onClick={(() => window.alert("Feature coming soon"))}>
         <p style={{ fontSize: "16px", fontWeight: "500"}}>Engineering Blog</p>
         </span>
-        <span>
+        <span onClick={(() => window.alert("Feature coming soon"))}>
         <p style={{ fontSize: "16px", fontWeight: "500"}}>Accessibility</p>
         </span>
-        <span>
+        <span onClick={(() => window.alert("Feature coming soon"))}>
         <p style={{ fontSize: "16px", fontWeight: "500"}}>Be a Dasher</p>
         </span>
-        <span>
+        <span onClick={(() => window.alert("Feature coming soon"))}>
         <p style={{ fontSize: "16px", fontWeight: "500"}}>Be a Partner Restaurant</p>
         </span>
-        <span>
+        <span onClick={(() => window.alert("Feature coming soon"))}>
         <p style={{ fontSize: "16px", fontWeight: "500"}}>Dashers for Deliveries</p>
         </span>
         <span>
-        <p style={{ fontSize: "16px"}}>////</p>
+        {/* <p style={{ fontSize: "16px"}}>////</p> */}
         </span>
       </div>
     </div>

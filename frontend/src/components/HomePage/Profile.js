@@ -41,7 +41,7 @@ function Profile({ user, d }) {
 
 
   const logout = (e) => {
-    e.preventDefault();
+    e.stopPropagation();
     history.push('/')
     dispatch(sessionActions.logout());
   };
@@ -51,7 +51,7 @@ function Profile({ user, d }) {
   const ulClassName = drop ? "" : "hidden";
 
   return (
-    <div ref={targetRef} className={ulClassName} id="profile-menu">
+    <div ref={targetRef} style={{ height: user.id ? "600" : "100%"}} className={ulClassName} id="profile-menu">
       <div style={{position: "absolute"}}>
       <div id="close-a">
       <h1 id="acc-sett">Account</h1>
@@ -114,7 +114,7 @@ function Profile({ user, d }) {
         <span onClick={logout}>
         <p style={{ fontSize: "16px", fontWeight: "500"}}>Sign Out</p>
         </span>
-        <span>
+        {/* <span>
         <p style={{ fontSize: "16px", fontWeight: "500"}}>Engineering Blog</p>
         </span>
         <span>
@@ -131,7 +131,7 @@ function Profile({ user, d }) {
         </span>
         <span>
         <p style={{ fontSize: "16px"}}>////</p>
-        </span>
+        </span> */}
       </div>
     </div>
       </div>

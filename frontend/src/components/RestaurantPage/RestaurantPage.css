@@ -651,8 +651,12 @@
     flex: 1 1;
     flex-direction: column;
     box-sizing: border-box;
-    max-width: 94%;
+    width: 94%;
     /* width: 110vh; */
+}
+
+.profile > span:hover {
+    background-color: rgb(231, 231, 231);
 }
 
 #cart-form {

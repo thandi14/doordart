@@ -219,12 +219,13 @@
 .profile {
     background-color: white;
     overflow-y: scroll;
+    overflow-x: hidden;
     position: absolute;
     left: 0;
+    border-radius: 8px;
     width: 352px;
-    /* display: flex; */
-    height: 100vh;
-    flex-direction: column;
+    padding-bottom: 20px;
+    height: 600px;
 }
 
 .hidden {
@@ -287,15 +288,15 @@
     box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 24px;
     display: flex;
     align-items: flex-start;
-    overflow: hidden;
-    height: 600px;
+    padding-bottom: 40px;
+    height: 500px;
     z-index: 10;
     position: absolute;
-    font-family: TT Norms, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";;
+    font-family: TT Norms, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     /* right: -160%; */
     bottom: 10%;
     width: 352px;
-    top: 20%;
+    top: 5%;
     outline: none;
 }
 
@@ -304,6 +305,7 @@
     width: 352px;
     box-sizing: border-box;
     display: flex;
+    border-radius: 8px;
     align-items: center;
     background-color: white;
     position: sticky;

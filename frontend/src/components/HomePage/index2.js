@@ -78,6 +78,7 @@ function HomePageTwo({ arr, title }) {
     display: "flex",
     transition: "transform 0.5s ease",
     transform: `translateX(-${lengthTwo * 50}%)`,
+    margin: "10px 0px"
   };
 
   const saveRestaurant = (id) => {
@@ -120,12 +121,12 @@ function HomePageTwo({ arr, title }) {
     <div className="types">
     { arr.length > 0 && !category && <div style={{ overflow: "hidden"}} className="saved">
     <div style={{ boxSizing: "border-box"}} id="saved">
-    <h1 style={{ fontSize: "26px"}}>{title}</h1>
+    <h1 style={{ fontSize: "26px", margin: "0px"}}>{title}</h1>
         <div style={{ display: "flex", gap: "18px", alignItems: "center", fontSize: "14px", fontWeight: "600"}}>
             <p>See All</p>
             <span style={{ display: "flex", gap: "10px", boxSizing: "border-box"}}>
-                { <i id="gotobutt-two" style={{ left: "0"}} onClick={goToPrevTwo} class="fi fi-sr-angle-circle-left"></i>}
-                { <i id="gotobutt-two" style={{ right: "0" }} onClick={goToNextTwo} class="fi fi-sr-angle-circle-right"></i>}
+                { <i id="gotobutt-two" style={{ cursor: lengthTwo == 0 && "not-allowed", left: "0", color: lengthTwo == 0 && "rgb(247, 247, 247)", backgroundColor: lengthTwo == 0 && "rgb(178, 178, 178)" }} onClick={goToPrevTwo} class="fi fi-sr-angle-circle-left"></i>}
+                { <i id="gotobutt-two" style={{ cursor: lengthTwo == arr.length - 1 && "not-allowed", left: "0", color: lengthTwo == arr.length - 1 && "rgb(247, 247, 247)", backgroundColor: lengthTwo == arr.length - 1 && "rgb(178, 178, 178)", right: "0"}} onClick={goToNextTwo} class="fi fi-sr-angle-circle-right"></i>}
             </span>
         </div>
     </div>

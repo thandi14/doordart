@@ -214,7 +214,7 @@ function RestaurantNavTwo({ isLoaded }) {
         </div>
         {/* <i style={{ fontSize: "18px"}} id="notify" class="fi fi-rr-cowbell"></i> */}
         <i style={{ fontSize: "16px"}} onClick={(() => setDropTwo(!dropTwo))} id={shoppingCart.CartItems?.length == 0 ? "cart-two" : "cart"} class="fi fi-rr-shopping-cart">
-        <p>{shoppingCart.CartItems?.length}</p>
+        <p>{shoppingCart.CartItems?.length ? shoppingCart.CartItems?.length : 0}</p>
         { cMenu &&
           <div style={{ right: "0" }}  onClick={((e) => e.stopPropagation())} id="cart-menu">
             <div style={{ cursor: "default" }} id="c-menu">

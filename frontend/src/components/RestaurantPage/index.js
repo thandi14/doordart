@@ -233,7 +233,9 @@ if (menu?.length) {
     {user ? <RestaurantNav /> : <RestaurantNavTwo />}
 
     <div style={{ display: "flex"}} >
-    <div className="side-bar" onMouseEnter={(() => setBar(true))} onMouseLeave={(() => setBar(false))}  style={{ position: "sticky", height: "100vh", top: "64px", zIndex: 10}}>
+    <div className="side-bar" onMouseEnter={(() => setBar(true))} onMouseLeave={(() => {
+        setProfile(false)
+        setBar(false)})}  style={{ position: "sticky", height: "100vh", top: "64px", zIndex: 10}}>
 
     { user?.id && <div style={{ width: "auto"}} id="side-bar">
         <span onClick={(() => history.push('/home'))} className="page">

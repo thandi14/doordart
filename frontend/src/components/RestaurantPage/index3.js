@@ -37,6 +37,7 @@ function FranchiseTwo({ isLoaded }) {
   const [ hide, setHide ] = useState(true)
   const [ bar, setBar ] = useState(false)
   const [ scroll, setScroll ] = useState(false)
+  const [ roll, setRoll ] = useState(false)
   const [ search, setSearch ] = useState("")
   const dispatch = useDispatch()
   const { location, setRecentId, profile, setProfile } = useFilters()
@@ -269,10 +270,33 @@ function FranchiseTwo({ isLoaded }) {
         return `${month}/${day}/${year}`;
     }
 
+    useEffect(() => {
+
+        const rollToTarget = () => {
+            const handleScrollOrNavigate = () => {
+                const targetElement = document.getElementById(`grid`);
+                if (targetElement && roll) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                    setRoll(false)
+                }
+            };
+
+            if (document.readyState === 'complete' || document.readyState === 'interactive') {
+                handleScrollOrNavigate();
+            } else {
+                document.addEventListener('DOMContentLoaded', handleScrollOrNavigate);
+            }
+        };
+
+        rollToTarget();
+
+    }, [roll]);
+
+
 
   return (
 
-        <div id="rp-st">
+        <div style={{ width: "100%"}} id="rp-st">
 
             <div className="rp-h" id={"hidden"}>
                         <div id="rp-h-one">
@@ -460,7 +484,7 @@ function FranchiseTwo({ isLoaded }) {
                             </div>
                                     )}
                                     <div style={{ padding: "0px 16px", paddingBottom: "16px" }}>
-                                    <button id="more-reviews-two">See More Reviews <i style={{ width: "16px", height: "16px", fontSize: "16px", color: "black"}} class="fi fi-rr-arrow-small-down"></i></button>
+                                    <button onClick={(() => setRoll(true))} id="more-reviews-two">See More Reviews <i style={{ width: "16px", height: "16px", fontSize: "16px", color: "black"}} class="fi fi-rr-arrow-small-down"></i></button>
                                     </div>
                             </div>
                         </div>
@@ -524,7 +548,7 @@ function FranchiseTwo({ isLoaded }) {
                         </div>
                     </div> */}
                     <div style={{ padding: "0px", display: "flex", flexDirection: "column", gap: "15px" }} >
-                        <button style={{ alignItems: "center", width: "100%", justifyContent: "center", display: "flex", gap: "10px" }} id="group-butt">
+                        <button onClick={(() => window.alert("Feature coming soon"))}  style={{ alignItems: "center", width: "100%", justifyContent: "center", display: "flex", gap: "10px" }} id="group-butt">
                             <i style={{ width: "14px", width: "14px", fontSize: "14px"}} class="fi fi-sr-users-medical"></i> Group Order</button>
                         <div style={{ padding: "0px" }} className="group-two" id= "group">
                             <span>
@@ -546,7 +570,9 @@ function FranchiseTwo({ isLoaded }) {
                         <div id="rp-h-one">
 
                             <div style={{ width: "50%", display: "flex", gap: "5px", flexDirection: "column"}}>
-                            <h1 style={{ gap: "10px", fontSize: "20px", whiteSpace: "nowrap", display: "flex", alignItems: "center" }}>Lunch Menu <i style={{ width: "20px", height: "20px", fontSize: "20px" }} class="fi fi-rr-angle-small-down"></i></h1>
+                            <h1 style={{ gap: "10px", fontSize: "20px", whiteSpace: "nowrap", display: "flex", alignItems: "center" }}>Lunch Menu
+                            {/* <i style={{ width: "20px", height: "20px", fontSize: "20px" }} class="fi fi-rr-angle-small-down"></i> */}
+                            </h1>
                             <p style={{ width: "100%", gap: "4px", margin: "0px", color: "#767676", fontSize: "13px", display: "flex", alignItems: "center"}}>
                                 {restaurant.RestaurantTime?.monday}
                             </p>

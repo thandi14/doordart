@@ -432,11 +432,13 @@ function Franchise({ isLoaded }) {
                             American
                         </p>
                         <p style={{ fontSize: "13px", color: "#767676", display: "flex", gap: "5px", alignItems: "center" }}>Pricing & Fees<i style={{ width: "10px", height: "10px", fontSize: "10px" }}  class="fi fi-rr-circle-i"></i></p>
-                        <button id="more">See More</button>
+                        <button onClick={(() => window.alert("Feature coming soon"))} id="more">See More</button>
                     </div>
                     <div id="line-five"></div>
                     <div id="info-two">
-                            <h1 style={{ fontSize: "20px", whiteSpace: "nowrap", display: "flex", alignItems: "center" }}>Lunch Menu <i style={{ width: "16px", height: "16px", fontSize: "16px" }} class="fi fi-rr-angle-small-down"></i></h1>
+                            <h1 style={{ fontSize: "20px", whiteSpace: "nowrap", display: "flex", alignItems: "center" }}>Lunch Menu
+                            {/* <i style={{ width: "16px", height: "16px", fontSize: "16px" }} class="fi fi-rr-angle-small-down"></i> */}
+                            </h1>
                             <p style={{ fontSize: "13px", color: "#767676"}}>{restaurant.RestaurantTime?.monday}</p>
                             <span style={{ fontSize: "13px", width: "100%", overflowY: "scroll"}}>
                             {/* <p onClick={(() => {
@@ -494,7 +496,7 @@ function Franchise({ isLoaded }) {
                         </div>
                     </div>
                     <div id="group">
-                        <button>Group Order</button>
+                        <button onClick={(() => window.alert("Feature coming soon"))} >Group Order</button>
                         <div>
                             <span>
                             <h1 style={{ fontSize: "16px", whiteSpace: "nowrap", display: "flex", margin: "0px" }}>${restaurant.deliveryFee}</h1>
@@ -517,8 +519,8 @@ function Franchise({ isLoaded }) {
                             </div>
                             <div id="add-r">
                                 <span>
-                                { <i id="gotobutt-two" style={{ left: "0", color: lengthTwo == 0 && "rgb(247, 247, 247)", backgroundColor: lengthTwo == 0 && "rgb(178, 178, 178)" }} onClick={goToPrevTwo} class="fi fi-sr-angle-circle-left"></i>}
-                                { <i id="gotobutt-two"style={{ left: "0", color: lengthTwo == ordered.length && "rgb(247, 247, 247)", backgroundColor: lengthTwo == ordered.length && "rgb(178, 178, 178)", right: "0"}} onClick={goToNextTwo} class="fi fi-sr-angle-circle-right"></i>}
+                                { <i id="gotobutt-two" style={{ cursor: lengthTwo == 0&& "not-allowed", left: "0", color: lengthTwo == 0 && "rgb(247, 247, 247)", backgroundColor: lengthTwo == 0 && "rgb(178, 178, 178)" }} onClick={goToPrevTwo} class="fi fi-sr-angle-circle-left"></i>}
+                                { <i id="gotobutt-two" style={{ cursor: lengthTwo == ordered.length && "not-allowed", left: "0", color: lengthTwo == ordered.length && "rgb(247, 247, 247)", backgroundColor: lengthTwo == ordered.length && "rgb(178, 178, 178)", right: "0"}} onClick={goToNextTwo} class="fi fi-sr-angle-circle-right"></i>}
                                 </span>
                             </div>
                         </div>

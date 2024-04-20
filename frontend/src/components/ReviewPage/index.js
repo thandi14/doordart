@@ -20,12 +20,11 @@ function ReviewPage({ isLoaded }) {
   const { user } = useSelector((state) => state.session );
   const { restaurant, reviews } = useSelector((state) => state.restaurants);
   const { id } = useParams();
-//   const { page } = useParams();
   const dispatch = useDispatch()
   const [currentPage, setCurrentPage] = useState(1);
   const { setModalContent } = useModal()
   const [threshold, setThreshold] = useState(450);
-  const { location, setRecentId, profile, setProfile } = useFilters()
+  const { location, profile, setProfile } = useFilters()
   const history = useHistory()
   const targetRef = useRef()
 
@@ -104,8 +103,6 @@ function ReviewPage({ isLoaded }) {
 
     let allReviews = Object.values(reviews)
 
-    console.log(allReviews)
-
 
   return (
     <div style={{ position: "relative"}}>
@@ -113,8 +110,10 @@ function ReviewPage({ isLoaded }) {
     <div style={{ display: "flex"}}>
     <div className="side-bar" style={{ position: "sticky", height: "100vh", top: "64px", zIndex: 10}}>
 
-{ user?.id && <div id="side-bar">
-    <span onClick={(() => history.push('/home'))} className="page">
+{ user?.id && <div onClick={(() => window.alert("Feature coming soon"))}  id="side-bar">
+    <span onClick={((e) => {
+        e.stopPropagation()
+        history.push('/home')})} className="page">
         <i class="fi fi-rs-house-chimney"></i>
         <p>Home</p>
     </span>
@@ -159,7 +158,9 @@ function ReviewPage({ isLoaded }) {
         <i class="fi fi-rr-receipt"></i>
         <p>Orders</p>
     </span>
-    <span onClick={(() => setProfile(true))} >
+    <span onClick={((e) => {
+        e.stopPropagation()
+        setProfile(true)})} >
         <i class="fi fi-rr-user"></i>
         <p>Account</p>
     </span>
