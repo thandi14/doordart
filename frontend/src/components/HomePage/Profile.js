@@ -99,7 +99,7 @@ function Profile({ user, d }) {
         <span>
         <div id="acc">
             <p style={{ fontSize: "16px", fontWeight: "500"}}>Account</p>
-            <p style={{ fontSize: "12px", color: "#767676"}}>Thandi Mpofu</p>
+            <p style={{ fontSize: "12px", color: "#767676"}}>{user.firstName} {user.lastName}</p>
         </div>
         </span>
         <span>

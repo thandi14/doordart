@@ -24,6 +24,7 @@ function RestaurantNav() {
   const { location, item, setItem, count } = useFilters()
   const [ lMenu, setLMenu ] = useState(false)
   const [ cMenu, setCMenu ] = useState(false)
+  const [ sc, setSc ] = useState([])
   const targetRef = useRef()
   const { setModalContent } = useModal()
   const { setLocation } = useFilters()
@@ -46,7 +47,17 @@ function RestaurantNav() {
 
     }, [item]);
 
-    // console.log(item)
+    useEffect(() => {
+      if (shoppingCart.message) {
+          setSc([])
+      }
+      else {
+          let cart = shoppingCart.CartItems;
+          setSc(cart);
+      }
+  }, [shoppingCart]);
+
+  console.log(sc);
 
   const handlePlaceChanged = () => {
     const autocomplete = autocompleteRef.current;
@@ -87,8 +98,6 @@ function RestaurantNav() {
 
   }, []);
 
-  let sc = shoppingCart.CartItems
-
   return (
     <>
     {/* <ProfileButton user={sessionUser} d={drop} /> */}
@@ -113,7 +122,7 @@ function RestaurantNav() {
 
         </div>
         {/* <div className="search"> */}
-        <i style={{ width: "30px" }} onClick={(() => setDropTwo(!dropTwo))} id={sc?.length > 0 || Object.values(shoppingCart).length > 0 ? "cart-three" : "cart-two"} class="fi fi-rr-shopping-cart">
+        <i style={{ width: sc?.length == 0 && "30px" }} onClick={(() => setDropTwo(!dropTwo))} id={sc?.length == 0 ? "cart-three" : "cart-two"} class="fi fi-rr-shopping-cart">
           { lMenu &&
           <div style={{ right: "0" }}  onClick={((e) => e.stopPropagation())} id="addy-menu">
             <div id="a-menu" style={{ padding: "16px", color: "black" }}>
@@ -181,12 +190,12 @@ function RestaurantNav() {
                 </div>
                 <div style={{backgroundColor: "rgb(231, 231, 231)", height: "1px", width: "100%"}} id="divider-two"></div>
                 <button onClick={(() => setDropTwo(!dropTwo))} style={{ display: "flex", justifyContent: "center" }}><p>Go to cart</p></button>
-                <button id="cart-c" style={{ backgroundColor: "red", color: "white" }}><p>Checkout</p> {cartItem.price * count}</button>
+                <button onClick={(() => setDropTwo(!dropTwo))}  id="cart-c" style={{ backgroundColor: "red", color: "white" }}><p>Checkout</p> {cartItem.price * count}</button>
                 </div>
             </div>
           </div>
           }
-          <p>{sc?.length}</p>
+          { sc?.length > 0 && <p>{sc?.length}</p>}
         </i>
         </div>
     </div>

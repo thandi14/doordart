@@ -1118,7 +1118,7 @@
 
 .shopping-menu {
     position: sticky;
-    z-index: 15;
+    z-index: 17;
     top: 0;
 }
 
@@ -1130,7 +1130,7 @@
     position: absolute;
     right: 0;
     top: 0;
-    z-index: 5;
+    z-index: 17;
     font-family: TT Norms, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";;
 }
 

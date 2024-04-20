@@ -177,6 +177,11 @@ export const thunkDeleteCart = (id) => async (dispatch) => {
     return response;
 };
 
+export const thunkCreateOrder = (id) => async (dispatch) => {
+  dispatch(deleteCart(id));
+  return "Processing Order";
+};
+
 
 let initialState = {
    shoppingCarts: {},

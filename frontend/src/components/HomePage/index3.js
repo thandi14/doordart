@@ -147,7 +147,7 @@ function HomePageThree({ filter, category, restaurants }) {
         {franchises.map((f, id) =>
         <>
             <div onClick={(() => history.push(`/restaurant/${f.id}`))} className="restaurant" id={`r-${id}`}>
-                <img style={{ marginBottom: "6px", height: "62%" }}src={f.RestaurantImage?.thumbnailUrl}></img>
+                <img style={{ marginBottom: "6px", height: "60%" }}src={f.RestaurantImage?.thumbnailUrl}></img>
                 <div id="r-name">
                     <h1 style={{ fontSize: "16px", margin: "2px 0px"}} >{f.name} </h1>
                     { user?.id && <>

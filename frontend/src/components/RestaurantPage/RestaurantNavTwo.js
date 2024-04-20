@@ -5,7 +5,7 @@ import OpenModalButton from "../OpenModalButton";
 import LoginForm from "../LoginForm";
 import SignupForm from "../SignupForm";
 import "../HomePage/Navigation.css";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { useHistory, useLocation } from "react-router-dom/cjs/react-router-dom.min";
 import { useFilters } from "../../context/Filters";
 import { useModal } from "../../context/Modal";
 import SignupFormModal from "../SignupForm";
@@ -32,10 +32,19 @@ function RestaurantNavTwo({ isLoaded }) {
   const [dropTwo, setDropTwo] = useState(false)
   const [search, setSearch] = useState("")
   const [ cartItem, setCartItem ] = useState({})
-//   const [ count, setCount ] = useState(0)
+  const [ sc, setSc ] = useState([])
+  const locations = useLocation();
+  const currentPage = locations.pathname;
 
-
-
+useEffect(() => {
+    if (shoppingCart.message) {
+        setSc([])
+    }
+    else {
+        let cart = shoppingCart.CartItems;
+        setSc(cart);
+    }
+}, [shoppingCart]);
 
     useEffect(() => {
 
@@ -94,17 +103,19 @@ function RestaurantNavTwo({ isLoaded }) {
     let data = []
       if (event.key === 'Enter') {
         data = await dispatch(restaurantActions.thunkGetSearch(search));
-      }
 
-      if (data.length == 1) {
-        history.push(`/restaurant/${data[0].id}`)
-      }
-      else {
-        history.push(`restaurants/searchs`)
+        if (!currentPage.includes("search")) {
+          if (data.length == 1) {
+            history.push(`/restaurant/${data[0].id}`)
+          }
+          else {
+            history.push(`restaurants/search`)
 
+          }
+        }
       }
+    }
 
-  };
 
 
   useEffect(() => {
@@ -208,7 +219,6 @@ function RestaurantNavTwo({ isLoaded }) {
             <i class="fi fi-rr-search"></i>
             <input
             value={search}
-            onChange={((e) => setSearch(e.target.value))}
             onKeyDown={handleSearch}
             placeholder="Search stores, dishes, products"></input>
         </div>

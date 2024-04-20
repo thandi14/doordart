@@ -45,10 +45,6 @@ function SearchPage({ isLoaded }) {
 
   let searched = Object.values(searchs)
 
-    console.log(searched)
-
-
-
   useEffect(() => {
 
     const handleDocumentClick = (event) => {
@@ -77,7 +73,7 @@ function SearchPage({ isLoaded }) {
             if (filter.star) {
                 filteredFranchises = filteredFranchises.filter((f) => {
                     const averageRating = f.Reviews.reduce((accumulator, review) => accumulator + review.rating, 0) / f.Reviews.length;
-                    return averageRating < filter.stars;
+                    return averageRating > filter.stars;
                 });
             }
             if (filter.timing) {
@@ -140,12 +136,6 @@ function SearchPage({ isLoaded }) {
     return result.toFixed(1)
 
   };
-
-  console.log(searched, filter)
-
-//   const handleResults = (e) => {
-//     setCatTwo(filter)
-//   };
 
   return (
     <div style={{ position: "relative"}}>
@@ -228,17 +218,19 @@ function SearchPage({ isLoaded }) {
                     <p style={{ color: mark == 1 ? "black" : "rgb(73, 73, 73)"}}>Restaurant</p>
                 </p>
                 <p id="s-categories" onClick={(() => {
+                    window.alert("Feature coming soon")
                     // setScroll(true)
-                    setMark(2)
+                    // setMark(2)
                     })}  style={{ position: "relative"}}>
-                    <div id={mark == 2 ? "mark-two" : "hidden"}></div>
+                    {/* <div id={mark == 2 ? "mark-two" : "hidden"}></div> */}
                     <p style={{ color: mark == 2 ? "black" : "rgb(73, 73, 73)"}}>Grocery</p>
                 </p>
                 <p id="s-categories" onClick={(() => {
+                    window.alert("Feature coming soon")
                     // setScroll(true)
-                    setMark(3)
+                    // setMark(3)
                     })}  style={{ position: "relative"}}>
-                    <div id={mark == 3 ? "mark-two" : "hidden"}></div>
+                    {/* <div id={mark == 3 ? "mark-two" : "hidden"}></div> */}
                     <p style={{ color: mark == 3 ? "black" : "rgb(73, 73, 73)"}}>Retail</p>
                 </p>
             </div>
@@ -571,8 +563,8 @@ function SearchPage({ isLoaded }) {
 
         }
     </div>
-    </div>
     <HomeFoot />
+    </div>
     </div>
     </div>
     </div>

@@ -88,7 +88,7 @@ function ShoppingCarts({ user, d }) {
     let data = {
       price
     }
-    
+
     await dispatch(cartActions.thunkUpdateCart(id, data));
     if (user) {
         history.push('/home')
@@ -101,6 +101,8 @@ function ShoppingCarts({ user, d }) {
             history.push('/')
         }
     }
+
+    await dispatch(cartActions.thunkCreateOrder(id))
 
     window.alert("Order placed! :)")
 

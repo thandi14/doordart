@@ -173,7 +173,8 @@ function HomePage({ isLoaded }) {
   return (
     <div style={{ position: "relative"}}>
     {user ? <HomeNavTwo /> : <HomeNav /> }
-    <div style={{ display: "flex", width: user?.id ? "79.5%" : "94%"}} >
+    <div style={{ display: "flex"}} >
+
     <div className="side-bar" style={{ position: "sticky", height: "100vh", top: "64px", zIndex: 14}}>
 
     { user?.id && <div onClick={(() => window.alert("Feature coming soon!"))} id="side-bar">
@@ -234,6 +235,7 @@ function HomePage({ isLoaded }) {
         </div>}
     </div>}
         </div>
+    <div style={{ display: "flex", width: user?.id ? "79.5%" : "94%"}} >
     <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
     <div>
 
@@ -584,11 +586,12 @@ function HomePage({ isLoaded }) {
     </div> }
     {category || Object.values(catTwo).length ? null : <div style={{ width: "100%", fontSize: "30px"}}><h1 style={{fontSize: "30px"}}>All Stores</h1></div>}
     <HomePageThree category={catOne} filter={catTwo} restaurants={franchises} />
+    { !user?.id && <HomeFoot />}
     { user?.id && <HomeFoot />}
     </div>
     </div>
     </div>
-    { !user?.id && <HomeFoot />}
+    </div>
         </div>
 
   );

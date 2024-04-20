@@ -9,7 +9,7 @@ function HomeFoot({ isLoaded }) {
 
   return (
     <>
-    <div className="sp-foot">
+    <div style={{ width: !sessionUser && "110%" }} className="sp-foot">
         <div>
         <div onClick={(() => window.alert("Feature coming soon!"))} id="foot-four">
             <span>

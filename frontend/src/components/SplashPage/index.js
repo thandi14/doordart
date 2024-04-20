@@ -16,7 +16,7 @@ import * as restaurantActions from "../../store/restaurants"
 function SplashPage() {
   const { user } = useSelector((state) => state.session);
   const dispatch = useDispatch();
-  const { closeModal } = useModal();
+  const { closeModal, setModalContent } = useModal();
   const { setLocation } = useFilters()
   const autocompleteRef = useRef(null);
   const history = useHistory()
@@ -45,6 +45,7 @@ const handlePlaceChanged = () => {
       };
 
       await dispatch(restaurantActions.thunkGetRestaurants(data));
+      window.alert("GOOGLE API MAY NOT BE AVIALBLE SO MILES/TIMES/PRICE LEVEL MAY NOT BE ACCURATE OR DISPLAY")
       history.push("/home");
 
   };
@@ -96,7 +97,7 @@ const handlePlaceChanged = () => {
       <i style={{ color: "red", cursor: "pointer"}} class="fi fi-ss-arrow-circle-right"></i>
       </span>
       </div>
-      <button><i class="fi fi-br-user"></i>Sign in for saved address</button>
+      <button onClick={(() => setModalContent(<LoginFormModal />))} ><i class="fi fi-br-user"></i>Sign in for saved address</button>
        </div>
     </div>
     <div className="sp-one" id="sp-one">

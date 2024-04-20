@@ -64,7 +64,7 @@
 
 #types-two {
     display: flex;
-    width: 100%;
+    /* width: 100%; */
     gap: 20px;
     padding-top: 16px;
     margin-bottom: -16px;

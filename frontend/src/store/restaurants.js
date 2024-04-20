@@ -305,6 +305,9 @@ const restaurantReducer = (state = initialState, action) => {
     case GET_SAVE_DETAILS:
       newState = { ...state };
       const sDetails = action.details;
+      if (!newState.restaurants[sDetails.restaurantId].Saves?.length) {
+        newState.restaurants[sDetails.restaurantId].Saves = []
+      }
       newState.restaurants[sDetails.restaurantId].Saves.push(sDetails)
       newState.saves[sDetails.id] = { ...sDetails };
       return newState;
@@ -327,7 +330,10 @@ const restaurantReducer = (state = initialState, action) => {
       const saveId = action.id;
       const restaurantId = action.restaurantId;
       delete newState.saves[saveId]
-      newState.restaurants[restaurantId].Saves =  newState.restaurants[restaurantId].Saves.filter((save) => save.id !== saveId);
+      if (!newState.restaurants[restaurantId].Saves?.length) {
+        return newState
+      }
+      newState.restaurants[restaurantId].Saves = newState.restaurants[restaurantId].Saves.filter((save) => save.id !== saveId);
     return newState;
     default:
       return state;

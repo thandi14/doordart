@@ -152,7 +152,6 @@ router.put('/:id', async (req, res) => {
     let cartExist = await ShoppingCart.findByPk(cartId);
     let { price } = req.body
     const { user } = req
-    const userId = user.dataValues.id
 
     if (!cartExist) {
 

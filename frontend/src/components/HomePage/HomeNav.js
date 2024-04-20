@@ -6,7 +6,7 @@ import OpenModalButton from "../OpenModalButton";
 import LoginForm from "../LoginForm";
 import SignupForm from "../SignupForm";
 import "./Navigation.css";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { useHistory, useLocation } from "react-router-dom/cjs/react-router-dom.min";
 import { useFilters } from "../../context/Filters";
 import { useModal } from "../../context/Modal";
 import SignupFormModal from "../SignupForm";
@@ -29,6 +29,8 @@ function HomeNav({ isLoaded }) {
   const dispatch = useDispatch()
   const [dropTwo, setDropTwo] = useState(false)
   const [search, setSearch] = useState("")
+  const locations = useLocation();
+  const currentPage = locations.pathname;
 
 
   useEffect(() => {
@@ -74,15 +76,18 @@ function HomeNav({ isLoaded }) {
     let data = []
       if (event.key === 'Enter') {
         data = await dispatch(restaurantActions.thunkGetSearch(search));
+
+        if (!currentPage.includes("search")) {
+          if (data.length == 1) {
+            history.push(`/restaurant/${data[0].id}`)
+          }
+          else {
+            history.push(`restaurants/search`)
+
+          }
+        }
       }
 
-      if (data.length == 1) {
-        history.push(`/restaurant/${data[0].id}`)
-      }
-      else {
-        history.push(`restaurants/searchs`)
-
-      }
 
   };
 
